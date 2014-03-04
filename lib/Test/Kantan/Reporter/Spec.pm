@@ -63,6 +63,7 @@ sub suite {
     my ($self, $suite) = @_;
 
     ++$self->{level};
+    print "\n";
     printf "%s%s\n", $self->indent, $suite->title;
 
     return Scope::Guard->new(

@@ -6,6 +6,11 @@ use File::Temp;
 use t::Util;
 
 for my $file (sort <eg/*.t>) {
+    (my $outfile = $file) =~ s/\.t\z/.out/;
+    print "perl -Ilib $file > $outfile\n";
+}
+
+for my $file (sort <eg/*.t>) {
     note $file;
     (my $outfile = $file) =~ s/\.t\z/.out/;
     my $expected = slurp_utf8($outfile);

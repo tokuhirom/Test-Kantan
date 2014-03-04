@@ -1,12 +1,19 @@
 
 
+
+
+
      Array
+
        push
          + do something
          ✓  should push an element
+
      Hash
+
        fetch
          ✓  take the value
+
      Foo
        + A
        + B
