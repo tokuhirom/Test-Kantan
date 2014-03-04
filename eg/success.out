@@ -1,0 +1,11 @@
+
+
+     Array
+       push
+         ✓  should push an element
+     Hash
+       fetch
+         ✓  take the value
+
+
+ok

@@ -3,27 +3,24 @@ use warnings;
 use utf8;
 use Test::Kantan;
 
-suite 'Array', sub {
-    suite 'push', sub {
-        test 'it should push an element', sub {
+describe 'Array', sub {
+    describe 'push', sub {
+        it 'should push an element', sub {
             my @a=qw(a b c);
             push @a, 'd';
-            expect { join(' ', @a) eq 'a b c d e' };
+            ok { join(' ', @a) eq 'a b c d e' };
 
             diag "HOGE";
         };
     };
 };
 
-suite 'Hash', sub {
-    suite 'fetch', sub {
-        step 'foo';
-        step 'bar';
-
-        test 'take the value', sub {
-            ok +{f => 1}->{g};
+describe 'Hash', sub {
+    describe 'fetch', sub {
+        it 'take the value', sub {
+            expect(+{f => 1}->{g})->ok;
         };
     };
 };
 
-done_testing;
+runtests;

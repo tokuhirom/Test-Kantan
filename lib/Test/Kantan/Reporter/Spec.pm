@@ -34,7 +34,6 @@ sub start {
     };
 
     binmode *STDOUT, ":encoding(${encoding})";
-    binmode *STDERR, ":encoding(${encoding})";
     STDOUT->autoflush(1);
 
     print "\n\n";
@@ -98,11 +97,11 @@ sub finalize {
 
     if (!$state->is_passing || $ENV{TEST_KANTAN_VERBOSE}) {
         if (@{$self->{messages}}) {
-            printf STDERR "\n\n\n  %s:\n\n", $self->colored(['red'], '(Diagnostic message)');
+            printf "\n\n\n  %s:\n\n", $self->colored(['red'], '(Diagnostic message)');
             for my $message (@{$self->{messages}}) {
                 my $str = $message->as_string(reporter => $self);
                 $str =~ s/^/      /gm;
-                print STDERR "\n$str";
+                print "\n$str";
             }
         }
     }
