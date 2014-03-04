@@ -41,10 +41,11 @@ sub ok(&) {
 }
 
 sub diag {
-    my $msg = shift;
+    my ($msg, $cutoff) = @_;
     $Test::Kantan::REPORTER->message(
         Test::Kantan::Message::Diag->new(
             message => $msg,
+            cutoff  => $cutoff,
             caller  => Test::Kantan::Caller->new(0),
         )
     );

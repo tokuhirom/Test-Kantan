@@ -110,9 +110,12 @@ sub finalize {
 }
 
 sub truncstr {
-    my ($self, $message) = @_;
-    if (length($message) > $self->cutoff) {
-        return substr($message, 0, $self->cutoff-3) . '...';
+    my ($self, $message, $cutoff) = @_;
+    unless (defined $cutoff) {
+        $cutoff = $self->cutoff;
+    }
+    if (length($message) > $cutoff) {
+        return substr($message, 0, $cutoff-3) . '...';
     } else {
         return $message;
     }
