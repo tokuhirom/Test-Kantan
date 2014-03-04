@@ -41,7 +41,7 @@ sub as_string {
             my $deparse = B::Deparse->new();
             $deparse->{curcv} = B::svref_2object($self->{code});
 
-            my $val = $self->truncstr($self->dump_data($value->[1]));
+            my $val = $self->truncstr($reporter->dump_data($value->[1]));
             $val =~ s/\n/\\n/g;
             push @ret, sprintf("%s => %s\n",
                 $reporter->colored(['red on_black'], $deparse->deparse($op)),
