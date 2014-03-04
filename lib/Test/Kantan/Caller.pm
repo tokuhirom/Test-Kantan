@@ -26,11 +26,11 @@ sub new {
     my $code = sub {
         undef $filename if $filename eq '-e';
         if (defined $filename) {
-            $filename = File::Spec->rel2abs($filename, $BASE_DIR);
-            my $file = $FILECACHE{$filename} ||= [
+            my $abs_filename = File::Spec->rel2abs($filename, $BASE_DIR);
+            my $file = $FILECACHE{$abs_filename} ||= [
                 do {
                     # Do not die if we can't open the file
-                    open my $fh, $binmode, $filename
+                    open my $fh, $binmode, $abs_filename
                         or return '';
                     <$fh>
                 }

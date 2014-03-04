@@ -5,8 +5,6 @@ use warnings;
 
 our $VERSION = "0.01";
 
-use Term::ANSIColor;
-use Test::Power::Core;
 use Test::Deep::NoTest qw(ignore);
 
 use Test::Kantan::State;
@@ -19,6 +17,7 @@ use Test::Kantan::Message::Power;
 use Test::Kantan::Message::Fail;
 use Test::Kantan::Message::Diag;
 
+# Alias.
 sub import {
     my $class = shift;
     my %args = @_;

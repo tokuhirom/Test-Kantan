@@ -5,6 +5,8 @@ use utf8;
 use 5.010_001;
 use parent qw(Exporter);
 
+use Test::Power::Core;
+
 our @EXPORT = qw(suite step test ok done_testing diag expect cmp_deeply ignore);
 
 our $COLOR = $ENV{TEST_KANTAN_COLOR} || -t *STDOUT;
