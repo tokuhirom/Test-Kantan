@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.12 2014-03-04T11:51:00Z
+
+    - Better diag for Expect#is
+
 0.11 2014-03-04T11:09:30Z
 
     - Added Expect#isnt method
