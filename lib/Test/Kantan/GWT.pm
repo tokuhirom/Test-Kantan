@@ -50,9 +50,9 @@ sub Feature($&) {
     {
         local $CURRENT = $suite;
         my $guard = $REPORTER->suite($suite);
-        $suite->call_trigger('setup');
+        $suite->parent->call_trigger('setup');
         $code->();
-        $suite->call_trigger('teardown');
+        $suite->parent->call_trigger('teardown');
     }
     $CURRENT->add_suite($suite);
 }

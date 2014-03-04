@@ -5,7 +5,7 @@ use utf8;
 use 5.010_001;
 
 use Class::Accessor::Lite 0.05 (
-    rw => [qw(title root)],
+    rw => [qw(title root parent)],
 );
 
 sub new {
