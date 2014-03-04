@@ -51,7 +51,6 @@ sub indent {
 
 sub step {
     my ($self, $title) = @_;
-    warn;
     printf "%s%s\n", $self->indent, $title;
 }
 

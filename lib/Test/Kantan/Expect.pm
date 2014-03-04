@@ -9,6 +9,12 @@ use Class::Accessor::Lite 0.05 (
     new => 1,
 );
 
+use overload (
+    q{==} => 'is',
+    q{eq} => 'is',
+    fallback => 1,
+);
+
 sub stuff {
     my $self = shift;
     exists($self->{stuff}) ? $self->{stuff} : $self->{source};

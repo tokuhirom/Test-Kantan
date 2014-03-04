@@ -21,25 +21,33 @@ use Test::Deep::NoTest qw(ignore);
 use Test::Power::Core;
 use Test::Kantan::Expect;
 
-our @EXPORT = qw(describe it ok runtests diag expect ignore before_each);
+our @EXPORT = qw(suite step test ok done_testing diag expect ignore setup teardown);
 
 our $COLOR = $ENV{TEST_KANTAN_COLOR} || -t *STDOUT;
 our $CURRENT = our $ROOT = Test::Kantan::Suite->new(root => 1, title => 'Root');
-our $STATE;
 our $FINISHED;
-our $REPORTER;
+our $STATE = Test::Kantan::State->new();
+our $REPORTER = Test::Kantan::Reporter::Spec->new(
+    color => $COLOR,
+);
+$REPORTER->start;
 
-sub before_each(&) {
+sub setup(&) {
     my ($code) = @_;
-    $CURRENT->add_trigger('before_each' => $code);
+    $CURRENT->add_trigger('setup' => $code);
 }
 
-sub after_each(&) {
+sub teardown(&) {
     my ($code) = @_;
-    $CURRENT->add_trigger('after_each' => $code);
+    $CURRENT->add_trigger('teardown' => $code);
 }
 
-sub describe($&) {
+sub step($) {
+    my $message = shift;
+    $REPORTER->step($message);
+}
+
+sub suite($&) {
     my ($title, $code) = @_;
 
     my $suite = Test::Kantan::Suite->new(
@@ -48,18 +56,22 @@ sub describe($&) {
     );
     {
         local $CURRENT = $suite;
+        my $guard = $REPORTER->suite($suite);
+        $suite->call_trigger('setup');
         $code->();
+        $suite->call_trigger('teardown');
     }
     $CURRENT->add_suite($suite);
 }
 
-sub it($&) {
+sub test($&) {
     my ($title, $code) = @_;
 
     my $test = Test::Kantan::Test->new(
         title   => $title,
         code    => $code,
     );
+    $test->run(state => $STATE, reporter => $REPORTER);
     $CURRENT->add_test($test);
 }
 
@@ -101,18 +113,10 @@ sub diag {
     );
 }
 
-sub runtests {
+sub done_testing {
     $FINISHED++;
 
     return if $ROOT->is_empty;
-
-    local $STATE = Test::Kantan::State->new();
-    local $REPORTER = Test::Kantan::Reporter::Spec->new(
-        color => $COLOR,
-    );
-    $REPORTER->start;
-
-    $ROOT->run(reporter => $REPORTER, state => $STATE);
 
     if (!$STATE->is_passing || $ENV{TEST_KANTAN_VERBOSE}) {
         $REPORTER->finalize(
@@ -139,7 +143,7 @@ sub runtests {
 END {
     unless ($ROOT->is_empty) {
         unless ($FINISHED) {
-            runtests()
+            done_testing()
         }
     }
 }

@@ -2,6 +2,7 @@
 
      Array
        push
+       do something
          ✓  should push an element
      Hash
        fetch

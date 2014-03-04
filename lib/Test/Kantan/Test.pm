@@ -23,7 +23,7 @@ sub new {
 
 sub run {
     my ($self, %args) = @_;
-    my $state = $args{state} or die;
+    my $state = $args{state} or Carp::croak("Missing mandatory parameter: state");
     my $reporter = $args{reporter} or die;
 
     my $orig_fail_cnt = $state->fail_cnt;
