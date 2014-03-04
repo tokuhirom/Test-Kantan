@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.10 2014-03-04T10:59:35Z
+
+    - Added stub_guard
+
 0.09 2014-03-04T10:49:58Z
 
     - fixed Power

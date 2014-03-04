@@ -46,6 +46,7 @@
             "Class::Accessor::Lite" : "0.05",
             "Scope::Guard" : "0",
             "Test::Deep" : "0",
+            "Test::Mock::Guard" : "0",
             "Test::Power::Core" : "0",
             "perl" : "5.010001"
          }
@@ -68,5 +69,5 @@
          "web" : "https://github.com/tokuhirom/Test-Kantan"
       }
    },
-   "version" : "0.09"
+   "version" : "0.10"
 }
