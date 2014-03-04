@@ -66,6 +66,21 @@ sub is {
     }
 }
 
+sub isnt {
+    my ($self, $rhs) = @_;
+
+    unless (Test::Deep::eq_deeply($self->stuff, $rhs)) {
+        1;
+    } else {
+        $self->state->failed();
+        $self->reporter->message(
+            Test::Kantan::Message::Fail->new(
+                caller => Test::Kantan::Caller->new(0),
+            )
+        );
+    }
+}
+
 sub should_be_a {
     my ($self, $rhs) = @_;
 
