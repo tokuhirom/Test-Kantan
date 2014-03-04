@@ -21,6 +21,10 @@ use Test::Deep::NoTest qw(ignore);
 use Test::Power::Core;
 use Test::Kantan::Expect;
 
+if (Test::Builder->can('new')) {
+    Test::Builder->new->no_diag(1);
+}
+
 our @EXPORT = qw(suite step test ok done_testing diag expect ignore setup teardown);
 
 our $COLOR = $ENV{TEST_KANTAN_COLOR} || -t *STDOUT;
