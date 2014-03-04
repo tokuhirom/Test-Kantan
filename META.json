@@ -57,5 +57,16 @@
       }
    },
    "release_status" : "unstable",
-   "version" : "0.01"
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/tokuhirom/Test-Kantan/issues"
+      },
+      "homepage" : "https://github.com/tokuhirom/Test-Kantan",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/tokuhirom/Test-Kantan.git",
+         "web" : "https://github.com/tokuhirom/Test-Kantan"
+      }
+   },
+   "version" : "0.08"
 }
