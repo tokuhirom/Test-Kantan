@@ -30,14 +30,16 @@ sub teardown(&) {
     $CURRENT->add_trigger('teardown' => $code);
 }
 
-sub Given($) {
-    my $message = shift;
+sub Given {
+    my ($message, $code) = @_;
     $REPORTER->Given($message);
+    $code->() if $code;
 }
 
 sub When($) {
-    my $message = shift;
+    my ($message, $code) = @_;
     $REPORTER->When($message);
+    $code->() if $code;
 }
 
 sub Feature($&) {
