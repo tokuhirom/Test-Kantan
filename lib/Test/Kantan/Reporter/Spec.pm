@@ -51,7 +51,7 @@ sub indent {
 
 sub step {
     my ($self, $title) = @_;
-    printf "%s%s\n", $self->indent, $title;
+    printf "%s  + %s\n", $self->indent, $title;
 }
 
 sub suite {

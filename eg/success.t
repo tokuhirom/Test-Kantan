@@ -26,5 +26,15 @@ suite 'Hash', sub {
     };
 };
 
+suite 'Foo', sub {
+    step 'A';
+    step 'B';
+    step 'C';
+
+    test 'bar', sub {
+        ok { 1 };
+    };
+};
+
 done_testing;
 

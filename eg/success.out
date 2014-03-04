@@ -2,11 +2,16 @@
 
      Array
        push
-       do something
+         + do something
          ✓  should push an element
      Hash
        fetch
          ✓  take the value
+     Foo
+       + A
+       + B
+       + C
+       ✓  bar
 
 
 ok
