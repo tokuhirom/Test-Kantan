@@ -54,6 +54,9 @@ sub step {
     printf "%s  + %s\n", $self->indent, $title;
 }
 
+sub Given { shift->step(@_) }
+sub When  { shift->step(@_) }
+
 sub suite {
     my ($self, $suite) = @_;
 

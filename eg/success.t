@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::Kantan;
+use Test::Kantan::Simple;
 
 suite 'Array', sub {
     suite 'push', sub {
