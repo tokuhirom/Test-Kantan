@@ -1,2 +1,6 @@
 name = "Test-Kantan"
 # badges = ["travis"]
+
+[release]
+do_not_upload_to_cpan=true
+

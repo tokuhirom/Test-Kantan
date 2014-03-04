@@ -9,6 +9,9 @@ use Class::Accessor::Lite 0.05 (
     new => 1,
 );
 
+use Test::Kantan::Caller;
+use Test::Kantan::Message::Fail;
+
 use overload (
     q{==} => 'is',
     q{eq} => 'is',
@@ -52,6 +55,21 @@ sub is {
     my ($self, $rhs) = @_;
 
     if (Test::Deep::eq_deeply($self->stuff, $rhs)) {
+        1;
+    } else {
+        $self->state->failed();
+        $self->reporter->message(
+            Test::Kantan::Message::Fail->new(
+                caller => Test::Kantan::Caller->new(0),
+            )
+        );
+    }
+}
+
+sub should_be_a {
+    my ($self, $rhs) = @_;
+
+    if (UNIVERSAL::isa($self->stuff, $rhs)) {
         1;
     } else {
         $self->state->failed();
