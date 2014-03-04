@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.11 2014-03-04T11:09:30Z
+
+    - Added Expect#isnt method
+
 0.10 2014-03-04T10:59:35Z
 
     - Added stub_guard

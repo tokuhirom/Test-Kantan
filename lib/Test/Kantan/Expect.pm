@@ -11,6 +11,7 @@ use Class::Accessor::Lite 0.05 (
 
 use Test::Kantan::Caller;
 use Test::Kantan::Message::Fail;
+use Test::Deep::NoTest;
 
 use overload (
     q{==} => 'is',
