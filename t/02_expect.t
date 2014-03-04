@@ -7,9 +7,19 @@ use Test::Kantan::State;
 
 {
     package Test::Kantan::Reporter::Null;
-    sub new { bless {}, shift }
+    use parent qw(Test::Kantan::Reporter::Base);
+    use Class::Accessor::Lite 0.05 (
+        rw => [qw(cutoff messages)],
+    );
+    sub new {
+        bless {messages => [], cutoff => 80}, shift
+    }
+    sub message {
+        my ($self, $message) = @_;
+        push @{$self->{messages}}, $message;
+    }
+    sub colored { $_[2] }
     sub DESTROY { }
-    sub AUTOLOAD { }
 }
 
 subtest 'should_be_a', sub {
@@ -41,6 +51,20 @@ subtest 'isnt', sub {
     );
     ok !$expect->isnt(0);
     ok $expect->isnt(1);
+};
+
+subtest 'is', sub {
+    my $expect = Test::Kantan::Expect->new(
+        source => 0,
+        reporter => Test::Kantan::Reporter::Null->new(),
+        state => Test::Kantan::State->new(),
+    );
+    ok !$expect->is(1);
+    ok $expect->is(0);
+
+    for (@{$expect->reporter->messages}) {
+        diag $_->as_string(reporter => $expect->reporter);
+    }
 };
 
 done_testing;

@@ -5,6 +5,8 @@ use utf8;
 use 5.010_001;
 use Term::ANSIColor ();
 
+use parent qw(Test::Kantan::Reporter::Base);
+
 use Class::Accessor::Lite 0.05 (
     rw => [qw(color level cutoff)],
 );
@@ -108,30 +110,6 @@ sub finalize {
         }
     }
 }
-
-sub truncstr {
-    my ($self, $message, $cutoff) = @_;
-    unless (defined $cutoff) {
-        $cutoff = $self->cutoff;
-    }
-    if (length($message) > $cutoff) {
-        return substr($message, 0, $cutoff-3) . '...';
-    } else {
-        return $message;
-    }
-}
-
-sub dump_data {
-    my $value = shift;
-
-    local $Data::Dumper::Terse = 1;
-    local $Data::Dumper::Indent = 0;
-    local $Data::Dumper::Sortkeys = 1;
-    $value = Data::Dumper::Dumper($value);
-    $value =~ s/\n/\\n/g;
-    return $value;
-}
-
 
 1;
 

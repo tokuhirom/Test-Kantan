@@ -35,6 +35,7 @@ sub ok {
                 caller => Test::Kantan::Caller->new(0),
             )
         );
+        0;
     }
 }
 
@@ -49,36 +50,45 @@ sub like {
                 caller => Test::Kantan::Caller->new(0),
             )
         );
+        0;
     }
 }
 
 sub is {
-    my ($self, $rhs) = @_;
+    my ($self, $expected) = @_;
 
-    if (Test::Deep::eq_deeply($self->stuff, $rhs)) {
+    my ($ok, $stack) = Test::Deep::cmp_details($self->stuff, $expected);
+    if ($ok) {
         1;
     } else {
         $self->state->failed();
+        my $diag = Test::Deep::deep_diag($stack);
         $self->reporter->message(
             Test::Kantan::Message::Fail->new(
-                caller => Test::Kantan::Caller->new(0),
+                description => $diag,
+                caller      => Test::Kantan::Caller->new(0),
             )
         );
+        0;
     }
 }
 
 sub isnt {
-    my ($self, $rhs) = @_;
+    my ($self, $expected) = @_;
 
-    unless (Test::Deep::eq_deeply($self->stuff, $rhs)) {
+    my ($ok, $stack) = Test::Deep::cmp_details($self->stuff, $expected);
+    unless ($ok) {
         1;
     } else {
+        # We can't call Test::Deep::deep_diag if cmp_details() was succeeded.
         $self->state->failed();
         $self->reporter->message(
             Test::Kantan::Message::Fail->new(
-                caller => Test::Kantan::Caller->new(0),
+                description => ('Got: ' . $self->reporter->truncstr($self->reporter->dump_data($self->source))),
+                caller      => Test::Kantan::Caller->new(0),
             )
         );
+        0;
     }
 }
 
@@ -94,6 +104,7 @@ sub should_be_a {
                 caller => Test::Kantan::Caller->new(0),
             )
         );
+        0;
     }
 }
 
