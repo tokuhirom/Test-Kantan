@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.13 2014-03-05T04:52:55Z
+
+    - use Module::Spy.
+
 0.12 2014-03-04T11:51:00Z
 
     - Better diag for Expect#is
