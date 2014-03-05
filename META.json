@@ -44,9 +44,9 @@
       "runtime" : {
          "requires" : {
             "Class::Accessor::Lite" : "0.05",
+            "Module::Spy" : "0",
             "Scope::Guard" : "0",
             "Test::Deep" : "0",
-            "Test::Mock::Guard" : "0",
             "Test::Power::Core" : "0",
             "perl" : "5.010001"
          }

@@ -6,18 +6,16 @@ use 5.010_001;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(expect ok diag ignore stub_guard);
+our @EXPORT = qw(expect ok diag ignore stub_guard spy);
 
 use Test::Power::Core;
 use Test::Kantan::Expect;
 use Test::Deep::NoTest qw(ignore);
-use Test::Mock::Guard ();
+use Module::Spy qw(spy);
 
 sub expect {
     Test::Kantan::Expect->new(source => $_[0], reporter => $Test::Kantan::REPORTER, state => $Test::Kantan::STATE);
 }
-
-sub stub_guard { Test::Mock::Guard::mock_guard(@_) }
 
 sub ok(&) {
     my $code = shift;
