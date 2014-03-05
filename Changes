@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.14 2014-03-05T07:41:14Z
+
+    - Dependency fix.
+
 0.13 2014-03-05T04:52:55Z
 
     - use Module::Spy.

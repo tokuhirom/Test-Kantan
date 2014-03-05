@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/tokuhirom/Test-Kantan.png?branch=master)](https://travis-ci.org/tokuhirom/Test-Kantan)
 # NAME
 
 Test::Kantan - It's new $module
