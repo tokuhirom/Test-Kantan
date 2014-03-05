@@ -63,7 +63,7 @@ subtest 'is', sub {
     ok $expect->is(0);
 
     for (@{$expect->reporter->messages}) {
-        diag $_->as_string(reporter => $expect->reporter);
+        note $_->as_string(reporter => $expect->reporter);
     }
 };
 
