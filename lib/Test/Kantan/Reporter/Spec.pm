@@ -47,13 +47,28 @@ sub colored {
 }
 
 sub indent {
+    my $self = shift;
+    $self->{level}++;
+    return Scope::Guard->new(
+        sub {
+            --$self->{level};
+        }
+    );
+}
+
+sub head_sp {
     my ($self) = @_;
     return ' ' x (3+$self->{level}*2);
 }
 
 sub step {
     my ($self, $title) = @_;
-    printf "%s  + %s\n", $self->indent, $title;
+    printf "%s  %s\n", $self->head_sp, $title;
+}
+
+sub tag_step {
+    my ($self, $tag, $title) = @_;
+    printf "%s  %5s %s\n", $self->head_sp, $tag, $title;
 }
 
 sub Given { shift->step(@_) }
@@ -64,7 +79,7 @@ sub suite {
 
     ++$self->{level};
     print "\n";
-    printf "%s%s\n", $self->indent, $suite->title;
+    printf "%s%s\n", $self->head_sp, $suite->title;
 
     return Scope::Guard->new(
         sub {
@@ -76,7 +91,7 @@ sub suite {
 sub fail {
     my ($self, $test) = @_;
     printf("%s  %s  %s\n",
-        $self->indent,
+        $self->head_sp,
         $self->colored(['red'], "\x{2716}"),
         $test->title,
     );
@@ -85,7 +100,7 @@ sub fail {
 sub pass {
     my ($self, $test) = @_;
     printf("%s  %s  %s\n",
-        $self->indent,
+        $self->head_sp,
         $self->colored(['green'], "\x{2713}"),
         $test->title,
     );

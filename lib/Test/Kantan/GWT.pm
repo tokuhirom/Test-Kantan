@@ -20,6 +20,16 @@ $REPORTER = Test::Kantan::Reporter::Spec->new(
 );
 $REPORTER->start;
 
+sub _tag {
+    my $tag = shift;
+    if ($CURRENT->{last_state} && $CURRENT->{last_state} eq $tag) {
+        return 'And';
+    } else {
+        $CURRENT->{last_state} = $tag;
+        return $tag;
+    }
+}
+
 sub setup(&) {
     my ($code) = @_;
     $CURRENT->add_trigger('setup' => $code);
@@ -31,16 +41,26 @@ sub teardown(&) {
 }
 
 sub Given {
-    my ($message, $code) = @_;
-    $REPORTER->Given($message);
+    my ($title, $code) = @_;
+
+    $REPORTER->tag_step(_tag('Given'), $title);
     $code->() if $code;
 }
 
-sub When($) {
-    my ($message, $code) = @_;
-    $REPORTER->When($message);
+sub When {
+    my ($title, $code) = @_;
+
+    $REPORTER->tag_step(_tag('When'), $title);
     $code->() if $code;
 }
+
+sub Then($&) {
+    my ($title, $code) = @_;
+
+    $REPORTER->tag_step(_tag('Then'), $title);
+    $code->() if $code;
+}
+
 
 sub Feature($&) {
     my ($title, $code) = @_;
@@ -51,7 +71,8 @@ sub Feature($&) {
     );
     {
         local $CURRENT = $suite;
-        my $guard = $REPORTER->suite($suite);
+        $REPORTER->tag_step('Feature', $title);
+        my $guard = $REPORTER->indent;
         $suite->parent->call_trigger('setup');
         $code->();
         $suite->parent->call_trigger('teardown');
@@ -59,17 +80,22 @@ sub Feature($&) {
     $CURRENT->add_suite($suite);
 }
 
-sub Scenario { goto \&Feature }
-
-sub Then($&) {
+sub Scenario {
     my ($title, $code) = @_;
 
-    my $test = Test::Kantan::Test->new(
+    my $suite = Test::Kantan::Suite->new(
         title   => $title,
-        code    => $code,
+        parent  => $CURRENT,
     );
-    $test->run(state => $STATE, reporter => $REPORTER);
-    $CURRENT->add_test($test);
+    {
+        local $CURRENT = $suite;
+        $REPORTER->tag_step('Scenario', $title);
+        my $guard = $REPORTER->indent;
+        $suite->parent->call_trigger('setup');
+        $code->();
+        $suite->parent->call_trigger('teardown');
+    }
+    $CURRENT->add_suite($suite);
 }
 
 sub done_testing {
