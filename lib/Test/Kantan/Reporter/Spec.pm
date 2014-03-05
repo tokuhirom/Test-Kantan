@@ -63,16 +63,13 @@ sub head_sp {
 
 sub step {
     my ($self, $title) = @_;
-    printf "%s  %s\n", $self->head_sp, $title;
+    printf "%s  + %s\n", $self->head_sp, $title;
 }
 
 sub tag_step {
     my ($self, $tag, $title) = @_;
     printf "%s  %5s %s\n", $self->head_sp, $tag, $title;
 }
-
-sub Given { shift->step(@_) }
-sub When  { shift->step(@_) }
 
 sub suite {
     my ($self, $suite) = @_;

@@ -2,13 +2,11 @@
 
 
 
-
-     Foo
-
-       Normal
-         + An array
-         + Push one item
-         ✓  the number of array is 1
+     Feature Foo
+       Scenario Normal
+         Given An array
+          When Push one item
+          Then the number of array is 1
 
 
 ok
