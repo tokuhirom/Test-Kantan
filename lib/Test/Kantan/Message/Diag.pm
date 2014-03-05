@@ -13,7 +13,7 @@ sub as_string {
     my ($self, %args) = @_;
     my $reporter = $args{reporter} or die;
 
-    my $msg = $self->message;
+    my $msg = $self->message // '(undef)';
     $msg =~ s/\n/\\n/g;
     return sprintf("Diag: %s\n  at %s line %s.\n", $reporter->colored(['magenta on_black'], $reporter->truncstr($msg, $self->cutoff)), $self->caller->filename, $self->caller->line);
 }
