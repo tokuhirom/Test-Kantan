@@ -2,10 +2,10 @@
 
 
 
-     Feature foo
-        Then pushed
-     Feature bar
-        Then pushed
+   Feature foo
+      Then pushed
+   Feature bar
+      Then pushed
 
 
 ok

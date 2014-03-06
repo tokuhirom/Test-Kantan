@@ -63,31 +63,26 @@ sub head_sp {
 
 sub step {
     my ($self, $title) = @_;
-    printf "%s  + %s\n", $self->head_sp, $title;
+    printf "%s+ %s\n", $self->head_sp, $title;
 }
 
 sub tag_step {
     my ($self, $tag, $title) = @_;
-    printf "%s  %5s %s\n", $self->head_sp, $tag, $title;
+    printf "%s%5s %s\n", $self->head_sp, $tag, $title;
 }
 
 sub suite {
     my ($self, $suite) = @_;
 
-    ++$self->{level};
     print "\n";
     printf "%s%s\n", $self->head_sp, $suite->title;
 
-    return Scope::Guard->new(
-        sub {
-            --$self->{level};
-        }
-    );
+    return $self->indent();
 }
 
 sub fail {
     my ($self, $test) = @_;
-    printf("%s  %s  %s\n",
+    printf("%s%s  %s\n",
         $self->head_sp,
         $self->colored(['red'], "\x{2716}"),
         $test->title,
@@ -96,7 +91,7 @@ sub fail {
 
 sub pass {
     my ($self, $test) = @_;
-    printf("%s  %s  %s\n",
+    printf("%s%s  %s\n",
         $self->head_sp,
         $self->colored(['green'], "\x{2713}"),
         $test->title,

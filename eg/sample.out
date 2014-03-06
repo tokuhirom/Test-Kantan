@@ -3,15 +3,15 @@
 
 
 
-     Array
+   Array
 
-       push
-         ✖  should push an element
+     push
+       ✖  should push an element
 
-     Hash
+   Hash
 
-       fetch
-         ✖  take the value
+     fetch
+       ✖  take the value
 
 
 
