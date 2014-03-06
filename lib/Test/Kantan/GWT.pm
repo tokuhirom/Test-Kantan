@@ -13,13 +13,6 @@ our @EXPORT = (qw(Given When Then done_testing Feature Scenario setup teardown),
 our $CURRENT = our $ROOT = Test::Kantan::Suite->new(root => 1, title => 'Root');
 our $FINISHED;
 
-$STATE = Test::Kantan::State->new();
-
-$REPORTER = Test::Kantan::Reporter::Spec->new(
-    color => $COLOR,
-);
-$REPORTER->start;
-
 sub _tag {
     my $tag = shift;
     if ($CURRENT->{last_state} && $CURRENT->{last_state} eq $tag) {
