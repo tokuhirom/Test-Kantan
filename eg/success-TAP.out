@@ -1,0 +1,18 @@
+
+
+# Array
+# Array/push
+# STEP do something
+# Diag: HOGE
+#   at eg/success.t line 15.
+
+ok 1 - should push an element
+# Hash
+# Hash/fetch
+ok 2 - take the value
+# Foo
+# STEP A
+# STEP B
+# STEP C
+ok 3 - bar
+1..3

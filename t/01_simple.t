@@ -6,15 +6,18 @@ use File::Temp;
 use t::Util;
 
 for my $file (sort <eg/*.t>) {
-    note $file;
-    (my $outfile = $file) =~ s/\.t\z/.out/;
-    my $expected = slurp_utf8($outfile);
+    for my $reporter (qw(Spec TAP)) {
+        note "$file $reporter";
+        local $ENV{TEST_KANTAN_REPORTER} = $reporter;
+        (my $outfile = $file) =~ s/\.t\z/-${reporter}.out/;
+        my $expected = slurp_utf8($outfile);
 
-    my $out = run_test($file);
-    $out =~ s/\A\n*//;
-    $expected =~ s/\A\n*//;
+        my $out = run_test($file);
+        $out =~ s/\A\n*//;
+        $expected =~ s/\A\n*//;
 
-    is($out, $expected);
+        is($out, $expected);
+    }
 }
 
 done_testing;

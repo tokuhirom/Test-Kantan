@@ -1,0 +1,20 @@
+
+
+# Array
+# Array/push
+# FAIL: ok { join(' ', @a) eq 'a b c d e' };
+#   at eg/sample.t line 11
+# 
+
+# Diag: HOGE
+#   at eg/sample.t line 13.
+
+not ok 1 - should push an element
+# Hash
+# Hash/fetch
+# expect(+{f => 1}->{g})->ok;
+#    at eg/sample.t line 21
+# 
+
+not ok 2 - take the value
+1..2

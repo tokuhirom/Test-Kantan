@@ -1,0 +1,11 @@
+
+
+# Feature Foo
+# Feature Foo/Scenario Normal
+# Feature Foo/Scenario Normal/Given First
+# Feature Foo/Scenario Normal/  And Second
+# Feature Foo/Scenario Normal/ When Push one item
+# Feature Foo/Scenario Normal/  And Push next item
+# Feature Foo/Scenario Normal/ Then the number of array is 2
+# Feature Foo/Scenario Normal/  And first item is "a"
+1..0

@@ -6,8 +6,11 @@ use 5.010000;
 use autodie;
 
 for my $file (sort <eg/*.t>) {
-    (my $outfile = $file) =~ s/\.t\z/.out/;
-    my $cmd = "perl -Ilib $file > $outfile";
-    system($cmd)==0 or die "ABORT\n";
+    for my $reporter (qw(Spec TAP)) {
+        (my $outfile = $file) =~ s/\.t\z/-${reporter}.out/;
+        my $cmd = "perl -Ilib $file > $outfile";
+        local $ENV{TEST_KANTAN_REPORTER}=$reporter;
+        system($cmd)==0 or die "ABORT\n";
+    }
 }
 
