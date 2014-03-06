@@ -108,5 +108,31 @@ sub should_be_a {
     }
 }
 
+sub _ok {
+    my ($self, $v) = @_;
+
+    if ($v) {
+        1;
+    } else {
+        $self->state->failed();
+        $self->reporter->message(
+            Test::Kantan::Message::Fail->new(
+                caller => Test::Kantan::Caller->new(1),
+            )
+        );
+        0;
+    }
+}
+
+sub should_be_true {
+    my ($self) = @_;
+    $self->_ok($self->stuff);
+}
+
+sub should_be_false {
+    my ($self) = @_;
+    $self->_ok(!$self->stuff);
+}
+
 1;
 

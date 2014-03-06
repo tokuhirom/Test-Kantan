@@ -22,6 +22,15 @@ use Test::Kantan::State;
     sub DESTROY { }
 }
 
+sub expect {
+    my $v = shift;
+    return Test::Kantan::Expect->new(
+        source => $v,
+        reporter => Test::Kantan::Reporter::Null->new(),
+        state => Test::Kantan::State->new(),
+    );
+}
+
 subtest 'should_be_a', sub {
     {
         package A;
@@ -65,6 +74,16 @@ subtest 'is', sub {
     for (@{$expect->reporter->messages}) {
         note $_->as_string(reporter => $expect->reporter);
     }
+};
+
+subtest 'should_be_false', sub {
+    ok !expect(1)->should_be_false;
+    ok expect(0)->should_be_false;
+};
+
+subtest 'should_be_true', sub {
+    ok expect(1)->should_be_true;
+    ok !expect(0)->should_be_true;
 };
 
 done_testing;
