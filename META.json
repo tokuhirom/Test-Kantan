@@ -44,6 +44,7 @@
       "runtime" : {
          "requires" : {
             "Class::Accessor::Lite" : "0.05",
+            "Module::Load" : "0",
             "Module::Spy" : "0",
             "Scope::Guard" : "0",
             "Term::Encoding" : "0",
@@ -70,5 +71,5 @@
          "web" : "https://github.com/tokuhirom/Test-Kantan"
       }
    },
-   "version" : "0.14"
+   "version" : "0.15"
 }
