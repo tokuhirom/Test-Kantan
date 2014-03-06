@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.16 2014-03-06T05:05:53Z
+
+    - Expect#should_be_true, Expect#should_be_false
+
 0.15 2014-03-06T02:48:38Z
 
     - Added TAP reporter
