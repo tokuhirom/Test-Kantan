@@ -50,6 +50,7 @@
             "Term::Encoding" : "0",
             "Test::Deep" : "0",
             "Test::Power::Core" : "0",
+            "Try::Tiny" : "0",
             "perl" : "5.010001"
          }
       },
@@ -71,5 +72,5 @@
          "web" : "https://github.com/tokuhirom/Test-Kantan"
       }
    },
-   "version" : "0.16"
+   "version" : "0.17"
 }
