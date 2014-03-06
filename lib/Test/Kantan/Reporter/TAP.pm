@@ -93,6 +93,11 @@ sub message {
     print "$str\n";
 }
 
+sub exception {
+    my ($self, $exception) = @_;
+    printf "Exception: %s\n", $self->truncstr($self->dump_data($exception));
+}
+
 sub finalize {
     my ($self, %args) = @_;
 

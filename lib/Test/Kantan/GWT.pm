@@ -7,6 +7,7 @@ use parent qw(Exporter);
 
 use Test::Kantan::Functions;
 use Test::Kantan;
+use Try::Tiny;
 
 our @EXPORT = (qw(Given When Then done_testing Feature Scenario setup teardown), @Test::Kantan::Functions::EXPORT);
 
@@ -36,7 +37,13 @@ sub _step {
     $CURRENT->{last_state} = $tag;
 
     my $guard = $REPORTER->suite(sprintf("%5s %s", $tag, $title));
-    $code->() if $code;
+    if ($code) {
+        try {
+            $code->();
+        } catch {
+            $REPORTER->exception($_);
+        };
+    }
 }
 
 sub Given { _step('Given', @_) }

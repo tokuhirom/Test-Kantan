@@ -98,6 +98,11 @@ sub message {
     push @{$self->{messages}}, $message;
 }
 
+sub exception {
+    my ($self, $exception) = @_;
+    printf "Exception: %s\n", $self->truncstr($self->dump_data($exception));
+}
+
 sub finalize {
     my ($self, %args) = @_;
 

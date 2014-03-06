@@ -22,6 +22,10 @@ sub truncstr {
 sub dump_data {
     my ($self, $value) = @_;
 
+    unless (defined $value) {
+        return '(undef)';
+    }
+
     local $Data::Dumper::Terse = 1;
     local $Data::Dumper::Indent = 0;
     local $Data::Dumper::Sortkeys = 1;
