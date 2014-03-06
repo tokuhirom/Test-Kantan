@@ -93,6 +93,17 @@ sub message {
     print "$str\n";
 }
 
+sub diag {
+    my ($self, %args) = @_;
+    my $message = $args{message} // die;
+    my $cutoff = $args{cutoff} || $self->cutoff;
+    $message = $self->dump_data($message);
+    $message = $self->truncstr($message, $cutoff);
+    $message =~ s/^/# /mg;
+
+    print "$message\n";
+}
+
 sub exception {
     my ($self, $exception) = @_;
     printf "Exception: %s\n", $self->truncstr($self->dump_data($exception));

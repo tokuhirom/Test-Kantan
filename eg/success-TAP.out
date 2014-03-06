@@ -3,9 +3,7 @@
 # Array
 # Array/push
 # STEP do something
-# Diag: HOGE
-#   at eg/success.t line 15.
-
+# HOGE
 ok 1 - should push an element
 # Hash
 # Hash/fetch

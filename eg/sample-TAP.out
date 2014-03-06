@@ -6,9 +6,7 @@
 #   at eg/sample.t line 11
 # 
 
-# Diag: HOGE
-#   at eg/sample.t line 13.
-
+# HOGE
 not ok 1 - should push an element
 # Hash
 # Hash/fetch

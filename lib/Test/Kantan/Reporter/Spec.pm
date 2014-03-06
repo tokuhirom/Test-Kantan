@@ -103,6 +103,14 @@ sub exception {
     printf "Exception: %s\n", $self->truncstr($self->dump_data($exception));
 }
 
+sub diag {
+    my ($self, %args) = @_;
+
+    push @{$self->{messages}}, Test::Kantan::Message::Diag->new(
+        %args
+    )
+}
+
 sub finalize {
     my ($self, %args) = @_;
 
