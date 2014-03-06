@@ -15,12 +15,6 @@ our $FINISHED;
 
 sub _tag {
     my $tag = shift;
-    if ($CURRENT->{last_state} && $CURRENT->{last_state} eq $tag) {
-        return sprintf("%5s", 'And');
-    } else {
-        $CURRENT->{last_state} = $tag;
-        return sprintf("%5s", $tag);
-    }
 }
 
 sub setup(&) {
@@ -33,30 +27,24 @@ sub teardown(&) {
     $CURRENT->add_trigger('teardown' => $code);
 }
 
-sub Given {
-    my ($title, $code) = @_;
+sub _step {
+    my ($tag, $title, $code) = @_;
 
-    my $guard = $REPORTER->suite(_tag('Given') . ' ' . $title);
+    if ($CURRENT->{last_state} && $CURRENT->{last_state} eq $tag) {
+        $tag = 'And';
+    }
+    $CURRENT->{last_state} = $tag;
+
+    my $guard = $REPORTER->suite(sprintf("%5s %s", $tag, $title));
     $code->() if $code;
 }
 
-sub When {
-    my ($title, $code) = @_;
+sub Given { _step('Given', @_) }
+sub When  { _step('When', @_) }
+sub Then  { _step('Then', @_) }
 
-    my $guard = $REPORTER->suite(_tag('When') . ' ' . $title);
-    $code->() if $code;
-}
-
-sub Then($&) {
-    my ($title, $code) = @_;
-
-    my $guard = $REPORTER->suite(_tag('Then') . ' ' . $title);
-    $code->() if $code;
-}
-
-
-sub Feature($&) {
-    my ($title, $code) = @_;
+sub _suite {
+    my ($tag, $title, $code) = @_;
 
     my $suite = Test::Kantan::Suite->new(
         title   => $title,
@@ -64,7 +52,7 @@ sub Feature($&) {
     );
     {
         local $CURRENT = $suite;
-        my $guard = $REPORTER->suite("Feature ${title}");
+        my $guard = $REPORTER->suite("${tag} ${title}");
         $suite->parent->call_trigger('setup');
         $code->();
         $suite->parent->call_trigger('teardown');
@@ -72,22 +60,8 @@ sub Feature($&) {
     $CURRENT->add_suite($suite);
 }
 
-sub Scenario {
-    my ($title, $code) = @_;
-
-    my $suite = Test::Kantan::Suite->new(
-        title   => $title,
-        parent  => $CURRENT,
-    );
-    {
-        local $CURRENT = $suite;
-        my $guard = $REPORTER->suite("Scenario ${title}");
-        $suite->parent->call_trigger('setup');
-        $code->();
-        $suite->parent->call_trigger('teardown');
-    }
-    $CURRENT->add_suite($suite);
-}
+sub Feature  { _suite('Feature',  @_) }
+sub Scenario { _suite('Scenario', @_) }
 
 sub done_testing {
     $FINISHED++;
