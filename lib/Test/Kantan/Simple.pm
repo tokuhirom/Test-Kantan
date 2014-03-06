@@ -38,7 +38,7 @@ sub suite($&) {
     );
     {
         local $CURRENT = $suite;
-        my $guard = $REPORTER->suite($suite);
+        my $guard = $REPORTER->suite($suite->title);
         $suite->call_trigger('setup');
         $code->();
         $suite->call_trigger('teardown');

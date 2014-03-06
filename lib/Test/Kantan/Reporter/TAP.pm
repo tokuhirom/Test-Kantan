@@ -60,8 +60,8 @@ sub tag_step {
 }
 
 sub suite {
-    my ($self, $suite) = @_;
-    push @{$self->{suite}}, $suite->title;
+    my ($self, $title) = @_;
+    push @{$self->{suite}}, $title;
     printf "# %s\n", join('/', @{$self->{suite}});
     return Scope::Guard->new(
         sub {

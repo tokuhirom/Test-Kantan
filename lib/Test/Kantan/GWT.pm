@@ -16,10 +16,10 @@ our $FINISHED;
 sub _tag {
     my $tag = shift;
     if ($CURRENT->{last_state} && $CURRENT->{last_state} eq $tag) {
-        return 'And';
+        return sprintf("%5s", 'And');
     } else {
         $CURRENT->{last_state} = $tag;
-        return $tag;
+        return sprintf("%5s", $tag);
     }
 }
 
@@ -36,21 +36,21 @@ sub teardown(&) {
 sub Given {
     my ($title, $code) = @_;
 
-    $REPORTER->tag_step(_tag('Given'), $title);
+    my $guard = $REPORTER->suite(_tag('Given') . ' ' . $title);
     $code->() if $code;
 }
 
 sub When {
     my ($title, $code) = @_;
 
-    $REPORTER->tag_step(_tag('When'), $title);
+    my $guard = $REPORTER->suite(_tag('When') . ' ' . $title);
     $code->() if $code;
 }
 
 sub Then($&) {
     my ($title, $code) = @_;
 
-    $REPORTER->tag_step(_tag('Then'), $title);
+    my $guard = $REPORTER->suite(_tag('Then') . ' ' . $title);
     $code->() if $code;
 }
 
@@ -64,8 +64,7 @@ sub Feature($&) {
     );
     {
         local $CURRENT = $suite;
-        $REPORTER->tag_step('Feature', $title);
-        my $guard = $REPORTER->indent;
+        my $guard = $REPORTER->suite("Feature ${title}");
         $suite->parent->call_trigger('setup');
         $code->();
         $suite->parent->call_trigger('teardown');
@@ -82,8 +81,7 @@ sub Scenario {
     );
     {
         local $CURRENT = $suite;
-        $REPORTER->tag_step('Scenario', $title);
-        my $guard = $REPORTER->indent;
+        my $guard = $REPORTER->suite("Scenario ${title}");
         $suite->parent->call_trigger('setup');
         $code->();
         $suite->parent->call_trigger('teardown');

@@ -1,17 +1,15 @@
 
 
 
+  Array
 
+    push
+      ✖  should push an element
 
-   Array
+  Hash
 
-     push
-       ✖  should push an element
-
-   Hash
-
-     fetch
-       ✖  take the value
+    fetch
+      ✖  take the value
 
 
 

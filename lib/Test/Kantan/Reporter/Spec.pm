@@ -46,19 +46,9 @@ sub colored {
     $self->color ? Term::ANSIColor::colored($color, $msg) : $msg;
 }
 
-sub indent {
-    my $self = shift;
-    $self->{level}++;
-    return Scope::Guard->new(
-        sub {
-            --$self->{level};
-        }
-    );
-}
-
 sub head_sp {
     my ($self) = @_;
-    return ' ' x (3+$self->{level}*2);
+    return ' ' x (2+$self->{level}*2);
 }
 
 sub step {
@@ -72,12 +62,17 @@ sub tag_step {
 }
 
 sub suite {
-    my ($self, $suite) = @_;
+    my ($self, $title) = @_;
 
-    print "\n";
-    printf "%s%s\n", $self->head_sp, $suite->title;
+    print "\n" if $self->{level} <= 1;
+    printf "%s%s\n", $self->head_sp, $title;
 
-    return $self->indent();
+    $self->{level}++;
+    return Scope::Guard->new(
+        sub {
+            --$self->{level};
+        }
+    );
 }
 
 sub fail {
