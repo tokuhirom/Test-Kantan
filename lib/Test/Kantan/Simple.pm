@@ -14,13 +14,6 @@ our @EXPORT = (qw(suite step test done_testing setup teardown), @Test::Kantan::F
 our $CURRENT = our $ROOT = Test::Kantan::Suite->new(root => 1, title => 'Root');
 our $FINISHED;
 
-$STATE = Test::Kantan::State->new();
-
-$REPORTER = Test::Kantan::Reporter::Spec->new(
-    color => $COLOR,
-);
-$REPORTER->start;
-
 sub setup(&) {
     my ($code) = @_;
     $CURRENT->add_trigger('setup' => $code);
@@ -69,26 +62,15 @@ sub done_testing {
 
     return if $ROOT->is_empty;
 
-    if (!$STATE->is_passing || $ENV{TEST_KANTAN_VERBOSE}) {
-        $REPORTER->finalize(
-            state => $STATE
-        );
-    }
+    $REPORTER->finalize(
+        state => $STATE
+    );
 
     # Test::Pretty was loaded
     if (Test::Pretty->can('_subtest')) {
         # Do not run Test::Pretty's finalization
         $Test::Pretty::NO_ENDING=1;
     }
-
-    # If Test::Builder was loaded...
-    if (Test::Builder->can('new')) {
-        if (!Test::Builder->new->is_passing) {
-            # Fail if Test::Builder was failed.
-            $STATE->failed;
-        }
-    }
-    printf "\n\n%sok\n", $STATE->fail_cnt ? 'not ' : '';
 }
 
 END {

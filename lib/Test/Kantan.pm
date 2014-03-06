@@ -7,6 +7,8 @@ our $VERSION = "0.14";
 
 use parent qw(Exporter);
 
+use Module::Load;
+
 use Test::Kantan::State;
 use Test::Kantan::Caller;
 use Test::Kantan::Test;
@@ -28,7 +30,14 @@ our $COLOR = $ENV{TEST_KANTAN_COLOR} || -t *STDOUT;
 our $CURRENT = our $ROOT = Test::Kantan::Suite->new(root => 1, title => 'Root');
 our $FINISHED;
 our $STATE = Test::Kantan::State->new();
-our $REPORTER = Test::Kantan::Reporter::Spec->new(
+
+my $reporter_class = do {
+    my $s = $ENV{TEST_KANTAN_REPORTER} || 'Spec';
+    my $klass = ($s =~ s/\A\+// ? $s : "Test::Kantan::Reporter::${s}");
+    Module::Load::load $klass;
+    $klass;
+};
+our $REPORTER = $reporter_class->new(
     color => $COLOR,
 );
 $REPORTER->start;

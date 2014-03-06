@@ -117,6 +117,16 @@ sub finalize {
             }
         }
     }
+
+    # If Test::Builder was loaded...
+    if (Test::Builder->can('new')) {
+        if (!Test::Builder->new->is_passing) {
+            # Fail if Test::Builder was failed.
+            $state->failed;
+        }
+    }
+
+    printf "\n\n%sok\n", $state->fail_cnt ? 'not ' : '';
 }
 
 1;

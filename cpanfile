@@ -5,6 +5,7 @@ requires 'Test::Deep';
 requires 'Scope::Guard';
 requires 'Module::Spy';
 requires 'Term::Encoding';
+requires 'Module::Load';
 
 on 'test' => sub {
     requires 'Test::More', '0.98';
