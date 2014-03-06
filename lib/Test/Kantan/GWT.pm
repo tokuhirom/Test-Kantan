@@ -96,26 +96,13 @@ sub done_testing {
 
     return if $ROOT->is_empty;
 
-    if (!$STATE->is_passing || $ENV{TEST_KANTAN_VERBOSE}) {
-        $REPORTER->finalize(
-            state => $STATE
-        );
-    }
+    $REPORTER->finalize();
 
     # Test::Pretty was loaded
     if (Test::Pretty->can('_subtest')) {
         # Do not run Test::Pretty's finalization
         $Test::Pretty::NO_ENDING=1;
     }
-
-    # If Test::Builder was loaded...
-    if (Test::Builder->can('new')) {
-        if (!Test::Builder->new->is_passing) {
-            # Fail if Test::Builder was failed.
-            $STATE->failed;
-        }
-    }
-    printf "\n\n%sok\n", $STATE->fail_cnt ? 'not ' : '';
 }
 
 END {

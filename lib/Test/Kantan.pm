@@ -39,6 +39,7 @@ my $reporter_class = do {
 };
 our $REPORTER = $reporter_class->new(
     color => $COLOR,
+    state => $STATE,
 );
 $REPORTER->start;
 

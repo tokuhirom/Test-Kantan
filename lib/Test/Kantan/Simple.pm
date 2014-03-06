@@ -62,9 +62,7 @@ sub done_testing {
 
     return if $ROOT->is_empty;
 
-    $REPORTER->finalize(
-        state => $STATE
-    );
+    $REPORTER->finalize();
 
     # Test::Pretty was loaded
     if (Test::Pretty->can('_subtest')) {

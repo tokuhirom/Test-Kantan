@@ -8,14 +8,14 @@ use Term::ANSIColor ();
 use parent qw(Test::Kantan::Reporter::Base);
 
 use Class::Accessor::Lite 0.05 (
-    rw => [qw(color level cutoff count)],
+    rw => [qw(color level cutoff count state)],
 );
 use Scope::Guard;
 
 sub new {
     my $class = shift;
     my %args = @_==1 ? %{$_[0]} : @_;
-    for my $key (qw(color)) {
+    for my $key (qw(color state)) {
         unless (exists $args{$key}) {
             Carp::croak("Missing mandatory paramter: $key");
         }
@@ -95,12 +95,11 @@ sub message {
 
 sub finalize {
     my ($self, %args) = @_;
-    my $state = $args{state} or die;
 
     # If Test::Builder was loaded...
     if (Test::Builder->can('new')) {
         if (!Test::Builder->new->is_passing) {
-            $state->failed;
+            $self->state->failed;
             printf "not ok - %s\n", 'Test::Builder was failed';
         }
     }
