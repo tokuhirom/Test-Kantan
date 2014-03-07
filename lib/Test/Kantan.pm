@@ -7,8 +7,6 @@ our $VERSION = "0.18";
 
 use parent qw(Exporter);
 
-use Module::Load;
-
 use Try::Tiny;
 
 use Test::Kantan::State;
@@ -21,7 +19,11 @@ use Test::Kantan::Message::Power;
 use Test::Kantan::Message::Fail;
 use Test::Kantan::Message::Diag;
 
-our @EXPORT = (qw(Given When Then subtest done_testing Feature Scenario setup teardown), @Test::Kantan::Functions::EXPORT);
+our @EXPORT = (
+    qw(Feature Scenario Given When Then),
+    qw(subtest done_testing setup teardown),
+    @Test::Kantan::Functions::EXPORT
+);
 
 # If users loaded Test::Builder, suppress it's outputs.
 if (Test::Builder->can('new')) {
@@ -41,10 +43,7 @@ sub builder {
 
 our $CURRENT = our $ROOT = Test::Kantan::Suite->new(root => 1, title => 'Root');
 our $FINISHED;
-
-sub _tag {
-    my $tag = shift;
-}
+our $RAN_TEST;
 
 sub setup(&) {
     my ($code) = @_;
@@ -93,7 +92,7 @@ sub _suite {
         $code->();
         $suite->parent->call_trigger('teardown');
     }
-    $CURRENT->add_suite($suite);
+    $RAN_TEST++;
 }
 
 sub Feature  { _suite( 'Feature', @_) }
@@ -102,8 +101,6 @@ sub subtest  { _suite(     undef, @_) }
 
 sub done_testing {
     $FINISHED++;
-
-    return if $ROOT->is_empty;
 
     builder->reporter->finalize();
 
@@ -115,7 +112,7 @@ sub done_testing {
 }
 
 END {
-    unless ($ROOT->is_empty) {
+    if ($RAN_TEST) {
         unless ($FINISHED) {
             done_testing()
         }
