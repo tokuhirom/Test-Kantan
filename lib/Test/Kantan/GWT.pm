@@ -31,10 +31,11 @@ sub teardown(&) {
 sub _step {
     my ($tag, $title, $code) = @_;
 
-    if ($CURRENT->{last_state} && $CURRENT->{last_state} eq $tag) {
+    my $last_state = $CURRENT->{last_state};
+    $CURRENT->{last_state} = $tag;
+    if ($last_state && $last_state eq $tag) {
         $tag = 'And';
     }
-    $CURRENT->{last_state} = $tag;
 
     my $guard = $REPORTER->suite(sprintf("%5s %s", $tag, $title));
     if ($code) {
