@@ -4,6 +4,7 @@ use utf8;
 use Test::More;
 use Test::Kantan::Expect;
 use Test::Kantan::State;
+use Test::Kantan::Builder;
 
 {
     package Test::Kantan::Reporter::Null;
@@ -26,8 +27,9 @@ sub expect {
     my $v = shift;
     return Test::Kantan::Expect->new(
         source => $v,
-        reporter => Test::Kantan::Reporter::Null->new(),
-        state => Test::Kantan::State->new(),
+        builder => Test::Kantan::Builder->new(
+            reporter => Test::Kantan::Reporter::Null->new()
+        ),
     );
 }
 
@@ -42,32 +44,20 @@ subtest 'should_be_a', sub {
         sub new { bless {}, shift }
     }
 
-    my $expect = Test::Kantan::Expect->new(
-        source => A->new,
-        reporter => Test::Kantan::Reporter::Null->new(),
-        state => Test::Kantan::State->new(),
-    );
+    my $expect = expect(A->new);
     ok $expect->should_be_a('A');
     ok $expect->should_be_a('B');
     ok !$expect->should_be_a('C');
 };
 
 subtest 'isnt', sub {
-    my $expect = Test::Kantan::Expect->new(
-        source => 0,
-        reporter => Test::Kantan::Reporter::Null->new(),
-        state => Test::Kantan::State->new(),
-    );
+    my $expect = expect(0);
     ok !$expect->isnt(0);
     ok $expect->isnt(1);
 };
 
 subtest 'is', sub {
-    my $expect = Test::Kantan::Expect->new(
-        source => 0,
-        reporter => Test::Kantan::Reporter::Null->new(),
-        state => Test::Kantan::State->new(),
-    );
+    my $expect = expect(0);
     ok !$expect->is(1);
     ok $expect->is(0);
 

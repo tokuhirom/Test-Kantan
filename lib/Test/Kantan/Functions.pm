@@ -14,7 +14,7 @@ use Test::Deep::NoTest qw(ignore);
 use Module::Spy qw(spy_on);
 
 sub expect {
-    Test::Kantan::Expect->new(source => $_[0], reporter => $Test::Kantan::REPORTER, state => $Test::Kantan::STATE);
+    Test::Kantan::Expect->new(source => $_[0], builder => Test::Kantan->builder);
 }
 
 sub ok(&) {
@@ -26,8 +26,9 @@ sub ok(&) {
     if ($retval) {
         return 1;
     } else {
-        $Test::Kantan::STATE->failed();
-        $Test::Kantan::REPORTER->message(
+        my $builder = Test::Kantan->builder;
+        $builder->state->failed();
+        $builder->reporter->message(
             Test::Kantan::Message::Power->new(
                 code        => $code,
                 err         => $err,
@@ -43,7 +44,7 @@ sub ok(&) {
 
 sub diag {
     my ($msg, $cutoff) = @_;
-    $Test::Kantan::REPORTER->diag(
+    Test::Kantan->builder->reporter->diag(
         message => $msg,
         cutoff  => $cutoff,
         caller  => Test::Kantan::Caller->new(0),

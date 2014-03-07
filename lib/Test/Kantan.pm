@@ -9,41 +9,35 @@ use parent qw(Exporter);
 
 use Module::Load;
 
+use Try::Tiny;
+
 use Test::Kantan::State;
+use Test::Kantan::Builder;
 use Test::Kantan::Caller;
 use Test::Kantan::Suite;
-use Test::Kantan::Reporter::Spec;
 use Test::Kantan::Functions;
 
 use Test::Kantan::Message::Power;
 use Test::Kantan::Message::Fail;
 use Test::Kantan::Message::Diag;
 
+our @EXPORT = (qw(Given When Then subtest done_testing Feature Scenario setup teardown), @Test::Kantan::Functions::EXPORT);
+
+# If users loaded Test::Builder, suppress it's outputs.
 if (Test::Builder->can('new')) {
     Test::Builder->new->no_diag(1);
 }
 
-our @EXPORT = (qw($COLOR $STATE $REPORTER Given When Then subtest done_testing Feature Scenario setup teardown), @Test::Kantan::Functions::EXPORT);
+our $BUILDER;
+sub builder {
+    if (not defined $BUILDER) {
+        $BUILDER = Test::Kantan::Builder->new();
+    }
+    return $BUILDER;
+}
 
-our $COLOR = $ENV{TEST_KANTAN_COLOR} || -t *STDOUT;
-our $STATE = Test::Kantan::State->new();
-
-my $reporter_class = do {
-    my $s = $ENV{TEST_KANTAN_REPORTER} || 'Spec';
-    my $klass = ($s =~ s/\A\+// ? $s : "Test::Kantan::Reporter::${s}");
-    Module::Load::load $klass;
-    $klass;
-};
-our $REPORTER = $reporter_class->new(
-    color => $COLOR,
-    state => $STATE,
-);
-$REPORTER->start;
-
-use Test::Kantan::Functions;
-use Test::Kantan;
-use Try::Tiny;
-
+# -------------------------------------------------------------------------
+# DSL functions
 
 our $CURRENT = our $ROOT = Test::Kantan::Suite->new(root => 1, title => 'Root');
 our $FINISHED;
@@ -71,12 +65,12 @@ sub _step {
         $tag = 'And';
     }
 
-    my $guard = $REPORTER->suite(sprintf("%5s %s", $tag, $title));
+    my $guard = builder->reporter->suite(sprintf("%5s %s", $tag, $title));
     if ($code) {
         try {
             $code->();
         } catch {
-            $REPORTER->exception($_);
+            builder->reporter->exception($_);
         };
     }
 }
@@ -94,7 +88,7 @@ sub _suite {
     );
     {
         local $CURRENT = $suite;
-        my $guard = $REPORTER->suite(defined($tag) ? "${tag} ${title}" : $title);
+        my $guard = builder->reporter->suite(defined($tag) ? "${tag} ${title}" : $title);
         $suite->parent->call_trigger('setup');
         $code->();
         $suite->parent->call_trigger('teardown');
@@ -111,7 +105,7 @@ sub done_testing {
 
     return if $ROOT->is_empty;
 
-    $REPORTER->finalize();
+    builder->reporter->finalize();
 
     # Test::Pretty was loaded
     if (Test::Pretty->can('_subtest')) {

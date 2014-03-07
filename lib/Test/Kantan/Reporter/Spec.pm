@@ -24,6 +24,7 @@ sub new {
         level => 0,
         cutoff => $ENV{KANTAN_CUTOFF} || 80,
         messages => [],
+        message_stack => [[]],
         %args
     }, $class;
     return $self;
