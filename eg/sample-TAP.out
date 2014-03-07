@@ -2,17 +2,17 @@
 
 # Array
 # Array/push
+# Array/push/should push an element
 # FAIL: ok { join(' ', @a) eq 'a b c d e' };
 #   at eg/sample.t line 11
 # 
 
 # HOGE
-not ok 1 - should push an element
 # Hash
 # Hash/fetch
+# Hash/fetch/take the value
 # expect(+{f => 1}->{g})->ok;
 #    at eg/sample.t line 21
 # 
 
-not ok 2 - take the value
-1..2
+1..0

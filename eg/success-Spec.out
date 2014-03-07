@@ -4,19 +4,20 @@
   Array
 
     push
-      + do something
-      ✓  should push an element
+      should push an element
+        + do something
 
   Hash
 
     fetch
-      ✓  take the value
+      take the value
 
   Foo
     + A
     + B
     + C
-    ✓  bar
+
+    bar
 
 
 ok

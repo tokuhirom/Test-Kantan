@@ -131,9 +131,9 @@ sub finalize {
 
     if (!$self->state->is_passing || $ENV{TEST_KANTAN_VERBOSE}) {
         if (@{$self->{message_groups}}) {
-            printf "\n\n\n  %s:\n\n", $self->colored(['red'], '(Diagnostic message)');
+            printf "\n\n\n  %s:\n", $self->colored(['red'], '(Diagnostic message)');
             for my $message_group (@{$self->{message_groups}}) {
-                printf "    %s:\n", join(' → ', map { $self->colored(['green'], $_) } @{$message_group->titles});
+                printf "\n    %s:\n", join(' → ', map { $self->colored(['green'], $_) } @{$message_group->titles});
                 for my $message (@{$message_group->messages}) {
                     my $str = $message->as_string(reporter => $self);
                     $str =~ s/^/      /gm;

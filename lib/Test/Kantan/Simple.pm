@@ -46,16 +46,7 @@ sub suite($&) {
     $CURRENT->add_suite($suite);
 }
 
-sub test($&) {
-    my ($title, $code) = @_;
-
-    my $test = Test::Kantan::Test->new(
-        title   => $title,
-        code    => $code,
-    );
-    $test->run(state => $STATE, reporter => $REPORTER);
-    $CURRENT->add_test($test);
-}
+sub test($&) { goto \&suite }
 
 sub done_testing {
     $FINISHED++;

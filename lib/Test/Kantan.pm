@@ -11,7 +11,6 @@ use Module::Load;
 
 use Test::Kantan::State;
 use Test::Kantan::Caller;
-use Test::Kantan::Test;
 use Test::Kantan::Suite;
 use Test::Kantan::Reporter::Spec;
 use Test::Kantan::Functions;
