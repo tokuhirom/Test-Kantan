@@ -7,27 +7,17 @@ use Term::ANSIColor ();
 
 use parent qw(Test::Kantan::Reporter::Base);
 
-use Class::Accessor::Lite 0.05 (
-    rw => [qw(color level cutoff count state)],
-);
-use Scope::Guard;
+use Moo;
 
-sub new {
-    my $class = shift;
-    my %args = @_==1 ? %{$_[0]} : @_;
-    for my $key (qw(color state)) {
-        unless (exists $args{$key}) {
-            Carp::croak("Missing mandatory paramter: $key");
-        }
-    }
-    my $self = bless {
-        level => 0,
-        cutoff => $ENV{KANTAN_CUTOFF} || 80,
-        count => 0,
-        %args
-    }, $class;
-    return $self;
-}
+has color => (is => 'ro', required => 1);
+has level => (is => 'ro', default => sub { 0 });
+has cutoff => (is => 'ro', default => sub { $ENV{TEST_KANTAN_CUTOFF} || 80 });
+has count => (is => 'ro', default => sub { 0 });
+has state => (is => 'ro', required => 1);
+
+no Moo;
+
+use Scope::Guard;
 
 sub start {
     my $encoding = do {

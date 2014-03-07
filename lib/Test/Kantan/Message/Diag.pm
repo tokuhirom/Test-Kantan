@@ -4,10 +4,13 @@ use warnings;
 use utf8;
 use 5.010_001;
 
-use Class::Accessor::Lite 0.05 (
-    rw => [qw(message caller cutoff)],
-    new => 1,
-);
+use Moo;
+
+has message => ( is => 'ro', required => 1 );
+has caller  => ( is => 'ro', required => 1 );
+has cutoff  => ( is => 'ro', required => 1 );
+
+no Moo;
 
 sub as_string {
     my ($self, %args) = @_;

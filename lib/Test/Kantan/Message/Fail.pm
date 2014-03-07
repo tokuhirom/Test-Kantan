@@ -4,17 +4,12 @@ use warnings;
 use utf8;
 use 5.010_001;
 
-use Class::Accessor::Lite 0.05 (
-    ro => [qw(description caller)],
-);
+use Moo;
 
-sub new {
-    my $class = shift;
-    my %args = @_==1 ? %{$_[0]} : @_;
-    bless {%args}, $class;
-}
+has description => ( is => 'ro', required => 1 );
+has caller  => ( is => 'ro', required => 1 );
 
-sub info { shift->{info} }
+no Moo;
 
 sub as_string {
     my ($self, %args) = @_;

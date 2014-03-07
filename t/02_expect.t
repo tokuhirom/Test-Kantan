@@ -9,18 +9,17 @@ use Test::Kantan::Builder;
 {
     package Test::Kantan::Reporter::Null;
     use parent qw(Test::Kantan::Reporter::Base);
-    use Class::Accessor::Lite 0.05 (
-        rw => [qw(cutoff messages)],
-    );
-    sub new {
-        bless {messages => [], cutoff => 80}, shift
-    }
+
+    use Moo;
+    has cutoff   => ( is => 'rw', default => sub { 80 } );
+    has messages => ( is => 'rw', default => sub { [] } );
+    no Moo;
+
     sub message {
         my ($self, $message) = @_;
         Test::More::note($message->as_string(reporter => $self));
     }
     sub colored { $_[2] }
-    sub DESTROY { }
 }
 
 sub expect {

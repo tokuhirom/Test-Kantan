@@ -8,19 +8,20 @@ use Module::Load;
 use Test::Kantan::State;
 use Test::Kantan::Message::Pass;
 
-use Class::Accessor::Lite 0.05 (
-    rw => [qw(color state reporter)],
-);
+use Moo;
 
-sub new {
-    my $class = shift;
-    my %args = @_==1 ? %{$_[0]} : @_;
+has color    => ( is => 'lazy' );
+has state    => ( is => 'lazy' );
+has reporter => ( is => 'lazy' );
 
-    my $self = bless { %args }, $class;
-    $self->{color} = $ENV{TEST_KANTAN_COLOR} || -t *STDOUT;
-    $self->{state} = Test::Kantan::State->new();
-    $self->{reporter} ||= $self->_build_reporter;
-    return $self;
+no Moo;
+
+sub _build_color {
+    $ENV{TEST_KANTAN_COLOR} || -t *STDOUT;
+}
+
+sub _build_state {
+    Test::Kantan::State->new();
 }
 
 sub _build_reporter {

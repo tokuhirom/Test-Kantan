@@ -7,23 +7,14 @@ use 5.010_001;
 use B::Deparse;
 use B;
 
-use Class::Accessor::Lite 0.05 (
-    rw => [qw(code tap_results err caller)],
-);
+use Moo;
 
-our $DUMP_CUTOFF=80;
+has code => ( is => 'ro', required => 1 );
+has tap_results => ( is => 'ro', required => 1 );
+has err  => ( is => 'ro', required => 1 );
+has caller  => ( is => 'ro', required => 1 );
 
-sub new {
-    my $class = shift;
-    my %args = @_==1 ? %{$_[0]} : @_;
-    for my $key (qw(code tap_results err caller)) {
-        unless (exists $args{$key}) {
-            Carp::confess("Missing mandatory parameter: ${key}");
-        }
-    }
-    return bless {%args}, $class;
-}
-
+no Moo;
 
 sub as_string {
     my ($self, %args) = @_;

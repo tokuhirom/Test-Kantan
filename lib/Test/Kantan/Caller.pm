@@ -4,15 +4,16 @@ use warnings;
 use utf8;
 use 5.010_001;
 
-use Class::Accessor::Lite 0.05 (
-    ro => [qw(package filename line code)],
-);
-
 use Cwd ();
 use File::Spec;
 
 our $BASE_DIR = Cwd::getcwd();
 our %FILECACHE;
+
+sub package { shift->{package} }
+sub filename { shift->{filename} }
+sub line { shift->{line} }
+sub code { shift->{code} }
 
 sub new {
     my $class = shift;

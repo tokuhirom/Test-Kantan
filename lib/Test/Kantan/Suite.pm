@@ -4,26 +4,16 @@ use warnings;
 use utf8;
 use 5.010_001;
 
-use Class::Accessor::Lite 0.05 (
-    rw => [qw(title root parent)],
-);
+use Moo;
 
-sub new {
-    my $class = shift;
-    my %args = @_==1 ? %{$_[0]} : @_;
-    for my $key (qw(title)) {
-        unless (exists $args{$key}) {
-            Carp::croak("Missing mandatory paramter: $key");
-        }
-    }
-    my $self = bless {
-        suites => [],
-        tests  => [],
-        triggers => +{},
-        %args,
-    }, $class;
-    return $self;
-}
+has title  => ( is => 'ro', required => 1 );
+has root   => ( is => 'ro' );
+has parent => ( is => 'ro' );
+has suites => ( is => 'ro', default => sub { +[] } );
+has tests  => ( is => 'ro', default => sub { +[] } );
+has triggers  => ( is => 'ro', default => sub { +{} } );
+
+no Moo;
 
 sub add_test {
     my ($self, $test) = @_;
