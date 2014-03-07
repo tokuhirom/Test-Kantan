@@ -67,9 +67,24 @@ sub suite {
     print "\n" if $self->{level} <= 1;
     printf "%s%s\n", $self->head_sp, $title;
 
+    push @{$self->{message_stack}}, [];
+    push @{$self->{fail_stack}}, $self->state->fail_cnt;
+    push @{$self->{title}}, $title;
     $self->{level}++;
     return Scope::Guard->new(
         sub {
+            my $orig_fail_cnt = pop @{$self->{fail_stack}};
+            my $messages = pop @{$self->{message_stack}};
+            my $titles = [@{$self->{title}}];
+            if ($orig_fail_cnt != $self->state->fail_cnt && @$messages) {
+                push @{$self->{message_groups}}, Test::Kantan::Reporter::Spec::MessageGroup->new(
+                    titles => $titles,
+                    messages => $messages,
+                );
+            }
+
+            pop @{$self->{title}};
+
             --$self->{level};
         }
     );
@@ -95,7 +110,7 @@ sub pass {
 
 sub message {
     my ($self, $message) = @_;
-    push @{$self->{messages}}, $message;
+    push @{$self->{message_stack}->[-1]}, $message;
 }
 
 sub exception {
@@ -106,21 +121,24 @@ sub exception {
 sub diag {
     my ($self, %args) = @_;
 
-    push @{$self->{messages}}, Test::Kantan::Message::Diag->new(
+    $self->message(Test::Kantan::Message::Diag->new(
         %args
-    )
+    ));
 }
 
 sub finalize {
     my ($self, %args) = @_;
 
     if (!$self->state->is_passing || $ENV{TEST_KANTAN_VERBOSE}) {
-        if (@{$self->{messages}}) {
+        if (@{$self->{message_groups}}) {
             printf "\n\n\n  %s:\n\n", $self->colored(['red'], '(Diagnostic message)');
-            for my $message (@{$self->{messages}}) {
-                my $str = $message->as_string(reporter => $self);
-                $str =~ s/^/      /gm;
-                print "\n$str";
+            for my $message_group (@{$self->{message_groups}}) {
+                printf "    %s:\n", join(' → ', map { $self->colored(['green'], $_) } @{$message_group->titles});
+                for my $message (@{$message_group->messages}) {
+                    my $str = $message->as_string(reporter => $self);
+                    $str =~ s/^/      /gm;
+                    print "\n$str";
+                }
             }
         }
     }
@@ -135,6 +153,13 @@ sub finalize {
 
     printf "\n\n%sok\n", $self->state->fail_cnt ? 'not ' : '';
 }
+
+package Test::Kantan::Reporter::Spec::MessageGroup;
+
+use Class::Accessor::Lite 0.05 (
+    rw => [qw(messages titles)],
+    new => 1,
+);
 
 1;
 

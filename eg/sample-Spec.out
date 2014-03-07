@@ -15,6 +15,7 @@
 
   (Diagnostic message):
 
+    Array → push:
 
       FAIL: ok { join(' ', @a) eq 'a b c d e' };
         at eg/sample.t line 11
@@ -22,6 +23,7 @@
 
       Diag: HOGE
         at eg/sample.t line 13.
+    Hash → fetch:
 
       expect(+{f => 1}->{g})->ok;
          at eg/sample.t line 21
