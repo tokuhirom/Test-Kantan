@@ -6,12 +6,12 @@ use 5.010_001;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(expect ok diag ignore stub_guard spy);
+our @EXPORT = qw(expect ok diag ignore spy_on);
 
 use Test::Power::Core;
 use Test::Kantan::Expect;
 use Test::Deep::NoTest qw(ignore);
-use Module::Spy qw(spy);
+use Module::Spy qw(spy_on);
 
 sub expect {
     Test::Kantan::Expect->new(source => $_[0], reporter => $Test::Kantan::REPORTER, state => $Test::Kantan::STATE);

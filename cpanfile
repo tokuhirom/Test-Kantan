@@ -3,7 +3,7 @@ requires 'Class::Accessor::Lite', 0.05;
 requires 'Test::Power::Core';
 requires 'Test::Deep';
 requires 'Scope::Guard';
-requires 'Module::Spy';
+requires 'Module::Spy', '0.03';
 requires 'Term::Encoding';
 requires 'Module::Load';
 requires 'Try::Tiny';
