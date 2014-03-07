@@ -35,7 +35,6 @@ sub ok(&) {
                 tap_results => $tap_results,
                 op_stack    => $op_stack,
                 caller      => Test::Kantan::Caller->new(0),
-                color       => $Test::Kantan::COLOR,
             )
         );
         return 0;

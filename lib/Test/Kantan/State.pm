@@ -7,7 +7,6 @@ use 5.010_001;
 use Moo;
 
 has fail_cnt => (is => 'ro', default => sub { 0 });
-has messages => (is => 'ro');
 
 no Moo;
 
