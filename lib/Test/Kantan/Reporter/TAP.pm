@@ -71,16 +71,14 @@ sub suite {
 }
 
 sub fail {
-    my ($self, $test) = @_;
-    my $title = $test->title;
+    my ($self, $title) = @_;
     $title =~ s/\n/\\n/g;
     $self->{count}++;
     printf("not ok %d - %s\n", $self->count, $title);
 }
 
 sub pass {
-    my ($self, $test) = @_;
-    my $title = $test->title;
+    my ($self, $title) = @_;
     $title =~ s/\n/\\n/g;
     $self->{count}++;
     printf("ok %d - %s\n", $self->count, $title);

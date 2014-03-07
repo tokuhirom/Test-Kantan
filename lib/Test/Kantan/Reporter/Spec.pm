@@ -76,20 +76,20 @@ sub suite {
 }
 
 sub fail {
-    my ($self, $test) = @_;
+    my ($self, $title) = @_;
     printf("%s%s  %s\n",
         $self->head_sp,
         $self->colored(['red'], "\x{2716}"),
-        $test->title,
+        $title,
     );
 }
 
 sub pass {
-    my ($self, $test) = @_;
+    my ($self, $title) = @_;
     printf("%s%s  %s\n",
         $self->head_sp,
         $self->colored(['green'], "\x{2713}"),
-        $test->title,
+        $title,
     );
 }
 

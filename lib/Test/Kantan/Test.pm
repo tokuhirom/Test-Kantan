@@ -31,9 +31,9 @@ sub run {
     my $new_fail_cnt = $state->fail_cnt();
 
     if ($orig_fail_cnt == $new_fail_cnt) {
-        $reporter->pass($self);
+        $reporter->pass($self->title);
     } else {
-        $reporter->fail($self);
+        $reporter->fail($self->title);
     }
 }
 
