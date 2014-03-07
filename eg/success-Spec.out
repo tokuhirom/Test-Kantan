@@ -5,7 +5,6 @@
 
     push
       should push an element
-        + do something
 
   Hash
 
@@ -13,9 +12,6 @@
       take the value
 
   Foo
-    + A
-    + B
-    + C
 
     bar
 

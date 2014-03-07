@@ -9,7 +9,7 @@ use parent qw(Exporter);
 use Test::Kantan::Functions;
 use Test::Kantan;
 
-our @EXPORT = (qw(suite step test done_testing setup teardown), @Test::Kantan::Functions::EXPORT);
+our @EXPORT = (qw(subtest done_testing setup teardown), @Test::Kantan::Functions::EXPORT);
 
 our $CURRENT = our $ROOT = Test::Kantan::Suite->new(root => 1, title => 'Root');
 our $FINISHED;
@@ -24,12 +24,7 @@ sub teardown(&) {
     $CURRENT->add_trigger('teardown' => $code);
 }
 
-sub step($) {
-    my $message = shift;
-    $REPORTER->step($message);
-}
-
-sub suite($&) {
+sub subtest($&) {
     my ($title, $code) = @_;
 
     my $suite = Test::Kantan::Suite->new(
@@ -45,8 +40,6 @@ sub suite($&) {
     }
     $CURRENT->add_suite($suite);
 }
-
-sub test($&) { goto \&suite }
 
 sub done_testing {
     $FINISHED++;

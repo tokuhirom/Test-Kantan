@@ -46,19 +46,6 @@ sub colored {
     $msg;
 }
 
-sub step {
-    my ($self, $title) = @_;
-    $title =~ s/\n/\\n/g;
-    printf "# STEP %s\n", $title;
-}
-
-sub tag_step {
-    my ($self, $tag, $title) = @_;
-    $tag =~ s/\n/\\n/g;
-    $title =~ s/\n/\\n/g;
-    printf "# %5s %s\n", $tag, $title;
-}
-
 sub suite {
     my ($self, $title) = @_;
     push @{$self->{suite}}, $title;

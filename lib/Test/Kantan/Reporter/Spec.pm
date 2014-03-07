@@ -51,16 +51,6 @@ sub head_sp {
     return ' ' x (2+$self->{level}*2);
 }
 
-sub step {
-    my ($self, $title) = @_;
-    printf "%s+ %s\n", $self->head_sp, $title;
-}
-
-sub tag_step {
-    my ($self, $tag, $title) = @_;
-    printf "%s%5s %s\n", $self->head_sp, $tag, $title;
-}
-
 sub suite {
     my ($self, $title) = @_;
 
