@@ -16,7 +16,7 @@ for my $file (sort <eg/*.t>) {
         $out =~ s/\A\n*//;
         $expected =~ s/\A\n*//;
 
-        is($out, $expected);
+        is($out, $expected, $outfile);
     }
 }
 
