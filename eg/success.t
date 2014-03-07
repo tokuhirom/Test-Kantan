@@ -1,7 +1,7 @@
 use strict;
-use warnings;
+use warnings FATAL => 'all';
 use utf8;
-use Test::Kantan::Simple;
+use Test::Kantan;
 
 subtest 'Array', sub {
     subtest 'push', sub {

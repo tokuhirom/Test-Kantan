@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use utf8;
-use Test::Kantan::GWT;
+use Test::Kantan;
 
 my @p;
 setup { push @p, 'a' };
