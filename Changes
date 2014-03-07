@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.18 2014-03-07T00:53:28Z
+
+    - Show message if tests failed in the suites
+
 0.17 2014-03-06T07:08:27Z
 
     - Show exception, for now.
