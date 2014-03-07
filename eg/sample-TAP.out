@@ -11,7 +11,7 @@
 # Hash
 # Hash/fetch
 # Hash/fetch/take the value
-# expect(+{f => 1}->{g})->ok;
+# expect(+{f => 1}->{g})->to_be_true;
 #    at eg/sample.t line 21
 # 
 

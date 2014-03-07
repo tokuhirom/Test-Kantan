@@ -7,6 +7,8 @@
 # Hash
 # Hash/fetch
 # Hash/fetch/take the value
+# Passed: expect(+{f => 1}->{f})->to_be(1);
+# Passed: expect(+{f => 1}->{f})->to_equal(1);
 # Foo
 # Foo/bar
 1..0

@@ -12,7 +12,7 @@ Feature 'Foo', sub {
         push @ary, 1;
 
         Then 'the number of array is 1', sub {
-            expect(0+@ary) == 1;
+            expect(0+@ary)->to_be(1);
         };
     };
 };

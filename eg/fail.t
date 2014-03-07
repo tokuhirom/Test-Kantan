@@ -13,7 +13,7 @@ Feature 'Foo', sub {
 
         Then 'the number of array is 1', sub {
             diag "Don't show me";
-            expect(0+@ary) == 1;
+            expect(0+@ary)->to_be(1);
         };
     };
 };
@@ -28,7 +28,7 @@ Feature 'Foo', sub {
 
         Then 'the number of array is 1', sub {
             diag "Show me";
-            expect(0+@ary) == 0;
+            expect(0+@ary)->to_be(0);
         };
     };
 };

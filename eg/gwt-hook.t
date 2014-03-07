@@ -8,13 +8,13 @@ setup { push @p, 'a' };
 
 Feature 'foo', sub {
     Then 'pushed', sub {
-        ok { expect(\@p)->is(['a']) };
+        ok { expect(\@p)->to_be(['a']) };
     };
 };
 
 Feature 'bar', sub {
     Then 'pushed', sub {
-        ok { expect(\@p)->is(['a', 'a']) };
+        ok { expect(\@p)->to_be(['a', 'a']) };
     };
 };
 

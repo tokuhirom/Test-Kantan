@@ -5,4 +5,5 @@
 # Feature Foo/Scenario Normal/Given An array
 # Feature Foo/Scenario Normal/ When Push one item
 # Feature Foo/Scenario Normal/ Then the number of array is 1
+# Passed: expect(0+@ary)->to_be(1);
 1..0

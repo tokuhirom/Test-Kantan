@@ -2,6 +2,8 @@
 
 # Feature foo
 # Feature foo/ Then pushed
+# Passed: ok { expect(\@p)->to_be(['a']) };
 # Feature bar
 # Feature bar/ Then pushed
+# Passed: ok { expect(\@p)->to_be(['a', 'a']) };
 1..0

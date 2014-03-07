@@ -6,6 +6,7 @@ use 5.010_001;
 use Module::Load;
 
 use Test::Kantan::State;
+use Test::Kantan::Message::Pass;
 
 use Class::Accessor::Lite 0.05 (
     rw => [qw(color state reporter)],
@@ -43,8 +44,16 @@ sub ok {
     my ($self, %args) = @_;
     my $caller = $args{caller} or Carp::confess("Missing caller");
     exists($args{value}) or Carp::cofess("Missing value");
+    my $value = $args{value};
+       $value = !$value if $args{inverted};
 
-    if ($args{value}) {
+    if ($value) {
+        $self->reporter->message(
+            Test::Kantan::Message::Pass->new(
+                caller      => $caller,
+                description => $args{description},
+            ),
+        );
         return 1;
     } else {
         $self->state->failed();

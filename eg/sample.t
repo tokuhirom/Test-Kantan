@@ -18,7 +18,7 @@ subtest 'Array', sub {
 subtest 'Hash', sub {
     subtest 'fetch', sub {
         subtest 'take the value', sub {
-            expect(+{f => 1}->{g})->ok;
+            expect(+{f => 1}->{g})->to_be_true;
         };
     };
 };

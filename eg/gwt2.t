@@ -15,10 +15,10 @@ Feature 'Foo', sub {
         push @ary, 'b';
 
         Then 'the number of array is 2', sub {
-            expect(0+@ary)->is(2);
+            expect(0+@ary)->to_be(2);
         };
         Then 'first item is "a"', sub {
-            expect($ary[0])->is('a');
+            expect($ary[0])->to_be('a');
         };
     };
 };

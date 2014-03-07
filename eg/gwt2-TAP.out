@@ -7,5 +7,7 @@
 # Feature Foo/Scenario Normal/ When Push one item
 # Feature Foo/Scenario Normal/  And Push next item
 # Feature Foo/Scenario Normal/ Then the number of array is 2
+# Passed: expect(0+@ary)->to_be(2);
 # Feature Foo/Scenario Normal/  And first item is "a"
+# Passed: expect($ary[0])->to_be('a');
 1..0

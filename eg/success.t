@@ -18,8 +18,8 @@ subtest 'Array', sub {
 subtest 'Hash', sub {
     subtest 'fetch', sub {
         subtest 'take the value', sub {
-            expect(+{f => 1}->{f})->is(1);
-            expect(+{f => 1}->{f}) == 1;
+            expect(+{f => 1}->{f})->to_be(1);
+            expect(+{f => 1}->{f})->to_equal(1);
         };
     };
 };
