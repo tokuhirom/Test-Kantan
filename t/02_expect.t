@@ -1,5 +1,5 @@
 use strict;
-use warnings;
+use warnings FATAL => 'all';
 use utf8;
 use Test::More;
 use Test::Kantan::Expect;
@@ -15,6 +15,14 @@ use Test::Kantan::Builder;
     has messages => ( is => 'rw', default => sub { [] } );
     no Moo;
 
+    sub pass {
+        my ($self, %args) = @_;
+        Test::More::note($args{description});
+    }
+    sub fail {
+        my ($self, %args) = @_;
+        Test::More::note($args{description});
+    }
     sub message {
         my ($self, $message) = @_;
         Test::More::note($message->as_string(reporter => $self));
