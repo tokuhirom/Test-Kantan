@@ -12,7 +12,7 @@ use Test::Kantan::Expect;
 use Test::Deep::NoTest qw(ignore);
 use Module::Spy qw(spy_on);
 
-my $HAS_TEST_POWER = eval "use Test::Power::Core; 1;";
+my $HAS_TEST_POWER = !$ENV{TEST_KANTAN_NOPOWER} && eval "use B; use B::Deparse; use Test::Power::Core; 1;";
 
 sub expect {
     Test::Kantan::Expect->new(source => $_[0], builder => Test::Kantan->builder);

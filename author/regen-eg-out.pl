@@ -7,10 +7,13 @@ use autodie;
 
 for my $file (sort <eg/*.t>) {
     for my $reporter (qw(Spec TAP)) {
-        (my $outfile = $file) =~ s/\.t\z/-${reporter}.out/;
-        my $cmd = "perl -Ilib $file > $outfile";
-        local $ENV{TEST_KANTAN_REPORTER}=$reporter;
-        system($cmd)==0 or die "ABORT\n";
+        for my $power (0, 1) {
+            (my $outfile = $file) =~ s/\.t\z/-${reporter}-${power}.out/;
+            my $cmd = "perl -Ilib $file > $outfile";
+            local $ENV{TEST_KANTAN_REPORTER}=$reporter;
+            local $ENV{TEST_KANTAN_NOPOWER} = $power ? 0 : 1;
+            system($cmd)==0 or die "ABORT\n";
+        }
     }
 }
 

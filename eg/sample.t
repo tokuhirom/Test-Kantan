@@ -17,8 +17,12 @@ subtest 'Array', sub {
 
 subtest 'Hash', sub {
     subtest 'fetch', sub {
+        my $h = +{ f => 1 };
         subtest 'take the value', sub {
-            expect(+{f => 1}->{g})->to_be_true;
+            expect($h->{g})->to_be_true;
+        };
+        subtest 'take the value', sub {
+            ok { $h->{g} };
         };
     };
 };

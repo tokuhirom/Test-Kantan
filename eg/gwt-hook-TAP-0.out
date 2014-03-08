@@ -1,0 +1,11 @@
+
+
+# Feature foo
+# Feature foo/ Then pushed
+ok 1 - -
+ok 2 - ok { expect(\@p)->to_be(['a']) };
+# Feature bar
+# Feature bar/ Then pushed
+ok 3 - -
+ok 4 - ok { expect(\@p)->to_be(['a', 'a']) };
+1..4

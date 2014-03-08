@@ -10,6 +10,7 @@
 
     fetch
       take the value
+      take the value
 
 
 
@@ -26,8 +27,14 @@
 
     Hash → fetch → take the value:
 
-      FAIL: expect(+{f => 1}->{g})->to_be_true;
-         at eg/sample.t line 21
+      FAIL: expect($h->{g})->to_be_true;
+         at eg/sample.t line 22
+      
+
+    Hash → fetch → take the value:
+
+      FAIL: ok { $h->{g} };
+         at eg/sample.t line 25
       
 
 

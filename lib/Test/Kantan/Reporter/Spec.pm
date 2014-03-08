@@ -154,6 +154,11 @@ sub render_message_fail {
     if (defined $message->description) {
         push @ret, sprintf("%s\n", $self->colored(['red on_black'], $message->description));
     }
+    if (defined $message->diag) {
+        my $diag = $message->diag;
+        $diag =~ s/^/  /mg;
+        push @ret, sprintf("%s\n", $self->colored(['red on_black'], $diag));
+    }
     push @ret, sprintf("   at %s line %s\n\n", $self->colored(['yellow'], $message->caller->filename), $self->colored(['yellow'], $message->caller->line));
     return join('', @ret);
 }

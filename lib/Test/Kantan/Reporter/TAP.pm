@@ -55,6 +55,9 @@ sub fail {
     $title =~ s/\n/\\n/g;
     $self->{count}++;
     printf("not ok %d - %s\n", $self->count, $title);
+    if ($args{diag}) {
+        $self->diag(message => $args{diag})
+    }
 }
 
 sub pass {
@@ -86,9 +89,9 @@ sub diag {
     my $cutoff = $args{cutoff} || $self->cutoff;
     $message = $self->dump_data($message);
     $message = $self->truncstr($message, $cutoff);
-    $message =~ s/^/# /mg;
-
-    print "$message\n";
+    for my $line (split /\n/, $message) {
+        print "# $line\n";
+    }
 }
 
 sub exception {
