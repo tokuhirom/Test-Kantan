@@ -48,16 +48,18 @@ sub suite {
 }
 
 sub fail {
-    my ($self, $title) = @_;
+    my ($self, %args) = @_;
+    my $title = $args{description} || $args{caller}->code || '-';
     $title =~ s/\n/\\n/g;
     $self->{count}++;
     printf("not ok %d - %s\n", $self->count, $title);
 }
 
 sub pass {
-    my ($self, $title) = @_;
+    my ($self, %args) = @_;
+    my $title = $args{description} || $args{caller}->code || '-';
     $title =~ s/\n/\\n/g;
-    $self->{count}++;
+    $self->{count}++; # TODO: use counter in the state object
     printf("ok %d - %s\n", $self->count, $title);
 }
 

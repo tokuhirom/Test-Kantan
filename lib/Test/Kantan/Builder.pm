@@ -49,20 +49,16 @@ sub ok {
        $value = !$value if $args{inverted};
 
     if ($value) {
-        $self->reporter->message(
-            Test::Kantan::Message::Pass->new(
-                caller      => $caller,
-                description => $args{description},
-            ),
+        $self->reporter->pass(
+            caller      => $caller,
+            description => $args{description},
         );
         return 1;
     } else {
         $self->state->failed();
-        $self->reporter->message(
-            Test::Kantan::Message::Fail->new(
-                caller      => $caller,
-                description => $args{description},
-            ),
+        $self->reporter->fail(
+            caller      => $caller,
+            description => $args{description},
         );
         return 0;
     }

@@ -72,21 +72,17 @@ sub suite {
 }
 
 sub fail {
-    my ($self, $title) = @_;
-    printf("%s%s  %s\n",
-        $self->head_sp,
-        $self->colored(['red'], "\x{2716}"),
-        $title,
-    );
+    my ($self, %args) = @_;
+    $self->message(Test::Kantan::Message::Fail->new(
+        %args
+    ));
 }
 
 sub pass {
-    my ($self, $title) = @_;
-    printf("%s%s  %s\n",
-        $self->head_sp,
-        $self->colored(['green'], "\x{2713}"),
-        $title,
-    );
+    my ($self, %args) = @_;
+    $self->message(Test::Kantan::Message::Pass->new(
+        %args
+    ));
 }
 
 sub message {
