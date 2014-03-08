@@ -18,7 +18,7 @@
     Array → push → should push an element:
 
       FAIL: ok { join(' ', @a) eq 'a b c d e' };
-        at eg/sample.t line 11
+         at eg/sample.t line 11
       
 
       Diag: HOGE
@@ -26,7 +26,7 @@
 
     Hash → fetch → take the value:
 
-      expect(+{f => 1}->{g})->to_be_true;
+      FAIL: expect(+{f => 1}->{g})->to_be_true;
          at eg/sample.t line 21
       
 

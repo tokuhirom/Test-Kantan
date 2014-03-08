@@ -150,7 +150,7 @@ sub render_message_fail {
     my ($self, $message) = @_;
 
     my @ret;
-    push @ret, sprintf("%s\n", $self->colored(['red on_black'], $message->caller->code));
+    push @ret, sprintf("FAIL: %s\n", $self->colored(['red on_black'], $message->caller->code));
     if (defined $message->description) {
         push @ret, sprintf("%s\n", $self->colored(['red on_black'], $message->description));
     }
@@ -161,32 +161,6 @@ sub render_message_fail {
 sub render_message_pass {
     my ($self, $message) = @_;
     "Passed: " . $message->caller->code;
-}
-
-sub render_message_power {
-    my ($self, $message) = @_;
-
-    my @ret;
-    push @ret, sprintf("%s: %s\n", $self->colored(['red'], 'FAIL'), $self->colored(['magenta'], $message->caller->code));
-    push @ret, sprintf("%s\n", $message->{err}) if $message->{err};
-    push @ret, sprintf("  at %s line %s\n", $self->colored(['yellow'], $message->caller->filename), $self->colored(['yellow'], $message->caller->line));
-    push @ret, "\n";
-    for my $result (@{$message->{tap_results}}) {
-        my $op = shift @$result;
-        for my $value (@$result) {
-            # take first argument if the value is scalar.
-            my $deparse = B::Deparse->new();
-            $deparse->{curcv} = B::svref_2object($message->{code});
-
-            my $val = $self->truncstr($self->dump_data($value->[1]));
-            $val =~ s/\n/\\n/g;
-            push @ret, sprintf("%s => %s\n",
-                $self->colored(['red on_black'], $deparse->deparse($op)),
-                $self->colored(['red on_black'], $val),
-            );
-        }
-    }
-    join('', @ret);
 }
 
 package Test::Kantan::Reporter::Spec::MessageGroup;

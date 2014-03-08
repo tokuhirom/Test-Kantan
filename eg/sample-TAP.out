@@ -3,10 +3,10 @@
 # Array
 # Array/push
 # Array/push/should push an element
-# ok { join(' ', @a) eq 'a b c d e' };
+not ok 1 - ok { join(' ', @a) eq 'a b c d e' };
 # HOGE
 # Hash
 # Hash/fetch
 # Hash/fetch/take the value
-not ok 1 - expect(+{f => 1}->{g})->to_be_true;
-1..1
+not ok 2 - expect(+{f => 1}->{g})->to_be_true;
+1..2

@@ -1,6 +1,6 @@
 requires 'perl', '5.010001';
 
-requires 'Test::Power::Core';
+recommends 'Test::Power::Core';
 requires 'Test::Deep';
 requires 'Scope::Guard';
 requires 'Module::Spy', '0.03';

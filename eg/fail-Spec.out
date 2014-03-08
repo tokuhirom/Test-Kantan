@@ -24,7 +24,7 @@
       Diag: Show me
         at eg/fail.t line 30.
 
-      expect(0+@ary)->to_be(0);
+      FAIL: expect(0+@ary)->to_be(0);
       Compared $data
          got : '1'
       expect : '0'

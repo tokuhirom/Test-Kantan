@@ -15,7 +15,6 @@ use Test::Kantan::Caller;
 use Test::Kantan::Suite;
 use Test::Kantan::Functions;
 
-use Test::Kantan::Message::Power;
 use Test::Kantan::Message::Fail;
 use Test::Kantan::Message::Diag;
 

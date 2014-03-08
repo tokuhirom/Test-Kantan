@@ -49,6 +49,8 @@ sub suite {
 
 sub fail {
     my ($self, %args) = @_;
+    $args{caller} or die;
+
     my $title = $args{description} || $args{caller}->code || '-';
     $title =~ s/\n/\\n/g;
     $self->{count}++;
