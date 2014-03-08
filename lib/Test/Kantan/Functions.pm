@@ -63,30 +63,22 @@ sub ok(&) {
     } else {
         my $retval = $code->();
         my $builder = Test::Kantan->builder;
-        if ($retval) {
-            $builder->reporter->pass(
-                caller      => Test::Kantan::Caller->new(0),
-            );
-            return 1;
-        } else {
-            $builder->state->failed();
-            $builder->reporter->fail(
-                caller      => Test::Kantan::Caller->new(0),
-            );
-        }
+        $builder->ok(
+            value       => $retval,
+            caller      => Test::Kantan::Caller->new(0),
+        );
     }
 }
 
 sub diag {
     my ($msg, $cutoff) = @_;
+
     Test::Kantan->builder->reporter->diag(
         message => $msg,
         cutoff  => $cutoff,
         caller  => Test::Kantan::Caller->new(0),
     );
 }
-
-
 
 1;
 
