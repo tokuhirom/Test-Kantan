@@ -6,10 +6,9 @@ use 5.010_001;
 
 use Moo;
 
-has builder  => ( is => 'rw',   required => 1 );
-has source   => ( is => 'rw',   required => 1 );
-has stuff    => ( is => 'lazy', required => 1 );
-has inverted => ( is => 'rw',   default => sub { 0 } );
+has builder  => ( is => 'rw', required => 1 );
+has stuff    => ( is => 'rw', required => 1 );
+has inverted => ( is => 'rw', default => sub { 0 } );
 
 no Moo;
 
@@ -20,11 +19,6 @@ use Test::Deep::NoTest;
 
 sub reporter { shift->builder->reporter }
 sub state    { shift->builder->state }
-
-sub _build_stuff {
-    my $self = shift;
-    $self->source;
-}
 
 sub _ok {
     my ($self, %args) = @_;
@@ -40,7 +34,7 @@ sub not {
     my $self = shift;
     Test::Kantan::Expect->new(
         builder  => $self->builder,
-        source   => $self->stuff,
+        stuff    => $self->stuff,
         inverted => !$self->inverted,
     );
 }

@@ -33,7 +33,7 @@ use Test::Kantan::Builder;
 sub expect {
     my $v = shift;
     return Test::Kantan::Expect->new(
-        source => $v,
+        stuff  => $v,
         builder => Test::Kantan::Builder->new(
             reporter => Test::Kantan::Reporter::Null->new()
         ),
