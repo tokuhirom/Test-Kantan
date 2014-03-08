@@ -16,7 +16,6 @@ no Moo;
 use Try::Tiny;
 
 use Test::Kantan::Caller;
-use Test::Kantan::Message::Fail;
 use Test::Deep::NoTest;
 
 sub reporter { shift->builder->reporter }

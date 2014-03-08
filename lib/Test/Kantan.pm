@@ -15,9 +15,6 @@ use Test::Kantan::Caller;
 use Test::Kantan::Suite;
 use Test::Kantan::Functions;
 
-use Test::Kantan::Message::Fail;
-use Test::Kantan::Message::Diag;
-
 our @EXPORT = (
     qw(Feature Scenario Given When Then),
     qw(subtest done_testing setup teardown),

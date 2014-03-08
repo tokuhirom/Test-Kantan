@@ -6,7 +6,6 @@ use 5.010_001;
 use Module::Load;
 
 use Test::Kantan::State;
-use Test::Kantan::Message::Pass;
 
 use Moo;
 

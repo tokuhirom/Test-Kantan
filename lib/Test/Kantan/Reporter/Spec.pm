@@ -177,5 +177,33 @@ has titles   => (is => 'ro');
 
 no Moo;
 
-1;
+package Test::Kantan::Message::Diag;
 
+use Moo;
+
+has message => ( is => 'ro', required => 1 );
+has caller  => ( is => 'ro', required => 1 );
+has cutoff  => ( is => 'ro', required => 1 );
+
+no Moo;
+
+package Test::Kantan::Message::Fail;
+
+use Moo;
+
+has description => ( is => 'ro', required => 0 );
+has diag => ( is => 'ro', required => 0 );
+has caller  => ( is => 'ro', required => 1 );
+
+no Moo;
+
+package Test::Kantan::Message::Pass;
+
+use Moo;
+
+has caller => ( is => 'ro' );
+has description => ( is => 'ro' );
+
+no Moo;
+
+1;
