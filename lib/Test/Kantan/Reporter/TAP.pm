@@ -65,9 +65,17 @@ sub pass {
 
 sub message {
     my ($self, $message) = @_;
-    my $str = $message->as_string(reporter => $self);
+
+    (my $moniker = ref($message)) =~ s/.*:://;
+    my $method = "render_message_\L$moniker";
+    my $str = $self->$method($message);
     $str =~ s/^/# /mg;
     print "$str\n";
+}
+
+sub render_message_power {
+    my ($self, $message) = @_;
+    $message->caller->code;
 }
 
 sub diag {

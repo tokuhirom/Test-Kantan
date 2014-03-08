@@ -3,10 +3,7 @@
 # Array
 # Array/push
 # Array/push/should push an element
-# FAIL: ok { join(' ', @a) eq 'a b c d e' };
-#   at eg/sample.t line 11
-# 
-
+# ok { join(' ', @a) eq 'a b c d e' };
 # HOGE
 # Hash
 # Hash/fetch

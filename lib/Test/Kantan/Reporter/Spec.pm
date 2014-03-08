@@ -112,8 +112,10 @@ sub finalize {
             for my $message_group (@{$self->{message_groups}}) {
                 printf "\n    %s:\n", join(' → ', map { $self->colored(['green'], $_) } @{$message_group->titles});
                 for my $message (@{$message_group->messages}) {
-                    my $str = $message->as_string(reporter => $self);
-                    $str =~ s/^/      /gm;
+                    (my $moniker = ref($message)) =~ s/.*:://;
+                    my $method = "render_message_\L$moniker";
+                    my $str = $self->$method($message);
+                    $str =~ s/^/      /mg;
                     print "\n$str";
                 }
             }
@@ -129,6 +131,62 @@ sub finalize {
     }
 
     printf "\n\n%sok\n", $self->state->fail_cnt ? 'not ' : '';
+}
+
+sub render_message_diag {
+    my ($self, $message) = @_;
+
+    my $msg = $self->dump_data($message->message);
+    $msg =~ s/\n/\\n/g;
+    return sprintf(
+        "Diag: %s\n  at %s line %s.\n",
+        $self->colored(['magenta on_black'], $self->truncstr($msg, $message->cutoff)),
+        $message->caller->filename,
+        $message->caller->line
+    );
+}
+
+sub render_message_fail {
+    my ($self, $message) = @_;
+
+    my @ret;
+    push @ret, sprintf("%s\n", $self->colored(['red on_black'], $message->caller->code));
+    if (defined $message->description) {
+        push @ret, sprintf("%s\n", $self->colored(['red on_black'], $message->description));
+    }
+    push @ret, sprintf("   at %s line %s\n\n", $self->colored(['yellow'], $message->caller->filename), $self->colored(['yellow'], $message->caller->line));
+    return join('', @ret);
+}
+
+sub render_message_pass {
+    my ($self, $message) = @_;
+    "Passed: " . $message->caller->code;
+}
+
+sub render_message_power {
+    my ($self, $message) = @_;
+
+    my @ret;
+    push @ret, sprintf("%s: %s\n", $self->colored(['red'], 'FAIL'), $self->colored(['magenta'], $message->caller->code));
+    push @ret, sprintf("%s\n", $message->{err}) if $message->{err};
+    push @ret, sprintf("  at %s line %s\n", $self->colored(['yellow'], $message->caller->filename), $self->colored(['yellow'], $message->caller->line));
+    push @ret, "\n";
+    for my $result (@{$message->{tap_results}}) {
+        my $op = shift @$result;
+        for my $value (@$result) {
+            # take first argument if the value is scalar.
+            my $deparse = B::Deparse->new();
+            $deparse->{curcv} = B::svref_2object($message->{code});
+
+            my $val = $self->truncstr($self->dump_data($value->[1]));
+            $val =~ s/\n/\\n/g;
+            push @ret, sprintf("%s => %s\n",
+                $self->colored(['red on_black'], $deparse->deparse($op)),
+                $self->colored(['red on_black'], $val),
+            );
+        }
+    }
+    join('', @ret);
 }
 
 package Test::Kantan::Reporter::Spec::MessageGroup;

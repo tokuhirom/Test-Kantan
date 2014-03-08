@@ -11,10 +11,5 @@ has description => ( is => 'ro' );
 
 no Moo;
 
-sub as_string {
-    my $self = shift;
-    "Passed: " . $self->caller->code;
-}
-
 1;
 
