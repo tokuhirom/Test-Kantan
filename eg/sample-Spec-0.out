@@ -23,11 +23,10 @@
       ✖
       ok { join(' ', @a) eq 'a b c d e' };
          at eg/sample.t line 11
-      
 
       ♨
       HOGE
-        at eg/sample.t line 13.
+         at eg/sample.t line 13
 
     Hash
       fetch
@@ -36,7 +35,6 @@
       ✖
       expect($h->{g})->to_be_true;
          at eg/sample.t line 22
-      
 
     Hash
       fetch
@@ -45,7 +43,6 @@
       ✖
       ok { $h->{g} };
          at eg/sample.t line 25
-      
 
 
 not ok

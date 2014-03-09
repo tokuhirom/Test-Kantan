@@ -47,6 +47,7 @@ sub ok {
     my $description = param(\%args, 'description', {optional => 1});
 
     if ($value) {
+        $self->state->passed();
         $self->reporter->pass(
             caller      => $caller,
             description => $description,

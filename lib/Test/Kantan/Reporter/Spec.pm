@@ -5,14 +5,10 @@ use utf8;
 use 5.010_001;
 use Term::ANSIColor ();
 
-use parent qw(Test::Kantan::Reporter::Base);
-
 use Moo;
 
-has color => (is => 'ro', required => 1);
-has level => (is => 'ro', default => sub { 0 });
-has cutoff => (is => 'ro', default => sub { $ENV{TEST_KANTAN_CUTOFF} || 80 });
-has state  => (is => 'ro', required => 1);
+with 'Test::Kantan::Reporter::Role';
+
 has messages => (is => 'ro', default => sub { +[] });
 has message_stack => (is => 'ro', default => sub { +[[]] });
 
@@ -73,14 +69,16 @@ sub suite {
 
 sub fail {
     my ($self, %args) = @_;
-    $self->message(Test::Kantan::Message::Fail->new(
+    $self->message(Test::Kantan::Reporter::Spec::Message::Fail->new(
+        reporter => $self,
         %args
     ));
 }
 
 sub pass {
     my ($self, %args) = @_;
-    $self->message(Test::Kantan::Message::Pass->new(
+    $self->message(Test::Kantan::Reporter::Spec::Message::Pass->new(
+        reporter => $self,
         %args
     ));
 }
@@ -92,7 +90,8 @@ sub message {
 
 sub exception {
     my ($self, %args) = @_;
-    $self->message(Test::Kantan::Message::Exception->new(
+    $self->message(Test::Kantan::Reporter::Spec::Message::Exception->new(
+        reporter => $self,
         %args
     ));
 }
@@ -100,7 +99,8 @@ sub exception {
 sub diag {
     my ($self, %args) = @_;
 
-    $self->message(Test::Kantan::Message::Diag->new(
+    $self->message(Test::Kantan::Reporter::Spec::Message::Diag->new(
+        reporter => $self,
         %args
     ));
 }
@@ -125,9 +125,7 @@ sub finalize {
                 }
 
                 for my $message (@{$message_group->messages}) {
-                    (my $moniker = ref($message)) =~ s/.*:://;
-                    my $method = "render_message_\L$moniker";
-                    my $str = $self->$method($message);
+                    my $str = $message->render();
                     $str =~ s/^/      /mg;
                     print "\n$str";
                 }
@@ -146,65 +144,6 @@ sub finalize {
     printf "\n\n%sok\n", $self->state->fail_cnt ? 'not ' : '';
 }
 
-sub render_message_exception {
-    my ($self, $message) = @_;
-
-    my $msg = $self->truncstr($message->message, 1024);
-    return sprintf(
-        "%s\n%s",
-        $self->colored(['magenta on_black'], "\x{2620}"),
-        $msg,
-    );
-}
-
-sub render_message_diag {
-    my ($self, $message) = @_;
-
-    my $msg = $self->dump_data($message->message);
-    $msg =~ s/\n/\\n/g;
-    return sprintf(
-        "%s\n%s\n  at %s line %s.\n",
-        $self->colored(['magenta'], "\x{2668}"),
-        $self->colored(['magenta on_black'], $self->truncstr($msg, $message->cutoff)),
-        $message->caller->filename,
-        $message->caller->line
-    );
-}
-
-sub render_message_fail {
-    my ($self, $message) = @_;
-
-    my @ret;
-    push @ret, sprintf(
-        "%s\n%s\n",
-        $self->colored(['red'], "\x{2716}"),
-        $self->colored(['red on_black'], $message->caller->code)
-    );
-    if (defined $message->description) {
-        push @ret, sprintf("%s\n", $self->colored(['red on_black'], $message->description));
-    }
-    if (defined $message->diag) {
-        my $diag = $message->diag;
-        $diag =~ s/^/  /mg;
-        push @ret, sprintf("%s\n", $self->colored(['red on_black'], $diag));
-    }
-    push @ret, sprintf("   at %s line %s\n\n", $self->colored(['yellow'], $message->caller->filename), $self->colored(['yellow'], $message->caller->line));
-    return join('', @ret);
-}
-
-sub render_message_pass {
-    my ($self, $message) = @_;
-    join('',
-        $self->colored(['green'], "\x{2713}\n"),
-        $message->caller->code, "\n",
-        $self->render_caller_pos($message)
-    );
-}
-
-sub render_caller_pos {
-    my ($self, $message) = @_;
-    return sprintf("   at %s line %s\n", $self->colored(['yellow'], $message->caller->filename), $self->colored(['yellow'], $message->caller->line));
-}
 
 package Test::Kantan::Reporter::Spec::MessageGroup;
 
@@ -215,9 +154,43 @@ has titles   => (is => 'ro');
 
 no Moo;
 
-package Test::Kantan::Message::Diag;
+package Test::Kantan::Reporter::Spec::Message::Base;
+use Test::Kantan::Util ();
 
 use Moo;
+
+has reporter => (
+    is => 'ro',
+    wek_ref => 1,
+    handles => [qw(colored cutoff)],
+);
+
+has caller  => ( is => 'ro' );
+
+no Moo;
+
+sub render_caller_pos {
+    my ($self) = @_;
+
+    return sprintf(
+        "   at %s line %s\n",
+        $self->colored(['yellow'], $self->caller->filename),
+        $self->colored(['yellow'], $self->caller->line)
+    );
+}
+
+sub truncstr {
+    my ($self, $str, $cutoff) = @_;
+    return Test::Kantan::Util::truncstr($str, $cutoff // $self->reporter->cutoff);
+}
+
+package Test::Kantan::Reporter::Spec::Message::Diag;
+
+use Test::Kantan::Util qw(dump_data);
+
+use Moo;
+
+extends 'Test::Kantan::Reporter::Spec::Message::Base';
 
 has message => ( is => 'ro', required => 1 );
 has caller  => ( is => 'ro', required => 1 );
@@ -225,9 +198,25 @@ has cutoff  => ( is => 'ro', required => 1 );
 
 no Moo;
 
-package Test::Kantan::Message::Fail;
+sub render {
+    my ($self, $message) = @_;
+
+    my @ret;
+
+    my $msg = dump_data($self->message);
+    $msg =~ s/\n/\\n/g;
+    push @ret, $self->colored(['magenta'], "\x{2668}\n");
+    push @ret, $self->colored(['magenta on_black'], $self->truncstr($msg, $self->cutoff)) . "\n";
+    push @ret, $self->render_caller_pos();
+    return join '', @ret;
+}
+
+
+package Test::Kantan::Reporter::Spec::Message::Fail;
 
 use Moo;
+
+extends 'Test::Kantan::Reporter::Spec::Message::Base';
 
 has description => ( is => 'ro', required => 0 );
 has diag => ( is => 'ro', required => 0 );
@@ -235,21 +224,69 @@ has caller  => ( is => 'ro', required => 1 );
 
 no Moo;
 
-package Test::Kantan::Message::Exception;
+sub render {
+    my ($self) = @_;
+
+    my @ret;
+    push @ret, sprintf(
+        "%s\n%s\n",
+        $self->colored(['red'], "\x{2716}"),
+        $self->colored(['red on_black'], $self->caller->code)
+    );
+    if (defined $self->description) {
+        push @ret, sprintf("%s\n", $self->colored(['red on_black'], $self->description));
+    }
+    if (defined $self->diag) {
+        my $diag = $self->diag;
+        $diag =~ s/^/  /mg;
+        push @ret, sprintf("%s\n", $self->colored(['red on_black'], $diag));
+    }
+    push @ret, $self->render_caller_pos();
+    return join('', @ret);
+}
+
+
+package Test::Kantan::Reporter::Spec::Message::Exception;
 
 use Moo;
+
+extends 'Test::Kantan::Reporter::Spec::Message::Base';
 
 has message => ( is => 'ro', required => 1 );
 
 no Moo;
 
-package Test::Kantan::Message::Pass;
+sub render {
+    my ($self) = @_;
+
+    my $msg = $self->truncstr($self->message, 1024);
+    return join(
+        "\n",
+        $self->colored(['magenta on_black'], "\x{2620}"),
+        $msg,
+    );
+}
+
+
+package Test::Kantan::Reporter::Spec::Message::Pass;
 
 use Moo;
+
+extends 'Test::Kantan::Reporter::Spec::Message::Base';
 
 has caller => ( is => 'ro' );
 has description => ( is => 'ro' );
 
 no Moo;
+
+sub render {
+    my ($self) = @_;
+    join('',
+        $self->colored(['green'], "\x{2713}\n"),
+        $self->caller->code, "\n",
+        $self->render_caller_pos($self)
+    );
+}
+
 
 1;

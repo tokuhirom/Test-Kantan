@@ -1,26 +1,15 @@
-package Test::Kantan::Reporter::Base;
+package Test::Kantan::Util;
 use strict;
 use warnings;
 use utf8;
 use 5.010_001;
+use parent qw(Exporter);
 use Data::Dumper ();
 
-sub truncstr {
-    my ($self, $message, $cutoff) = @_;
-
-    unless (defined $cutoff) {
-        $cutoff = $self->cutoff;
-    }
-
-    if (length($message) > $cutoff) {
-        return substr($message, 0, $cutoff-3) . '...';
-    } else {
-        return $message;
-    }
-}
+our @EXPORT = qw(dump_data truncstr);
 
 sub dump_data {
-    my ($self, $value) = @_;
+    my ($value) = @_;
 
     unless (defined $value) {
         return '(undef)';
@@ -36,5 +25,15 @@ sub dump_data {
     return $value;
 }
 
-1;
+sub truncstr {
+    my ($message, $cutoff) = @_;
+    return $message unless defined $cutoff;
 
+    if (length($message) > $cutoff) {
+        return substr($message, 0, $cutoff-3) . '...';
+    } else {
+        return $message;
+    }
+}
+
+1;

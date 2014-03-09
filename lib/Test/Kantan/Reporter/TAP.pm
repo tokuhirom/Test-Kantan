@@ -4,16 +4,13 @@ use warnings;
 use utf8;
 use 5.010_001;
 use Term::ANSIColor ();
-
-use parent qw(Test::Kantan::Reporter::Base);
+use Test::Kantan::Util qw(dump_data truncstr);
 
 use Moo;
 
-has color => (is => 'ro', required => 1);
-has level => (is => 'ro', default => sub { 0 });
-has cutoff => (is => 'ro', default => sub { $ENV{TEST_KANTAN_CUTOFF} || 80 });
+with qw(Test::Kantan::Reporter::Role);
+
 has count => (is => 'ro', default => sub { 0 });
-has state => (is => 'ro', required => 1);
 
 no Moo;
 
@@ -86,9 +83,9 @@ sub render_message_power {
 sub diag {
     my ($self, %args) = @_;
     my $message = $args{message} // die;
-    my $cutoff = $args{cutoff} || $self->cutoff;
-    $message = $self->dump_data($message);
-    $message = $self->truncstr($message, $cutoff);
+    my $cutoff = $args{cutoff} // $self->cutoff;
+    $message = dump_data($message);
+    $message = truncstr($message, $cutoff);
     for my $line (split /\n/, $message) {
         print "# $line\n";
     }

@@ -8,11 +8,12 @@ use Test::Kantan::Builder;
 
 {
     package Test::Kantan::Reporter::Null;
-    use parent qw(Test::Kantan::Reporter::Base);
 
     use Moo;
-    has cutoff   => ( is => 'rw', default => sub { 80 } );
+    with qw(Test::Kantan::Reporter::Role);
+
     has messages => ( is => 'rw', default => sub { [] } );
+
     no Moo;
 
     sub pass {
@@ -35,7 +36,10 @@ sub expect {
     return Test::Kantan::Expect->new(
         stuff  => $v,
         builder => Test::Kantan::Builder->new(
-            reporter => Test::Kantan::Reporter::Null->new()
+            reporter => Test::Kantan::Reporter::Null->new(
+                color => 0,
+                state => Test::Kantan::State->new(),
+            )
         ),
     );
 }
