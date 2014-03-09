@@ -42,22 +42,21 @@ sub _build_reporter {
 
 sub ok {
     my ($self, %args) = @_;
-    my $caller = $args{caller} or Carp::confess("Missing caller");
-    exists($args{value}) or Carp::cofess("Missing value");
-    my $value = $args{value};
-       $value = !$value if $args{inverted};
+    my $caller      = param(\%args, 'caller');
+    my $value       = param(\%args, 'value');
+    my $description = param(\%args, 'description', {optional => 1});
 
     if ($value) {
         $self->reporter->pass(
             caller      => $caller,
-            description => $args{description},
+            description => $description,
         );
         return 1;
     } else {
         $self->state->failed();
         $self->reporter->fail(
             caller      => $caller,
-            description => $args{description},
+            description => $description,
         );
         return 0;
     }
@@ -83,7 +82,11 @@ sub param {
     if (exists $args->{$key}) {
         delete $args->{$key};
     } else {
-        Carp::confess "Missing mandatory parameter: message";
+        if ($opts->{optional}) {
+            return undef;
+        } else {
+            Carp::confess "Missing mandatory parameter: message";
+        }
     }
 }
 

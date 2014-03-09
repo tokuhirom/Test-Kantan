@@ -22,10 +22,12 @@ sub state    { shift->builder->state }
 
 sub _ok {
     my ($self, %args) = @_;
+    exists($args{value}) or die "Missing value";
+    my $value = delete $args{value};
 
     $self->builder->ok(
-        inverted => $self->inverted,
         caller   => Test::Kantan::Caller->new(1),
+        value    => $self->inverted ? !$value : $value,
         %args,
     );
 }
