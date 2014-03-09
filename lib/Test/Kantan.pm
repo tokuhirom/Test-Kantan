@@ -65,7 +65,7 @@ sub _step {
         try {
             $code->();
         } catch {
-            builder->reporter->exception($_);
+            builder->exception(message => $_);
         };
     }
 }

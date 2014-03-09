@@ -63,5 +63,25 @@ sub ok {
     }
 }
 
+sub exception {
+    my ($self, %args) = @_;
+    my $message = param(\%args, 'message');
+
+    $self->state->failed();
+    $self->reporter->exception(
+        message => $message,
+    );
+}
+
+sub param {
+    my ($args, $key) = @_;
+
+    if (exists $args->{$key}) {
+        delete $args->{$key};
+    } else {
+        Carp::confess "Missing mandatory parameter: message";
+    }
+}
+
 1;
 

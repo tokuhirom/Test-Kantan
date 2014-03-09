@@ -5,7 +5,15 @@
 
     Scenario bar
        Then baz
-Exception: Died at eg/gwt-exception.t line 8.\n
 
 
-ok
+
+  (Diagnostic message):
+
+    Feature Foo → Scenario bar →  Then baz:
+
+      ☠
+      Died at eg/gwt-exception.t line 8.
+
+
+not ok

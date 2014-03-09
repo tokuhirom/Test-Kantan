@@ -3,5 +3,5 @@
 # Feature Foo
 # Feature Foo/Scenario bar
 # Feature Foo/Scenario bar/ Then baz
-Exception: Died at eg/gwt-exception.t line 8.\n
+Exception: Died at eg/gwt-exception.t line 8.
 1..0

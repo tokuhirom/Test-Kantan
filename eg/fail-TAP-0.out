@@ -14,4 +14,5 @@ ok 1 - -
 # Feature Foo/Scenario Normal/ Then the number of array is 1
 # Show me
 not ok 2 - Compared $data\n   got : '1'\nexpect : '0'\n
-1..2
+ok 3 - ok { 1 };
+1..3

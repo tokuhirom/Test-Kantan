@@ -29,6 +29,7 @@ Feature 'Foo', sub {
         Then 'the number of array is 1', sub {
             diag "Show me";
             expect(0+@ary)->to_be(0);
+            ok { 1 };
         };
     };
 };

@@ -91,8 +91,10 @@ sub message {
 }
 
 sub exception {
-    my ($self, $exception) = @_;
-    printf "Exception: %s\n", $self->truncstr($self->dump_data($exception));
+    my ($self, %args) = @_;
+    $self->message(Test::Kantan::Message::Exception->new(
+        %args
+    ));
 }
 
 sub diag {
@@ -133,13 +135,25 @@ sub finalize {
     printf "\n\n%sok\n", $self->state->fail_cnt ? 'not ' : '';
 }
 
+sub render_message_exception {
+    my ($self, $message) = @_;
+
+    my $msg = $self->truncstr($message->message, 1024);
+    return sprintf(
+        "%s\n%s",
+        $self->colored(['magenta on_black'], "\x{2620}"),
+        $msg,
+    );
+}
+
 sub render_message_diag {
     my ($self, $message) = @_;
 
     my $msg = $self->dump_data($message->message);
     $msg =~ s/\n/\\n/g;
     return sprintf(
-        "Diag: %s\n  at %s line %s.\n",
+        "%s\n%s\n  at %s line %s.\n",
+        $self->colored(['magenta'], "\x{2668}"),
         $self->colored(['magenta on_black'], $self->truncstr($msg, $message->cutoff)),
         $message->caller->filename,
         $message->caller->line
@@ -150,7 +164,11 @@ sub render_message_fail {
     my ($self, $message) = @_;
 
     my @ret;
-    push @ret, sprintf("FAIL: %s\n", $self->colored(['red on_black'], $message->caller->code));
+    push @ret, sprintf(
+        "%s\n%s\n",
+        $self->colored(['red'], "\x{2716}"),
+        $self->colored(['red on_black'], $message->caller->code)
+    );
     if (defined $message->description) {
         push @ret, sprintf("%s\n", $self->colored(['red on_black'], $message->description));
     }
@@ -165,7 +183,16 @@ sub render_message_fail {
 
 sub render_message_pass {
     my ($self, $message) = @_;
-    "Passed: " . $message->caller->code;
+    join('',
+        $self->colored(['green'], "\x{2713}\n"),
+        $message->caller->code, "\n",
+        $self->render_caller_pos($message)
+    );
+}
+
+sub render_caller_pos {
+    my ($self, $message) = @_;
+    return sprintf("   at %s line %s\n", $self->colored(['yellow'], $message->caller->filename), $self->colored(['yellow'], $message->caller->line));
 }
 
 package Test::Kantan::Reporter::Spec::MessageGroup;
@@ -194,6 +221,14 @@ use Moo;
 has description => ( is => 'ro', required => 0 );
 has diag => ( is => 'ro', required => 0 );
 has caller  => ( is => 'ro', required => 1 );
+
+no Moo;
+
+package Test::Kantan::Message::Exception;
+
+use Moo;
+
+has message => ( is => 'ro', required => 1 );
 
 no Moo;
 

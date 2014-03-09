@@ -49,7 +49,7 @@ sub suite {
 
 sub fail {
     my ($self, %args) = @_;
-    $args{caller} or die;
+    $args{caller} or Carp::confess;
 
     my $title = $args{description} || $args{caller}->code || '-';
     $title =~ s/\n/\\n/g;
@@ -95,8 +95,8 @@ sub diag {
 }
 
 sub exception {
-    my ($self, $exception) = @_;
-    printf "Exception: %s\n", $self->truncstr($self->dump_data($exception));
+    my ($self, %args) = @_;
+    print "Exception: $args{message}";
 }
 
 sub finalize {
