@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.20 2014-03-09T13:07:43Z
+
+    - Refactor interface.
+
 0.19 2014-03-07T03:56:19Z
 
     - use Module::Spy 0.03 interface.

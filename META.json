@@ -4,7 +4,7 @@
       "Tokuhiro Matsuno <tokuhirom@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Minilla/v0.11.0, CPAN::Meta::Converter version 2.133380",
+   "generated_by" : "Minilla/v0.11.1, CPAN::Meta::Converter version 2.133380",
    "license" : [
       "perl_5"
    ],
@@ -42,21 +42,24 @@
          }
       },
       "runtime" : {
+         "recommends" : {
+            "Test::Power::Core" : "0.13"
+         },
          "requires" : {
-            "Class::Accessor::Lite" : "0.05",
             "Module::Load" : "0",
             "Module::Spy" : "0.03",
+            "Moo" : "0",
             "Scope::Guard" : "0",
             "Term::Encoding" : "0",
             "Test::Deep" : "0",
-            "Test::Power::Core" : "0",
             "Try::Tiny" : "0",
             "perl" : "5.010001"
          }
       },
       "test" : {
          "requires" : {
-            "Test::More" : "0.98"
+            "Test::More" : "0.98",
+            "Test::Requires" : "0"
          }
       }
    },
@@ -72,5 +75,5 @@
          "web" : "https://github.com/tokuhirom/Test-Kantan"
       }
    },
-   "version" : "0.19"
+   "version" : "0.20"
 }
