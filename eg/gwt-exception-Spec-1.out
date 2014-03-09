@@ -10,7 +10,9 @@
 
   (Diagnostic message):
 
-    Feature Foo → Scenario bar →  Then baz:
+    Feature Foo
+      Scenario bar
+         Then baz:
 
       ☠
       Died at eg/gwt-exception.t line 8.

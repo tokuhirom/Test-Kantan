@@ -19,7 +19,9 @@
 
   (Diagnostic message):
 
-    Feature Foo → Scenario Normal →  Then the number of array is 1:
+    Feature Foo
+      Scenario Normal
+         Then the number of array is 1:
 
       ♨
       Show me

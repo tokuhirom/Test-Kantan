@@ -112,7 +112,18 @@ sub finalize {
         if (@{$self->{message_groups}}) {
             printf "\n\n\n  %s:\n", $self->colored(['red'], '(Diagnostic message)');
             for my $message_group (@{$self->{message_groups}}) {
-                printf "\n    %s:\n", join(' → ', map { $self->colored(['green'], $_) } @{$message_group->titles});
+                # Show group title
+                {
+                    print "\n";
+                    my $i=0;
+                    for my $title (@{$message_group->titles}) {
+                        printf("    %s%s%s\n", (' ' x ($i++*2)),
+                            $self->colored(['green'], $title),
+                            $i==@{$message_group->titles} ? ':' : ''
+                        );
+                    }
+                }
+
                 for my $message (@{$message_group->messages}) {
                     (my $moniker = ref($message)) =~ s/.*:://;
                     my $method = "render_message_\L$moniker";

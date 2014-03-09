@@ -16,7 +16,9 @@
 
   (Diagnostic message):
 
-    Array → push → should push an element:
+    Array
+      push
+        should push an element:
 
       ✖
       ok { join(' ', @a) eq 'a b c d e' };
@@ -27,14 +29,18 @@
       HOGE
         at eg/sample.t line 13.
 
-    Hash → fetch → take the value:
+    Hash
+      fetch
+        take the value:
 
       ✖
       expect($h->{g})->to_be_true;
          at eg/sample.t line 22
       
 
-    Hash → fetch → take the value:
+    Hash
+      fetch
+        take the value:
 
       ✖
       ok { $h->{g} };
