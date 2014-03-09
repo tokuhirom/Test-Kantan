@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use File::Temp;
-use Test::Requires 'Test::Power::Core';
+use Test::Requires { 'Test::Power::Core' => '0.13' };
 use t::Util;
 
 for my $file (sort <eg/*.t>) {

@@ -10,9 +10,9 @@ our @EXPORT = qw(expect ok diag ignore spy_on);
 
 use Test::Kantan::Expect;
 use Test::Deep::NoTest qw(ignore);
-use Module::Spy qw(spy_on);
+use Module::Spy 0.03 qw(spy_on);
 
-my $HAS_TEST_POWER = !$ENV{TEST_KANTAN_NOPOWER} && eval "use B; use B::Deparse; use Test::Power::Core; 1;";
+my $HAS_TEST_POWER = !$ENV{TEST_KANTAN_NOPOWER} && eval "use B; use B::Deparse; use Test::Power::Core 0.13; 1;";
 
 sub expect {
     my $stuff = shift;
@@ -26,44 +26,24 @@ sub ok(&) {
     my $code = shift;
 
     if ($HAS_TEST_POWER) {
-        local $@;
-        my ($retval, $err, $tap_results, $op_stack)
+        my ($retval, $pairs)
             = Test::Power::Core->give_me_power($code);
-        if ($retval) {
-            return 1;
-        } else {
-            my $builder = Test::Kantan->builder;
-            my $reporter = $builder->reporter;
-            my @diag;
-            for my $result (@{$tap_results}) {
-                my $op = shift @$result;
-                for my $value (@$result) {
-                    # take first argument if the value is scalar.
-                    my $deparse = B::Deparse->new();
-                    $deparse->{curcv} = B::svref_2object($code);
 
-                    my $val = $reporter->truncstr($reporter->dump_data($value->[1]));
-                    $val =~ s/\n/\\n/g;
-                    push @diag, sprintf("%s => %s\n",
-                        $deparse->deparse($op),
-                        $val,
-                    );
-                }
-            }
-            $builder->state->failed();
-            if ($err) {
-                $builder->reporter->diag(
-                    message => $err,
-                    caller  => Test::Kantan::Caller->new(0),
-                    cutoff  => $reporter->cutoff,
-                );
-            }
-            $builder->reporter->fail(
-                diag => join('', @diag),
-                caller      => Test::Kantan::Caller->new(0),
+        my $builder = Test::Kantan->builder;
+        $builder->ok(
+            value       => $retval,
+            caller      => Test::Kantan::Caller->new(0),
+        );
+        while (@$pairs) {
+            my $code = shift @$pairs;
+            my $dump = shift @$pairs;
+            $builder->reporter->diag(
+                message => sprintf("%s => %s\n", $code, $dump),
+                caller  => Test::Kantan::Caller->new(0),
+                cutoff  => $builder->reporter->cutoff,
             );
-            return 0;
         }
+        return !!$retval;
     } else {
         my $retval = $code->();
         my $builder = Test::Kantan->builder;
