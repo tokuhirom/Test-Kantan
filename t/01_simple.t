@@ -5,6 +5,7 @@ use Test::More;
 use File::Temp;
 use Test::Requires { 'Test::Power::Core' => '0.13' };
 use t::Util;
+use Text::Diff;
 
 for my $file (sort <eg/*.t>) {
     for my $reporter (qw(Spec TAP)) {
@@ -19,7 +20,7 @@ for my $file (sort <eg/*.t>) {
             $out =~ s/\A\n*//;
             $expected =~ s/\A\n*//;
 
-            is($out, $expected, $outfile);
+            ok($out eq $expected, $outfile) or diag(diff(\$out, \$expected));
         }
     }
 }
