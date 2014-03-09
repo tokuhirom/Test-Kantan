@@ -42,11 +42,11 @@
       
 
       ♨
-      $h->{'g'} => undef\n
+      $h->{'g'} => undef
         at eg/sample.t line 25.
 
       ♨
-      $h => {'f' => 1}\n
+      $h => {'f' => 1}
         at eg/sample.t line 25.
 
 

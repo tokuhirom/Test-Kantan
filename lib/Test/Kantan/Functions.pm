@@ -37,8 +37,9 @@ sub ok(&) {
         while (@$pairs) {
             my $code = shift @$pairs;
             my $dump = shift @$pairs;
-            $builder->reporter->diag(
-                message => sprintf("%s => %s\n", $code, $dump),
+
+            $builder->diag(
+                message => sprintf("%s => %s", $code, $dump),
                 caller  => Test::Kantan::Caller->new(0),
                 cutoff  => $builder->reporter->cutoff,
             );
@@ -57,7 +58,7 @@ sub ok(&) {
 sub diag {
     my ($msg, $cutoff) = @_;
 
-    Test::Kantan->builder->reporter->diag(
+    Test::Kantan->builder->diag(
         message => $msg,
         cutoff  => $cutoff,
         caller  => Test::Kantan::Caller->new(0),

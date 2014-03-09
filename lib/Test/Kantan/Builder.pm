@@ -74,13 +74,30 @@ sub exception {
 }
 
 sub param {
-    my ($args, $key) = @_;
+    my ($args, $key, $opts) = @_;
+
+    if (exists $opts->{default} && not exists $args->{$key}) {
+        $args->{$key} = $opts->{default};
+    }
 
     if (exists $args->{$key}) {
         delete $args->{$key};
     } else {
         Carp::confess "Missing mandatory parameter: message";
     }
+}
+
+sub diag {
+    my ($self, %args) = @_;
+    my $message = param(\%args, 'message');
+    my $cutoff  = param(\%args, 'cutoff', { default => $self->reporter->cutoff });
+    my $caller  = param(\%args, 'caller');
+
+    $self->reporter->diag(
+        message => $message,
+        cutoff  => $cutoff,
+        caller  => $caller,
+    );
 }
 
 1;
