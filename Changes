@@ -2,6 +2,11 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.21 2014-03-09T13:41:43Z
+
+    - Change message group title display format in Reporter::Spec.
+      (tokuhirom)
+
 0.20 2014-03-09T13:07:43Z
 
     - Refactor interface.
