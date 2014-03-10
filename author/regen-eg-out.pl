@@ -11,7 +11,7 @@ for my $file (sort <eg/*.t>) {
             (my $outfile = $file) =~ s/\.t\z/-${reporter}-${power}.out/;
             my $cmd = "perl -Ilib $file > $outfile";
             local $ENV{TEST_KANTAN_REPORTER}=$reporter;
-            local $ENV{TEST_KANTAN_NOPOWER} = $power ? 0 : 1;
+            local $ENV{TEST_KANTAN_NOOBSERVER} = $power ? 0 : 1;
             system($cmd)==0 or die "ABORT\n";
         }
     }

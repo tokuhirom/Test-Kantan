@@ -12,7 +12,7 @@ use Test::Kantan::Expect;
 use Test::Deep::NoTest qw(ignore);
 use Module::Spy 0.03 qw(spy_on);
 
-my $HAS_TEST_POWER = !$ENV{TEST_KANTAN_NOPOWER} && eval "use B; use B::Deparse; use Test::Power::Core 0.13; 1;";
+my $HAS_TEST_POWER = !$ENV{TEST_KANTAN_NOOBSERVER} && eval "use B; use B::Deparse; use Devel::CodeObserver 0.10; 1;";
 
 sub expect {
     my $stuff = shift;
@@ -26,8 +26,8 @@ sub ok(&) {
     my $code = shift;
 
     if ($HAS_TEST_POWER) {
-        my ($retval, $pairs)
-            = Test::Power::Core->give_me_power($code);
+        state $observer = Devel::CodeObserver->new();
+        my ($retval, $pairs) = $observer->call($code);
 
         my $builder = Test::Kantan->builder;
         $builder->ok(

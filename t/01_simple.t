@@ -3,7 +3,7 @@ use warnings;
 use utf8;
 use Test::More;
 use File::Temp;
-use Test::Requires { 'Test::Power::Core' => '0.13' };
+use Test::Requires { 'Devel::CodeObserver' => '0.10' };
 use t::Util;
 use Text::Diff;
 
@@ -12,7 +12,7 @@ for my $file (sort <eg/*.t>) {
         for my $power (qw(0 1)) {
             note "$file $reporter";
             local $ENV{TEST_KANTAN_REPORTER} = $reporter;
-            local $ENV{TEST_KANTAN_NOPOWER} = $power ? 0 : 1;
+            local $ENV{TEST_KANTAN_NOOBSERVER} = $power ? 0 : 1;
             (my $outfile = $file) =~ s/\.t\z/-${reporter}-${power}.out/;
             my $expected = slurp_utf8($outfile);
 
