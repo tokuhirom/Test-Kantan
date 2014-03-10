@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.23 2014-03-10T01:54:36Z
+
+    - use Devel::CodeObserver 0.11
+
 0.22 2014-03-10T01:18:39Z
 
     - use Devel::CodeObserver

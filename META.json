@@ -43,7 +43,7 @@
       },
       "runtime" : {
          "recommends" : {
-            "Devel::CodeObserver" : "0.10"
+            "Devel::CodeObserver" : "0.11"
          },
          "requires" : {
             "Module::Load" : "0",
@@ -76,5 +76,5 @@
          "web" : "https://github.com/tokuhirom/Test-Kantan"
       }
    },
-   "version" : "0.22"
+   "version" : "0.23"
 }
