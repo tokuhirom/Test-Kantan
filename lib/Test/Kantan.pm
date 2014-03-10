@@ -93,7 +93,14 @@ sub _suite {
 
 sub Feature  { _suite( 'Feature', @_) }
 sub Scenario { _suite('Scenario', @_) }
+
+# Test::More compat
 sub subtest  { _suite(     undef, @_) }
+
+# BDD compat
+sub describe { _suite(     undef, @_) }
+sub context  { _suite(     undef, @_) }
+sub it       { _suite(     undef, @_) }
 
 sub done_testing {
     $FINISHED++;
