@@ -12,7 +12,7 @@ use Test::Kantan::Expect;
 use Test::Deep::NoTest qw(ignore);
 use Module::Spy 0.03 qw(spy_on);
 
-my $HAS_TEST_POWER = !$ENV{TEST_KANTAN_NOOBSERVER} && eval "use B; use B::Deparse; use Devel::CodeObserver 0.10; 1;";
+my $HAS_TEST_POWER = !$ENV{TEST_KANTAN_NOOBSERVER} && eval "use B; use B::Deparse; use Devel::CodeObserver 0.11; 1;";
 
 sub expect {
     my $stuff = shift;
@@ -27,16 +27,15 @@ sub ok(&) {
 
     if ($HAS_TEST_POWER) {
         state $observer = Devel::CodeObserver->new();
-        my ($retval, $pairs) = $observer->call($code);
+        my ($retval, $result) = $observer->call($code);
 
         my $builder = Test::Kantan->builder;
         $builder->ok(
             value       => $retval,
             caller      => Test::Kantan::Caller->new(0),
         );
-        while (@$pairs) {
-            my $code = shift @$pairs;
-            my $dump = shift @$pairs;
+        for my $pair (@{$result->dump_pairs}) {
+            my ($code, $dump) = @$pair;
 
             $builder->diag(
                 message => sprintf("%s => %s", $code, $dump),
