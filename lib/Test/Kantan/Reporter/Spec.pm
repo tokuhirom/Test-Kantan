@@ -10,7 +10,8 @@ use Moo;
 with 'Test::Kantan::Reporter::Role';
 
 has messages => (is => 'ro', default => sub { +[] });
-has message_stack => (is => 'ro', default => sub { +[[]] });
+has message_groups => (is => 'ro', default => sub { +[] });
+has message_stack => (is => 'ro', default => sub { +[] });
 
 no Moo;
 
@@ -85,6 +86,9 @@ sub pass {
 
 sub message {
     my ($self, $message) = @_;
+    unless (@{$self->message_stack}) {
+        $self->{root_suite} = $self->suite('Root');
+    }
     push @{$self->{message_stack}->[-1]}, $message;
 }
 
@@ -107,6 +111,8 @@ sub diag {
 
 sub finalize {
     my ($self, %args) = @_;
+
+    delete $self->{root_suite};
 
     if (!$self->state->is_passing || $ENV{TEST_KANTAN_VERBOSE}) {
         if (@{$self->{message_groups}}) {
