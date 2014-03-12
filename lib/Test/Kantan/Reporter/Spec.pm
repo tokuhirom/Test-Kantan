@@ -148,6 +148,7 @@ sub finalize {
     }
 
     printf "\n\n%sok\n", $self->state->fail_cnt ? 'not ' : '';
+    print "1..1\n";
 }
 
 
