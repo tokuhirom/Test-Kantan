@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.26 2014-03-12T20:45:40Z
+
+    - remove TEST_ prefix from the environment variables.
+
 0.25 2014-03-12T10:28:50Z
 
     - Added stub for Test::Builder.
