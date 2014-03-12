@@ -78,12 +78,12 @@ sub to_equal {
 sub to_be { goto \&to_equal }
 
 sub to_throw {
-    my ($self, $expected) = @_;
+    my ($self) = @_;
 
     my $thrown;
     try { $self->stuff->() } catch { $thrown++ };
     $self->_ok(
-        value       => $thrown,
+        value => $thrown,
     );
 }
 
