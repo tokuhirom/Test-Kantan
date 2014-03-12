@@ -13,15 +13,20 @@ use Test::Kantan::State;
 use Test::Kantan::Builder;
 use Test::Kantan::Caller;
 use Test::Kantan::Suite;
-use Test::Kantan::Functions;
+use Test::Kantan::Expect;
+
+use Test::Deep::NoTest qw(ignore);
+use Module::Spy 0.03 qw(spy_on);
 
 our @EXPORT = (
     qw(Feature Scenario Given When Then),
     qw(subtest done_testing setup teardown),
     qw(describe context it),
     qw(before_each after_each),
-    @Test::Kantan::Functions::EXPORT
+    qw(expect ok diag ignore spy_on),
 );
+
+my $HAS_DEVEL_CODEOBSERVER = !$ENV{TEST_KANTAN_NOOBSERVER} && eval "use Devel::CodeObserver 0.11; 1;";
 
 if (Test::Builder->can('new')) {
     # Replace some Test::Builder methods with mine.
@@ -143,6 +148,56 @@ sub subtest  { _suite(     undef, @_) }
 sub describe { _suite(     undef, @_) }
 sub context  { _suite(     undef, @_) }
 sub it       { _suite(     undef, @_) }
+
+sub expect {
+    my $stuff = shift;
+    Test::Kantan::Expect->new(
+        stuff   => $stuff,
+        builder => Test::Kantan->builder
+    );
+}
+
+sub ok(&) {
+    my $code = shift;
+
+    if ($HAS_DEVEL_CODEOBSERVER) {
+        state $observer = Devel::CodeObserver->new();
+        my ($retval, $result) = $observer->call($code);
+
+        my $builder = Test::Kantan->builder;
+        $builder->ok(
+            value       => $retval,
+            caller      => Test::Kantan::Caller->new(0),
+        );
+        for my $pair (@{$result->dump_pairs}) {
+            my ($code, $dump) = @$pair;
+
+            $builder->diag(
+                message => sprintf("%s => %s", $code, $dump),
+                caller  => Test::Kantan::Caller->new(0),
+                cutoff  => $builder->reporter->cutoff,
+            );
+        }
+        return !!$retval;
+    } else {
+        my $retval = $code->();
+        my $builder = Test::Kantan->builder;
+        $builder->ok(
+            value       => $retval,
+            caller      => Test::Kantan::Caller->new(0),
+        );
+    }
+}
+
+sub diag {
+    my ($msg, $cutoff) = @_;
+
+    Test::Kantan->builder->diag(
+        message => $msg,
+        cutoff  => $cutoff,
+        caller  => Test::Kantan::Caller->new(0),
+    );
+}
 
 sub done_testing {
     $FINISHED++;
