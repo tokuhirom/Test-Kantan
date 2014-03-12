@@ -106,3 +106,54 @@ sub to_be_a {
 sub to_be_an { goto \&to_be_a }
 
 1;
+__END__
+
+=head1 NAME
+
+Test::Kantan::Expect - Assertion
+
+=head1 SYNOPSIS
+
+  expect($x)->to_be(3);
+
+=head1 METHODS
+
+=over 4
+
+=item C<< expect($x)->to_be_defined() >>
+
+Pass if the value is defined.
+
+=item C<< expect($x)->to_be_truthy() >>
+
+=item C<< expect($x)->to_be_true() >>
+
+Pass if the value is truthy.
+
+=item C<< expect($x)->to_be_falsy() >>
+
+=item C<< expect($x)->to_be_false() >>
+
+Pass if the value is falsy.
+
+=item C<< expect($x)->to_equal($y) >>
+
+=item C<< expect($x)->to_be($y) >>
+
+Pass if the value to equal $y.
+
+=item C<< expect($code : CodeRef)->to_throw() >>
+
+Take the coderef. Pass if the code throws exception.
+
+=item C<< expect($x)->to_match($re : Regexp) >>
+
+Pass if $x matches $re.
+
+=item C<< expect($x)->to_be_a($v : Regexp) >>
+
+=item C<< expect($x)->to_be_an($v : Regexp) >>
+
+Pass if C<<$x->$_isa($v)>> is true.
+
+=back

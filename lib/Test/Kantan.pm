@@ -134,26 +134,59 @@ Test::Kantan - simple, flexible, fun "Testing framework"
 
 =head1 SYNOPSIS
 
-    use Test::Kantan;
+  use Test::Kantan;
 
-    describe('String', function(){
-        describe('index', function(){
-            it('should return -1 when the value is not present', function(){
-                expect(index("abc", 'x'))->to_be(-1);
-                expect(index("abc", 'a'))->to_be(-1);
-            })
-        })
-    })
-
+  describe 'String', sub {
+    describe 'index', sub {
+      it 'should return -1 when the value is not matched', sub {
+        expect(index("abc", 'x'))->to_be(-1);
+        expect(index("abc", 'a'))->to_be(0);
+      };
+    };
+  };
 
 =head1 DESCRIPTION
 
 Test::Kantan is a behavior-driven development framework for testing Perl 5 code.
 It has a clean, obvious syntax so that you can easily write tests.
 
-=head2 Suites: describe Your Tests
+=head1 Interfaces
 
-A test suite begins with a call to the function B<describe> with two parameters: a string and a function. The string is a name or title for a spec suite – usually what is being tested. The function is a block of code that implements the suite.
+There is 3 types for describing test cases.
+
+=head2 BDD style
+
+RSpec/Jasmine like BDD style function names are available.
+
+  describe 'String', sub {
+    before { ... };
+    describe 'index', sub {
+      it 'should return -1 when the value is not matched', sub {
+        expect(index("abc", 'x'))->to_be(-1);
+        expect(index("abc", 'a'))->to_be(0);
+      };
+    };
+  };
+
+=head2 Given-When-Then style
+
+There is the Given-When-Then style functions.
+It's really useful for describing real complex problems.
+
+  Scenario 'String', sub {
+    setup { ... };
+
+    Feature 'Get the index from the code', sub {
+      Given 'the string';
+      my $str = 'abc';
+
+      When 'get the index for "a"';
+      my $i = index($str, 'a');
+
+      Then 'the return value is 0';
+      expect($i)->to_be(0);
+    };
+  };
 
 =head1 Assertions
 
@@ -173,6 +206,15 @@ C<ok()> returns the value what returned by the code.
 
 Here is the C<expect> function like RSpec/Jasmine. For more details, please look L<Test::Kantan::Expect>.
 
+=head1 Utility functions
+
+=head2 C< diag($message) >
+
+You can show the diagnostic message with C< diag() > function.
+Diagnostic message would not print if whole test cases in the subtest were passed.
+
+It means, you can call diag() without worries about the messages is a obstacle.
+
 =head1 LICENSE
 
 Copyright (C) Tokuhiro Matsuno.
@@ -185,4 +227,3 @@ it under the same terms as Perl itself.
 Tokuhiro Matsuno E<lt>tokuhirom@gmail.comE<gt>
 
 =cut
-
