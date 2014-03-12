@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/tokuhirom/Test-Kantan.png?branch=master)](https://travis-ci.org/tokuhirom/Test-Kantan)
 # NAME
 
 Test::Kantan - simple, flexible, fun "Testing framework"
@@ -29,7 +30,7 @@ There is 3 types for describing test cases.
 RSpec/Jasmine like BDD style function names are available.
 
     describe 'String', sub {
-      before { ... };
+      before_each { ... };
       describe 'index', sub {
         it 'should return -1 when the value is not matched', sub {
           expect(index("abc", 'x'))->to_be(-1);
@@ -37,6 +38,8 @@ RSpec/Jasmine like BDD style function names are available.
         };
       };
     };
+
+    done_testing;
 
 ## Given-When-Then style
 
@@ -58,6 +61,21 @@ It's really useful for describing real complex problems.
       };
     };
 
+    done_testing;
+
+## Plain old Test::More style
+
+    subtest 'String', sub {
+      setup { ... };
+
+      subtest 'index', sub {
+        expect(index("abc", 'x'))->to_be(-1);
+        expect(index("abc", 'a'))->to_be(0);
+      };
+    };
+
+    done_testing;
+
 # Assertions
 
 Here is 2 type assertions.
@@ -74,7 +92,7 @@ There is the `ok` function. It takes one code block. The code returns true value
 
     expect($x)->to_be_true;
 
-Here is the `expect` function like RSpec/Jasmine. For more details, please look [Test::Kantan::Expect](http://search.cpan.org/perldoc?Test::Kantan::Expect).
+Here is the `expect` function like RSpec/Jasmine. For more details, please look [Test::Kantan::Expect](https://metacpan.org/pod/Test::Kantan::Expect).
 
 # Utility functions
 

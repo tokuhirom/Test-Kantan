@@ -18,6 +18,8 @@ use Test::Kantan::Functions;
 our @EXPORT = (
     qw(Feature Scenario Given When Then),
     qw(subtest done_testing setup teardown),
+    qw(describe context it),
+    qw(before_each after_each),
     @Test::Kantan::Functions::EXPORT
 );
 
@@ -45,11 +47,13 @@ sub setup(&) {
     my ($code) = @_;
     $CURRENT->add_trigger('setup' => $code);
 }
+sub before_each { goto \&setup }
 
 sub teardown(&) {
     my ($code) = @_;
     $CURRENT->add_trigger('teardown' => $code);
 }
+sub after_each { goto \&teardown }
 
 sub _step {
     my ($tag, $title, $code) = @_;
@@ -159,7 +163,7 @@ There is 3 types for describing test cases.
 RSpec/Jasmine like BDD style function names are available.
 
   describe 'String', sub {
-    before { ... };
+    before_each { ... };
     describe 'index', sub {
       it 'should return -1 when the value is not matched', sub {
         expect(index("abc", 'x'))->to_be(-1);
@@ -167,6 +171,8 @@ RSpec/Jasmine like BDD style function names are available.
       };
     };
   };
+
+  done_testing;
 
 =head2 Given-When-Then style
 
@@ -187,6 +193,21 @@ It's really useful for describing real complex problems.
       expect($i)->to_be(0);
     };
   };
+
+  done_testing;
+
+=head2 Plain old Test::More style
+
+  subtest 'String', sub {
+    setup { ... };
+
+    subtest 'index', sub {
+      expect(index("abc", 'x'))->to_be(-1);
+      expect(index("abc", 'a'))->to_be(0);
+    };
+  };
+
+  done_testing;
 
 =head1 Assertions
 
