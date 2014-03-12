@@ -17,9 +17,6 @@ use Try::Tiny;
 use Test::Kantan::Caller;
 use Test::Deep::NoTest;
 
-sub reporter { shift->builder->reporter }
-sub state    { shift->builder->state }
-
 sub _ok {
     my ($self, %args) = @_;
     exists($args{value}) or die "Missing value";
