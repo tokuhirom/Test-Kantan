@@ -87,7 +87,7 @@ sub param {
         if ($opts->{optional}) {
             return undef;
         } else {
-            Carp::confess "Missing mandatory parameter: message";
+            Carp::confess "Missing mandatory parameter: ${key}";
         }
     }
 }
