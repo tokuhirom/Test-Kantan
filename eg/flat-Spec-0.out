@@ -1,13 +1,10 @@
 
 
 
-  Root
-
 
 
   (Diagnostic message):
 
-    Root:
 
       ✓
       ok { 1 };

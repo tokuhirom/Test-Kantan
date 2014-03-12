@@ -18,6 +18,8 @@ no Moo;
 use Scope::Guard;
 
 sub start {
+    my $self = shift;
+
     my $encoding = do {
         require Term::Encoding;
         Term::Encoding::get_encoding();
@@ -25,6 +27,8 @@ sub start {
 
     binmode *STDOUT, ":encoding(${encoding})";
     STDOUT->autoflush(1);
+
+    $self->{root_suite} = $self->suite('');
 
     print "\n\n";
 }
@@ -36,14 +40,16 @@ sub colored {
 
 sub head_sp {
     my ($self) = @_;
-    return ' ' x (2+$self->{level}*2);
+    return ' ' x (2+($self->{level}-1)*2);
 }
 
 sub suite {
     my ($self, $title) = @_;
 
-    print "\n" if $self->{level} <= 1;
-    printf "%s%s\n", $self->head_sp, $title;
+    if (length($title) > 0) {
+        print "\n" if $self->{level} <= 2;
+        printf "%s%s\n", $self->head_sp, $title;
+    }
 
     push @{$self->{message_stack}}, [];
     push @{$self->{fail_stack}}, $self->state->fail_cnt;
@@ -86,9 +92,6 @@ sub pass {
 
 sub message {
     my ($self, $message) = @_;
-    unless (@{$self->message_stack}) {
-        $self->{root_suite} = $self->suite('Root');
-    }
     push @{$self->{message_stack}->[-1]}, $message;
 }
 
@@ -122,10 +125,12 @@ sub finalize {
                 {
                     print "\n";
                     my $i=0;
-                    for my $title (@{$message_group->titles}) {
+                    my @titles = @{$message_group->titles};
+                    shift @titles; # Remove root
+                    for my $title (@titles) {
                         printf("    %s%s%s\n", (' ' x ($i++*2)),
                             $self->colored(['green'], $title),
-                            $i==@{$message_group->titles} ? ':' : ''
+                            $i==@titles ? ':' : ''
                         );
                     }
                 }

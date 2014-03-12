@@ -12,7 +12,7 @@ use Moo;
 
 has color    => ( is => 'lazy' );
 has state    => ( is => 'lazy' );
-has reporter => ( is => 'lazy' );
+has reporter => ( is => 'ro', 'builder' => '_build_reporter' );
 has finished => ( is => 'rw', default => sub { 0 } );
 
 no Moo;
