@@ -10,8 +10,8 @@ for my $file (sort <eg/*.t>) {
         for my $power (0, 1) {
             (my $outfile = $file) =~ s/\.t\z/-${reporter}-${power}.out/;
             my $cmd = "perl -Ilib $file > $outfile";
-            local $ENV{TEST_KANTAN_REPORTER}=$reporter;
-            local $ENV{TEST_KANTAN_NOOBSERVER} = $power ? 0 : 1;
+            local $ENV{KANTAN_REPORTER}=$reporter;
+            local $ENV{KANTAN_NOOBSERVER} = $power ? 0 : 1;
             system($cmd)==0 or die "ABORT\n";
         }
     }

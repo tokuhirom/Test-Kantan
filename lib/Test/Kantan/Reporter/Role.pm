@@ -8,7 +8,7 @@ use Moo::Role;
 
 has color => (is => 'ro', required => 1);
 has level => (is => 'ro', default => sub { 0 });
-has cutoff => (is => 'ro', default => sub { $ENV{TEST_KANTAN_CUTOFF} || 80 });
+has cutoff => (is => 'ro', default => sub { $ENV{KANTAN_CUTOFF} || 80 });
 has state  => (is => 'ro', required => 1);
 
 no Moo::Role;

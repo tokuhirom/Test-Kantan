@@ -26,7 +26,7 @@ our @EXPORT = (
     qw(expect ok diag ignore spy_on),
 );
 
-my $HAS_DEVEL_CODEOBSERVER = !$ENV{TEST_KANTAN_NOOBSERVER} && eval "use Devel::CodeObserver 0.11; 1;";
+my $HAS_DEVEL_CODEOBSERVER = !$ENV{KANTAN_NOOBSERVER} && eval "use Devel::CodeObserver 0.11; 1;";
 
 if (Test::Builder->can('new')) {
     # Replace some Test::Builder methods with mine.
@@ -328,6 +328,25 @@ You can show the diagnostic message with C< diag() > function.
 Diagnostic message would not print if whole test cases in the subtest were passed.
 
 It means, you can call diag() without worries about the messages is a obstacle.
+
+=head1 ENVIRONMENT VARIABLES
+
+=over 4
+
+=item KANTAN_REPORTER
+
+You can specify the reporter class by KANTAN_REPORTER environment variable.
+
+    KANTAN_REPORTER=TAP perl -Ilib t/01_simple.t
+
+=item KANTAN_CUTOFF
+
+Kantan cut the dignostic message by 80 bytes by default.
+If you want to change this value, you can set by KANTAN_CUTOFF.
+
+    KANTAN_CUTOFF=10000 perl -Ilib t/01_simple.t
+
+=back
 
 =head1 LICENSE
 

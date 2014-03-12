@@ -114,7 +114,7 @@ sub finalize {
 
     delete $self->{root_suite};
 
-    if (!$self->state->is_passing || $ENV{TEST_KANTAN_VERBOSE}) {
+    if (!$self->state->is_passing || $ENV{KANTAN_VERBOSE}) {
         if (@{$self->{message_groups}}) {
             printf "\n\n\n  %s:\n", $self->colored(['red'], '(Diagnostic message)');
             for my $message_group (@{$self->{message_groups}}) {

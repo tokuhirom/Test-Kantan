@@ -17,7 +17,7 @@ has reporter => ( is => 'lazy' );
 no Moo;
 
 sub _build_color {
-    $ENV{TEST_KANTAN_COLOR} || -t *STDOUT;
+    $ENV{KANTAN_COLOR} || -t *STDOUT;
 }
 
 sub _build_state {
@@ -28,7 +28,7 @@ sub _build_reporter {
     my $self = shift;
 
     my $reporter_class = do {
-        my $s = $ENV{TEST_KANTAN_REPORTER} || 'Spec';
+        my $s = $ENV{KANTAN_REPORTER} || 'Spec';
         my $klass = ($s =~ s/\A\+// ? $s : "Test::Kantan::Reporter::${s}");
         Module::Load::load $klass;
         $klass;

@@ -103,6 +103,21 @@ Diagnostic message would not print if whole test cases in the subtest were passe
 
 It means, you can call diag() without worries about the messages is a obstacle.
 
+# ENVIRONMENT VARIABLES
+
+- KANTAN\_REPORTER
+
+    You can specify the reporter class by KANTAN\_REPORTER environment variable.
+
+        KANTAN_REPORTER=TAP perl -Ilib t/01_simple.t
+
+- KANTAN\_CUTOFF
+
+    Kantan cut the dignostic message by 80 bytes by default.
+    If you want to change this value, you can set by KANTAN\_CUTOFF.
+
+        KANTAN_CUTOFF=10000 perl -Ilib t/01_simple.t
+
 # LICENSE
 
 Copyright (C) Tokuhiro Matsuno.

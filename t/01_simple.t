@@ -11,8 +11,8 @@ for my $file (sort <eg/*.t>) {
     for my $reporter (qw(Spec TAP)) {
         for my $power (qw(0 1)) {
             note "$file $reporter";
-            local $ENV{TEST_KANTAN_REPORTER} = $reporter;
-            local $ENV{TEST_KANTAN_NOOBSERVER} = $power ? 0 : 1;
+            local $ENV{KANTAN_REPORTER} = $reporter;
+            local $ENV{KANTAN_NOOBSERVER} = $power ? 0 : 1;
             (my $outfile = $file) =~ s/\.t\z/-${reporter}-${power}.out/;
             my $expected = slurp_utf8($outfile);
 
