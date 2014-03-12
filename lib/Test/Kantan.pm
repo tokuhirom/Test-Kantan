@@ -3,7 +3,7 @@ use 5.010_001;
 use strict;
 use warnings;
 
-our $VERSION = "0.24";
+our $VERSION = "0.25";
 
 use parent qw(Exporter);
 
@@ -28,7 +28,7 @@ if (Test::Builder->can('new')) {
 
     no warnings 'redefine';
 
-    sub Test::Builder::ok {
+    *Test::Builder::ok = sub {
         my ($self, $ok, $msg) = @_;
         Test::Kantan->builder->ok(
             value => $ok,
@@ -37,14 +37,14 @@ if (Test::Builder->can('new')) {
                 $Test::Builder::Level
             ),
         );
-    }
+    };
 
-    sub Test::Builder::subtest {
+    *Test::Builder::subtest = sub {
         my $self = shift;
         goto \&Test::Kantan::subtest;
-    }
+    };
 
-    sub Test::Builder::diag {
+    *Test::Builder::diag = sub {
         my ($self, $message) = @_;
 
         Test::Kantan->builder->diag(
@@ -52,9 +52,9 @@ if (Test::Builder->can('new')) {
             cutoff  => 1024,
             caller  => Test::Kantan::Caller->new($Test::Builder::Level),
         );
-    }
+    };
 
-    sub Test::Builder::note {
+    *Test::Builder::note = sub {
         my ($self, $message) = @_;
 
         Test::Kantan->builder->diag(
@@ -62,7 +62,7 @@ if (Test::Builder->can('new')) {
             cutoff  => 1024,
             caller  => Test::Kantan::Caller->new($Test::Builder::Level),
         );
-    }
+    };
 }
 
 our $BUILDER;

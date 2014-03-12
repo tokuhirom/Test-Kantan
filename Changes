@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.25 2014-03-12T10:28:50Z
+
+    - Added stub for Test::Builder.
+
 0.24 2014-03-12T10:02:48Z
 
     - Documentation update

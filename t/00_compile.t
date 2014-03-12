@@ -1,10 +1,12 @@
 use strict;
-use Test::More;
 
-require Test::Kantan::Reporter::Spec;
 require Test::Kantan;
+require Test::Kantan::Reporter::Spec;
 
-pass 'done';
+require Test::More;
+Test::More->import;
 
-done_testing;
+pass('done');
+
+done_testing();
 
