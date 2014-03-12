@@ -186,7 +186,7 @@ sub render_caller_pos {
 
     return sprintf(
         "   at %s line %s\n",
-        $self->colored(['yellow'], $self->caller->filename),
+        $self->colored(['yellow'], $self->caller->filename // '-'),
         $self->colored(['yellow'], $self->caller->line)
     );
 }
