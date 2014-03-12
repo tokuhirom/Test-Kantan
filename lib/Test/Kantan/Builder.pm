@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use 5.010_001;
 use Module::Load;
+use Try::Tiny;
 
 use Test::Kantan::State;
 
@@ -102,6 +103,23 @@ sub diag {
         cutoff  => $cutoff,
         caller  => $caller,
     );
+}
+
+sub subtest {
+    my ($self, %args) = @_;
+    my $title = param(\%args, 'title');
+    my $code  = param(\%args, 'code');
+    my $suite = param(\%args, 'suite');
+
+    my $guard = $self->reporter->suite($title);
+
+    $suite->parent->call_trigger('setup');
+    try {
+        $code->();
+    } catch {
+        $self->exception(message => $_);
+    };
+    $suite->parent->call_trigger('teardown');
 }
 
 1;

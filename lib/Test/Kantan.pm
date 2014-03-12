@@ -87,10 +87,11 @@ sub _suite {
     );
     {
         local $CURRENT = $suite;
-        my $guard = builder->reporter->suite(defined($tag) ? "${tag} ${title}" : $title);
-        $suite->parent->call_trigger('setup');
-        $code->();
-        $suite->parent->call_trigger('teardown');
+        builder->subtest(
+            title => defined($tag) ? "${tag} ${title}" : $title,
+            code  => $code,
+            suite => $suite,
+        );
     }
     $RAN_TEST++;
 }
