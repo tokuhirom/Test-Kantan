@@ -5,6 +5,8 @@ use utf8;
 use 5.010_001;
 use Module::Load;
 use Try::Tiny;
+use File::Spec;
+use File::Path;
 
 use Test::Kantan::State;
 
@@ -14,6 +16,8 @@ has color    => ( is => 'lazy' );
 has state    => ( is => 'lazy' );
 has reporter => ( is => 'ro', 'builder' => '_build_reporter' );
 has finished => ( is => 'rw', default => sub { 0 } );
+has pid => (is => 'ro', default => sub { $$ });
+has message_dir => (is => 'ro', 'builder' => '_build_message_dir' );
 
 no Moo;
 
@@ -23,6 +27,12 @@ sub _build_color {
 
 sub _build_state {
     Test::Kantan::State->new();
+}
+
+sub _build_message_dir {
+    my $self = shift;
+    my $time = time;
+    File::Spec->catfile(File::Spec->tmpdir, "kantan.$$.${time}");
 }
 
 sub _build_reporter {
@@ -44,6 +54,8 @@ sub _build_reporter {
 
 sub ok {
     my ($self, %args) = @_;
+    return if $self->care_child(\%args);
+
     my $caller      = param(\%args, 'caller');
     my $value       = param(\%args, 'value');
     my $description = param(\%args, 'description', {optional => 1});
@@ -65,8 +77,17 @@ sub ok {
     }
 }
 
+sub care_child {
+    my ($self, $args) = @_;
+    return if $$ eq $self->pid;
+    (my $meth = [caller(1)]->[3]) =~ s/.*:://;
+
+    $self->push_child_message($meth, $args);
+}
+
 sub exception {
     my ($self, %args) = @_;
+    return if $self->care_child(\%args);
     my $message = param(\%args, 'message');
 
     $self->state->failed();
@@ -95,6 +116,7 @@ sub param {
 
 sub diag {
     my ($self, %args) = @_;
+    return if $self->care_child(\%args);
     my $message = param(\%args, 'message');
     my $cutoff  = param(\%args, 'cutoff', { default => $self->reporter->cutoff });
     my $caller  = param(\%args, 'caller');
@@ -120,6 +142,22 @@ sub subtest {
     } catch {
         $self->exception(message => $_);
     };
+
+    if (-d $self->message_dir) {
+        require Storable;
+        for my $fname (glob($self->message_dir . "/*")) {
+            open my $fh, '<', $fname
+                or die;
+            my $dat = Storable::thaw(do { local $/; <$fh> });
+            close $fh;
+            unlink $fname;
+
+            my ($method, $args) = @$dat;
+            $self->$method(%$args);
+        }
+        rmdir $self->message_dir;
+    }
+
     $suite->parent->call_trigger('teardown');
 }
 
@@ -133,6 +171,28 @@ sub done_testing {
     if (Test::Pretty->can('_subtest')) {
         # Do not run Test::Pretty's finalization
         $Test::Pretty::NO_ENDING=1;
+    }
+}
+
+sub push_child_message {
+    my ($self, $type, $args) = @_;
+
+    require Time::HiRes;
+    require Storable;
+
+    mkdir $self->message_dir;
+
+    my $fname = File::Spec->catfile($self->message_dir, "$$." . Time::HiRes::time());
+    open my $fh, '>>', $fname
+        or die "$fname: $!";
+    print {$fh} Storable::nfreeze([$type, $args]) . "\n";
+    close $fh;
+}
+
+sub DESTROY {
+    my $self = shift;
+    if ($$ == $self->pid) {
+        File::Path::rmtree($self->message_dir); # 為念
     }
 }
 

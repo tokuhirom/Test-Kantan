@@ -76,13 +76,8 @@ if (Test::Builder->can('new')) {
     };
 }
 
-our $BUILDER;
-sub builder {
-    if (not defined $BUILDER) {
-        $BUILDER = Test::Kantan::Builder->new();
-    }
-    return $BUILDER;
-}
+our $BUILDER = Test::Kantan::Builder->new();
+sub builder { $BUILDER }
 
 # -------------------------------------------------------------------------
 # DSL functions
