@@ -23,9 +23,46 @@ our @EXPORT = (
     @Test::Kantan::Functions::EXPORT
 );
 
-# If users loaded Test::Builder, suppress it's outputs.
 if (Test::Builder->can('new')) {
-    Test::Builder->new->no_diag(1);
+    # Replace some Test::Builder methods with mine.
+
+    no warnings 'redefine';
+
+    sub Test::Builder::ok {
+        my ($self, $ok, $msg) = @_;
+        Test::Kantan->builder->ok(
+            value => $ok,
+            message => $msg,
+            caller => Test::Kantan::Caller->new(
+                $Test::Builder::Level
+            ),
+        );
+    }
+
+    sub Test::Builder::subtest {
+        my $self = shift;
+        goto \&Test::Kantan::subtest;
+    }
+
+    sub Test::Builder::diag {
+        my ($self, $message) = @_;
+
+        Test::Kantan->builder->diag(
+            message => $message,
+            cutoff  => 1024,
+            caller  => Test::Kantan::Caller->new($Test::Builder::Level),
+        );
+    }
+
+    sub Test::Builder::note {
+        my ($self, $message) = @_;
+
+        Test::Kantan->builder->diag(
+            message => $message,
+            cutoff  => 1024,
+            caller  => Test::Kantan::Caller->new($Test::Builder::Level),
+        );
+    }
 }
 
 our $BUILDER;
