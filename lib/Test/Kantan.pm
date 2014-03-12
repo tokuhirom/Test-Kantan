@@ -3,7 +3,7 @@ use 5.010_001;
 use strict;
 use warnings;
 
-our $VERSION = "0.25";
+our $VERSION = "0.26";
 
 use parent qw(Exporter);
 
@@ -67,6 +67,12 @@ if (Test::Builder->can('new')) {
             cutoff  => 1024,
             caller  => Test::Kantan::Caller->new($Test::Builder::Level),
         );
+    };
+
+    *Test::Builder::done_testing = sub {
+        my ($self, $message) = @_;
+
+        Test::Kantan->builder->done_testing()
     };
 }
 
@@ -200,21 +206,13 @@ sub diag {
 }
 
 sub done_testing {
-    $FINISHED++;
-
-    builder->reporter->finalize();
-
-    # Test::Pretty was loaded
-    if (Test::Pretty->can('_subtest')) {
-        # Do not run Test::Pretty's finalization
-        $Test::Pretty::NO_ENDING=1;
-    }
+    builder->done_testing
 }
 
 END {
     if ($RAN_TEST) {
-        unless ($FINISHED) {
-            done_testing()
+        unless (builder->finished) {
+            die "You need to call `done_testing` before exit";
         }
     }
 }
@@ -341,7 +339,7 @@ You can specify the reporter class by KANTAN_REPORTER environment variable.
 
 =item KANTAN_CUTOFF
 
-Kantan cut the dignostic message by 80 bytes by default.
+Kantan cut the diagnostic message by 80 bytes by default.
 If you want to change this value, you can set by KANTAN_CUTOFF.
 
     KANTAN_CUTOFF=10000 perl -Ilib t/01_simple.t

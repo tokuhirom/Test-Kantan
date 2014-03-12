@@ -13,6 +13,7 @@ use Moo;
 has color    => ( is => 'lazy' );
 has state    => ( is => 'lazy' );
 has reporter => ( is => 'lazy' );
+has finished => ( is => 'rw', default => sub { 0 } );
 
 no Moo;
 
@@ -120,6 +121,19 @@ sub subtest {
         $self->exception(message => $_);
     };
     $suite->parent->call_trigger('teardown');
+}
+
+sub done_testing {
+    my ($self) = @_;
+    return if $self->{finished}++;
+
+    $self->reporter->finalize();
+
+    # Test::Pretty was loaded
+    if (Test::Pretty->can('_subtest')) {
+        # Do not run Test::Pretty's finalization
+        $Test::Pretty::NO_ENDING=1;
+    }
 }
 
 1;
