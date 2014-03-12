@@ -108,6 +108,8 @@ sub to_be_an { goto \&to_be_a }
 1;
 __END__
 
+=for stopwords truthy falsy coderef
+
 =head1 NAME
 
 Test::Kantan::Expect - Assertion
@@ -154,6 +156,6 @@ Pass if $x matches $re.
 
 =item C<< expect($x)->to_be_an($v : Regexp) >>
 
-Pass if C<<$x->$_isa($v)>> is true.
+Pass if C<< $x->$_isa($v) >> is true.
 
 =back
