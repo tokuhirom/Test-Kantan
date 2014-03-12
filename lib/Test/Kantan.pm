@@ -130,15 +130,48 @@ __END__
 
 =head1 NAME
 
-Test::Kantan - It's new $module
+Test::Kantan - simple, flexible, fun "Testing framework"
 
 =head1 SYNOPSIS
 
     use Test::Kantan;
 
+    describe('String', function(){
+        describe('index', function(){
+            it('should return -1 when the value is not present', function(){
+                expect(index("abc", 'x'))->to_be(-1);
+                expect(index("abc", 'a'))->to_be(-1);
+            })
+        })
+    })
+
+
 =head1 DESCRIPTION
 
-Test::Kantan is ...
+Test::Kantan is a behavior-driven development framework for testing Perl 5 code.
+It has a clean, obvious syntax so that you can easily write tests.
+
+=head2 Suites: describe Your Tests
+
+A test suite begins with a call to the function B<describe> with two parameters: a string and a function. The string is a name or title for a spec suite – usually what is being tested. The function is a block of code that implements the suite.
+
+=head1 Assertions
+
+Here is 2 type assertions.
+
+=head2 C<ok()>
+
+    ok { 1 };
+
+There is the C<ok> function. It takes one code block. The code returns true value if the test case was passed, false otherwise.
+
+C<ok()> returns the value what returned by the code.
+
+=head2 C<expect()>
+
+    expect($x)->to_be_true;
+
+Here is the C<expect> function like RSpec/Jasmine. For more details, please look L<Test::Kantan::Expect>.
 
 =head1 LICENSE
 
