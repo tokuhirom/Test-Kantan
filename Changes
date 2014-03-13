@@ -2,6 +2,11 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.27 2014-03-13T14:05:49Z
+
+    - root safe
+    - fork safe
+
 0.26 2014-03-12T20:45:40Z
 
     - remove TEST_ prefix from the environment variables.

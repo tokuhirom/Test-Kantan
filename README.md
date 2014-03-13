@@ -49,12 +49,12 @@ It's really useful for describing real complex problems.
     Scenario 'String', sub {
       setup { ... };
 
-    Feature 'Get the index from the code', sub {
-      Given 'the string';
-      my $str = 'abc';
+      Feature 'Get the index from the code', sub {
+        Given 'the string';
+        my $str = 'abc';
 
-      When 'get the index for "a"';
-      my $i = index($str, 'a');
+        When 'get the index for "a"';
+        my $i = index($str, 'a');
 
         Then 'the return value is 0';
         expect($i)->to_be(0);
