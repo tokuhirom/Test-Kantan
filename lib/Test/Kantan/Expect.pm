@@ -15,7 +15,7 @@ no Moo;
 use Try::Tiny;
 
 use Test::Kantan::Caller;
-use Test::Deep::NoTest;
+use Test::Deep::NoTest ();
 
 sub _ok {
     my ($self, %args) = @_;
