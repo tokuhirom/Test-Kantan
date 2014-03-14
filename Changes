@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.28 2014-03-14T01:51:59Z
+
+    - internal refactoring
+
 0.27 2014-03-13T14:05:49Z
 
     - root safe
