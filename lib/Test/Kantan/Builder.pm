@@ -10,6 +10,9 @@ use File::Path;
 
 use Test::Kantan::State;
 
+# Do not call this interface directly from your code.
+# After release TB2 and TB2 is good enough to me, I will replace this part with TB2.
+
 use Moo;
 
 has color    => ( is => 'lazy' );
