@@ -10,7 +10,7 @@ use Test::Kantan::Builder;
     package Test::Kantan::Reporter::Null;
 
     use Moo;
-    with qw(Test::Kantan::Reporter::Role);
+    extends 'Test::Kantan::Reporter::Base';
 
     has messages => ( is => 'rw', default => sub { [] } );
 

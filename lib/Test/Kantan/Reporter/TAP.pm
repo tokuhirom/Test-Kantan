@@ -8,7 +8,7 @@ use Test::Kantan::Util qw(dump_data truncstr);
 
 use Moo;
 
-with qw(Test::Kantan::Reporter::Role);
+extends 'Test::Kantan::Reporter::Base';
 
 has count => (is => 'ro', default => sub { 0 });
 

@@ -7,7 +7,7 @@ use Term::ANSIColor ();
 
 use Moo;
 
-with 'Test::Kantan::Reporter::Role';
+extends 'Test::Kantan::Reporter::Base';
 
 has messages => (is => 'ro', default => sub { +[] });
 has message_groups => (is => 'ro', default => sub { +[] });
