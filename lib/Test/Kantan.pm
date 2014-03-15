@@ -250,6 +250,10 @@ Test::Kantan - simple, flexible, fun "Testing framework"
 Test::Kantan is a behavior-driven development framework for testing Perl 5 code.
 It has a clean, obvious syntax so that you can easily write tests.
 
+=head1 CURRENT STATUS
+
+Unstable. I will change the API without notice.
+
 =head1 Interfaces
 
 There is 3 types for describing test cases.
@@ -362,6 +366,11 @@ Log::Minimal outputs logs to STDERR by default.
         local $Test::Kantan::Level = $Test::Kantan::Level + 3;
         Test::Kantan::diag("$time [$type] $message at $trace", 1024);
     };
+
+=head1 How do I use the testing library based on Test::Builder?
+
+Test::Kantan replace some methods in Test::Builder.
+You can use the library based on Test::Builder with Test::Kantan :)
 
 =head1 LICENSE
 
