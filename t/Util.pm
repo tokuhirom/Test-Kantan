@@ -7,7 +7,7 @@ use Test::More;
 
 use parent qw(Exporter);
 
-our @EXPORT = qw(run_test slurp_utf8);
+our @EXPORT = qw(run_test slurp_utf8 spew_utf8 slurp spew);
 
 {
     # utf8 hack.
@@ -38,10 +38,6 @@ sub run_test {
         my $out = do { local $/; <$fh> };
         close $fh;
 
-        note 'x' x 80;
-        note $out;
-        note 'x' x 80;
-
         return $out;
     } else {
         # child
@@ -57,6 +53,27 @@ sub slurp_utf8 {
     open my $fh, '<:encoding(utf-8)', $fname
         or Carp::croak("Can't open '$fname' for reading: '$!'");
     scalar(do { local $/; <$fh> })
+}
+
+sub slurp {
+    my $fname = shift;
+    open my $fh, '<', $fname
+        or Carp::croak("Can't open '$fname' for reading: '$!'");
+    scalar(do { local $/; <$fh> })
+}
+
+sub spew {
+    my $fname = shift;
+    open my $fh, '>', $fname
+        or Carp::croak("Can't open '$fname' for writing: '$!'");
+    print {$fh} $_[0];
+}
+
+sub spew_utf8 {
+    my $fname = shift;
+    open my $fh, '>:encoding(utf-8)', $fname
+        or Carp::croak("Can't open '$fname' for writing: '$!'");
+    print {$fh} $_[0];
 }
 
 1;

@@ -118,6 +118,18 @@ It means, you can call diag() without worries about the messages is a obstacle.
 
         KANTAN_CUTOFF=10000 perl -Ilib t/01_simple.t
 
+# Tips
+
+## How do I suppress output from Log::Minimal?
+
+Log::Minimal outputs logs to STDERR by default.
+
+    $Log::Minimal::PRINT = sub {
+        my ( $time, $type, $message, $trace,$raw_message) = @_;
+        local $Test::Kantan::Level = $Test::Kantan::Level + 3;
+        Test::Kantan::diag("$time [$type] $message at $trace", 1024);
+    };
+
 # LICENSE
 
 Copyright (C) Tokuhiro Matsuno.

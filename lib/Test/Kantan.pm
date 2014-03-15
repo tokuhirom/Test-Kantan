@@ -28,6 +28,8 @@ our @EXPORT = (
 
 my $HAS_DEVEL_CODEOBSERVER = !$ENV{KANTAN_NOOBSERVER} && eval "use Devel::CodeObserver 0.11; 1;";
 
+our $Level = 0;
+
 if (Test::Builder->can('new')) {
     # Replace some Test::Builder methods with mine.
 
@@ -168,14 +170,18 @@ sub ok(&) {
         my $builder = Test::Kantan->builder;
         $builder->ok(
             value       => $retval,
-            caller      => Test::Kantan::Caller->new(0),
+            caller      => Test::Kantan::Caller->new(
+                $Test::Kantan::Level
+            ),
         );
         for my $pair (@{$result->dump_pairs}) {
             my ($code, $dump) = @$pair;
 
             $builder->diag(
                 message => sprintf("%s => %s", $code, $dump),
-                caller  => Test::Kantan::Caller->new(0),
+                caller  => Test::Kantan::Caller->new(
+                    $Test::Kantan::Level
+                ),
                 cutoff  => $builder->reporter->cutoff,
             );
         }
@@ -185,7 +191,9 @@ sub ok(&) {
         my $builder = Test::Kantan->builder;
         $builder->ok(
             value       => $retval,
-            caller      => Test::Kantan::Caller->new(0),
+            caller      => Test::Kantan::Caller->new(
+                $Test::Kantan::Level
+            ),
         );
     }
 }
@@ -196,7 +204,9 @@ sub diag {
     Test::Kantan->builder->diag(
         message => $msg,
         cutoff  => $cutoff,
-        caller  => Test::Kantan::Caller->new(0),
+        caller  => Test::Kantan::Caller->new(
+            $Test::Kantan::Level
+        ),
     );
 }
 
@@ -340,6 +350,18 @@ If you want to change this value, you can set by KANTAN_CUTOFF.
     KANTAN_CUTOFF=10000 perl -Ilib t/01_simple.t
 
 =back
+
+=head1 Tips
+
+=head2 How do I suppress output from Log::Minimal?
+
+Log::Minimal outputs logs to STDERR by default.
+
+    $Log::Minimal::PRINT = sub {
+        my ( $time, $type, $message, $trace,$raw_message) = @_;
+        local $Test::Kantan::Level = $Test::Kantan::Level + 3;
+        Test::Kantan::diag("$time [$type] $message at $trace", 1024);
+    };
 
 =head1 LICENSE
 

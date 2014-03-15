@@ -5,6 +5,12 @@ use utf8;
 use 5.010000;
 use autodie;
 
+for my $xt (glob('t/cases/*.xt')) {
+    (my $expected = $xt) =~ s/\.xt\z/.expected/;
+    my $cmd = "perl -Ilib $xt > $expected";
+    system($cmd)==0 or die "ABORT\n";
+}
+
 for my $file (sort <eg/*.t>) {
     for my $reporter (qw(Spec TAP)) {
         for my $power (0, 1) {
