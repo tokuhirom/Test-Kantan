@@ -58,6 +58,7 @@
       },
       "test" : {
          "requires" : {
+            "Test::Base::Less" : "0",
             "Test::More" : "0.98",
             "Test::Requires" : "0",
             "Text::Diff" : "0"

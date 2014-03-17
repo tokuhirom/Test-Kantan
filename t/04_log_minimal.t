@@ -26,5 +26,7 @@ for my $xt (glob('t/cases/*.xt')) {
     is($got, slurp_utf8($expected));
 }
 
+pass 'done all tests';
+
 done_testing;
 
