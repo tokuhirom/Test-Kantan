@@ -13,6 +13,7 @@ recommends 'Devel::CodeObserver', '0.11';
 on 'test' => sub {
     requires 'Test::More', '0.98';
     requires 'Test::Requires';
+    requires 'Test::Base::Less';
     requires 'Text::Diff';
 };
 

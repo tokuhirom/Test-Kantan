@@ -2,6 +2,8 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+    - Documentation updated.
+
 0.28 2014-03-14T01:51:59Z
 
     - internal refactoring
