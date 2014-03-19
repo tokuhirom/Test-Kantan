@@ -26,7 +26,7 @@ our @EXPORT = qw(run_test slurp_utf8 spew_utf8 slurp spew);
 sub run_test {
     my $path = shift;
 
-    my ($tmp, $filename) = File::Temp::tempfile();
+    my ($tmp, $filename) = File::Temp::tempfile(UNLINK => 1);
     close $tmp;
 
     my $pid = fork;
