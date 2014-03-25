@@ -2,12 +2,12 @@
 
 # Feature Foo
 # Feature Foo/Scenario Normal
-# Feature Foo/Scenario Normal/Given First
-# Feature Foo/Scenario Normal/  And Second
-# Feature Foo/Scenario Normal/ When Push one item
-# Feature Foo/Scenario Normal/  And Push next item
-# Feature Foo/Scenario Normal/ Then the number of array is 2
+# Given First
+#   And Second
+#  When Push one item
+#   And Push next item
+#  Then the number of array is 2
 ok 1 - -
-# Feature Foo/Scenario Normal/  And first item is "a"
+#   And first item is "a"
 ok 2 - -
 1..2

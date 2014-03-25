@@ -101,22 +101,15 @@ sub teardown(&) {
 sub after_each { goto \&teardown }
 
 sub _step {
-    my ($tag, $title, $code) = @_;
+    my ($tag, $title) = @_;
+    @_==2 or Carp::confess "Invalid arguments";
 
     my $last_state = $CURRENT->{last_state};
     $CURRENT->{last_state} = $tag;
     if ($last_state && $last_state eq $tag) {
         $tag = 'And';
     }
-
-    my $guard = builder->reporter->suite(sprintf("%5s %s", $tag, $title));
-    if ($code) {
-        try {
-            $code->();
-        } catch {
-            builder->exception(message => $_);
-        };
-    }
+    builder->reporter->step(sprintf("%5s %s", $tag, $title));
 }
 
 sub Given { _step('Given', @_) }

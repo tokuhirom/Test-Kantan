@@ -80,6 +80,13 @@ sub render_message_power {
     $message->caller->code;
 }
 
+sub step {
+    my ($self, $title) = @_;
+    for my $line (split /\n/, $title) {
+        print "# $line\n";
+    }
+}
+
 sub diag {
     my ($self, %args) = @_;
     my $message = $args{message} // die;

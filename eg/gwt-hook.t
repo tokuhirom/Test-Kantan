@@ -7,15 +7,13 @@ my @p;
 setup { push @p, 'a' };
 
 Feature 'foo', sub {
-    Then 'pushed', sub {
-        ok { 1 };
-    };
+    Then 'pushed';
+    ok { 1 };
 };
 
 Feature 'bar', sub {
-    Then 'pushed', sub {
-        ok { 2 };
-    };
+    Then 'pushed';
+    ok { 2 };
 };
 
 done_testing;

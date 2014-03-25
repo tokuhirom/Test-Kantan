@@ -4,6 +4,7 @@ use warnings;
 use utf8;
 use 5.010000;
 use autodie;
+use lib 'lib';
 
 for my $xt (glob('t/cases/*.xt')) {
     (my $expected = $xt) =~ s/\.xt\z/.expected/;

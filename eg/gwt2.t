@@ -14,12 +14,11 @@ Feature 'Foo', sub {
         When 'Push next item';
         push @ary, 'b';
 
-        Then 'the number of array is 2', sub {
-            expect(0+@ary)->to_be(2);
-        };
-        Then 'first item is "a"', sub {
-            expect($ary[0])->to_be('a');
-        };
+        Then 'the number of array is 2';
+        expect(0+@ary)->to_be(2);
+
+        Then 'first item is "a"';
+        expect($ary[0])->to_be('a');
     };
 };
 

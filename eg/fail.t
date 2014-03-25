@@ -11,10 +11,9 @@ Feature 'Foo', sub {
         When 'Push one item';
         push @ary, 1;
 
-        Then 'the number of array is 1', sub {
-            diag "Don't show me";
-            expect(0+@ary)->to_be(1);
-        };
+        Then 'the number of array is 1';
+        diag "Don't show me";
+        expect(0+@ary)->to_be(1);
     };
 };
 
@@ -26,11 +25,10 @@ Feature 'Foo', sub {
         When 'Push one item';
         push @ary, 1;
 
-        Then 'the number of array is 1', sub {
-            diag "Show me";
-            expect(0+@ary)->to_be(0);
-            ok { 1 };
-        };
+        Then 'the number of array is 1';
+        diag "Show me";
+        expect(0+@ary)->to_be(0);
+        ok { 1 };
     };
 };
 

@@ -5,7 +5,8 @@ use Test::Kantan;
 
 Feature 'Foo', sub {
     Scenario 'bar', sub {
-         Then 'baz', sub { die };
+         Then 'baz';
+         die;
     };
 };
 

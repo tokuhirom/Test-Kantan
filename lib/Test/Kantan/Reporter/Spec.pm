@@ -75,6 +75,14 @@ sub suite {
     );
 }
 
+sub step {
+    my ($self, $title) = @_;
+
+    if (length($title) > 0) {
+        printf "%s%s\n", $self->head_sp, $title;
+    }
+}
+
 sub fail {
     my ($self, %args) = @_;
     $self->message(Test::Kantan::Reporter::Spec::Message::Fail->new(

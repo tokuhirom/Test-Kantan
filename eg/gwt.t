@@ -11,9 +11,8 @@ Feature 'Foo', sub {
         When 'Push one item';
         push @ary, 1;
 
-        Then 'the number of array is 1', sub {
-            expect(0+@ary)->to_be(1);
-        };
+        Then 'the number of array is 1';
+        expect(0+@ary)->to_be(1);
     };
 };
 
