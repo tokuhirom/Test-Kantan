@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.31 2014-03-26T06:23:11Z
+
+    - filtering test cases
+
 0.30 2014-03-25T00:27:23Z
 
     - Given/When/Then No longer takes the code.
