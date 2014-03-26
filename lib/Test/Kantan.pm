@@ -24,6 +24,7 @@ our @EXPORT = (
     qw(describe context it),
     qw(before_each after_each),
     qw(expect ok diag ignore spy_on),
+    qw(skip_all),
 );
 
 my $HAS_DEVEL_CODEOBSERVER = !$ENV{KANTAN_NOOBSERVER} && eval "use Devel::CodeObserver 0.11; 1;";
@@ -87,6 +88,12 @@ sub builder { $BUILDER }
 our $CURRENT = our $ROOT = Test::Kantan::Suite->new(root => 1, title => 'Root');
 our $FINISHED;
 our $RAN_TEST;
+
+sub skip_all {
+    my ($reason) = @_;
+    $reason //= '';
+    print "1..0 # SKIP ${reason}";
+}
 
 sub setup(&) {
     my ($code) = @_;
