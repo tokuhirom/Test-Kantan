@@ -117,7 +117,13 @@ sub When  { _step('When', @_) }
 sub Then  { _step('Then', @_) }
 
 sub _suite {
-    my ($tag, $title, $code) = @_;
+    my ($env_key, $tag, $title, $code) = @_;
+
+    my $filter = $ENV{$env_key};
+    if (defined($filter) && length($filter) > 0 && $title !~ /$filter/) {
+        builder->reporter->step("SKIP: ${title}");
+        return;
+    }
 
     my $suite = Test::Kantan::Suite->new(
         title   => $title,
@@ -134,11 +140,11 @@ sub _suite {
     $RAN_TEST++;
 }
 
-sub Feature  { _suite( 'Feature', @_) }
-sub Scenario { _suite('Scenario', @_) }
+sub Feature  { _suite('KANTAN_FILTER_FEATURE',  'Feature', @_) }
+sub Scenario { _suite('KANTAN_FILTER_SCENARIO', 'Scenario', @_) }
 
 # Test::More compat
-sub subtest  { _suite(     undef, @_) }
+sub subtest  { _suite('KANTAN_FILTER_SUBTEST', undef, @_) }
 
 # BDD compat
 sub describe { _suite(     undef, @_) }
