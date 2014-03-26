@@ -92,7 +92,7 @@ our $RAN_TEST;
 sub skip_all {
     my ($reason) = @_;
     $reason //= '';
-    print "1..0 # SKIP ${reason}";
+    print "1..0 # SKIP ${reason}\n";
     exit 0;
 }
 
