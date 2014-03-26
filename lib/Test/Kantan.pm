@@ -3,7 +3,7 @@ use 5.010_001;
 use strict;
 use warnings;
 
-our $VERSION = "0.32";
+our $VERSION = "0.33";
 
 use parent qw(Exporter);
 
@@ -93,6 +93,7 @@ sub skip_all {
     my ($reason) = @_;
     $reason //= '';
     print "1..0 # SKIP ${reason}";
+    exit 0;
 }
 
 sub setup(&) {

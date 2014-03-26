@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.33 2014-03-26T08:35:30Z
+
+    - skip_all function should exit after printing.
+
 0.32 2014-03-26T08:33:22Z
 
     - Added 'skip_all' function.
