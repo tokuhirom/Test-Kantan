@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.36 2014-08-26T21:08:55Z
+
+    - suppress UUV
+
 0.35 2014-08-26T20:53:11Z
 
     - First CPAN release
