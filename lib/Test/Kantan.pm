@@ -157,9 +157,9 @@ sub Scenario { _suite('KANTAN_FILTER_SCENARIO', 'Scenario', @_) }
 sub subtest  { _suite('KANTAN_FILTER_SUBTEST', undef, @_) }
 
 # BDD compat
-sub describe { _suite(     undef, @_) }
-sub context  { _suite(     undef, @_) }
-sub it       { _suite(     undef, @_) }
+sub describe { _suite(     undef, undef, @_) }
+sub context  { _suite(     undef, undef, @_) }
+sub it       { _suite(     undef, undef, @_) }
 
 sub expect {
     my $stuff = shift;
