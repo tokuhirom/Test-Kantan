@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.35 2014-08-26T20:53:11Z
+
+    - First CPAN release
+
 0.34 2014-03-26T08:39:58Z
 
     - show new line after skip_all message.
