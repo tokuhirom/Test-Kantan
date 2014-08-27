@@ -16,6 +16,8 @@ has message_stack => (is => 'ro', default => sub { +[] });
 
 no Moo;
 
+our $UTF8;
+
 use Scope::Guard;
 
 sub start {
@@ -25,6 +27,8 @@ sub start {
         require Term::Encoding;
         Term::Encoding::get_encoding();
     };
+
+    $UTF8 = ($encoding =~ /utf-?8/i && !$ENV{KANTAN_ASCII}) ? 1 : 0;
 
     binmode *STDOUT, ":encoding(${encoding})";
     STDOUT->autoflush(1);
@@ -226,7 +230,7 @@ sub render {
 
     my $msg = dump_data($self->message);
     $msg =~ s/\n/\\n/g;
-    push @ret, $self->colored(['magenta'], "\x{2668}\n");
+    push @ret, $self->colored(['magenta'], $Test::Kantan::Reporter::Spec::UTF8 ? "\x{2668}\n" : "#\n");
     push @ret, $self->colored(['magenta on_black'], $self->truncstr($msg, $self->cutoff)) . "\n";
     push @ret, $self->render_caller_pos();
     return join '', @ret;
@@ -251,7 +255,7 @@ sub render {
     my @ret;
     push @ret, sprintf(
         "%s\n%s\n",
-        $self->colored(['red'], "\x{2716}"),
+        $self->colored(['red'], $Test::Kantan::Reporter::Spec::UTF8 ? "\x{2716}" : "x"),
         $self->colored(['red on_black'], $self->caller->code)
     );
     if (defined $self->description) {
@@ -283,7 +287,7 @@ sub render {
     my $msg = $self->truncstr($self->message, 1024);
     return join(
         "\n",
-        $self->colored(['magenta on_black'], "\x{2620}"),
+        $self->colored(['magenta on_black'], $Test::Kantan::Reporter::Spec::UTF8 ? "\x{2620}" : "orz"),
         $msg,
     );
 }
@@ -303,7 +307,7 @@ no Moo;
 sub render {
     my ($self) = @_;
     join('',
-        $self->colored(['green'], "\x{2713}\n"),
+        $self->colored(['green'], $Test::Kantan::Reporter::Spec::UTF8 ? "\x{2713}\n" : "o"),
         $self->caller->code, "\n",
         $self->render_caller_pos($self)
     );
