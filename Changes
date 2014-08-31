@@ -2,6 +2,10 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.37 2014-08-31T19:31:16Z
+
+    - fixed bdd style dsl.
+
 0.36 2014-08-26T21:08:55Z
 
     - suppress UUV

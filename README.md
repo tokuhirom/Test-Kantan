@@ -16,6 +16,8 @@ Test::Kantan - simple, flexible, fun "Testing framework"
       };
     };
 
+    done_testing;
+
 # DESCRIPTION
 
 Test::Kantan is a behavior-driven development framework for testing Perl 5 code.
