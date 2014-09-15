@@ -109,6 +109,40 @@ Diagnostic message would not print if whole test cases in the subtest were passe
 
 It means, you can call diag() without worries about the messages is a obstacle.
 
+## `ignore()`
+
+The same as [Test::Deep::NoTest](https://metacpan.org/pod/Test::Deep::NoTest)'s one. See also ["ignore()" in Test::Deep](https://metacpan.org/pod/Test::Deep#ignore)
+
+## `spy_on()`
+
+The same as ["spy\_on()" in Module::Spy](https://metacpan.org/pod/Module::Spy#my-spy-spy_on-class-object-method)
+
+## `skip_all()`
+
+Skips all of the tests that are in the hereafter.
+
+# Hooks
+
+## `setup()`
+
+    setup { do_something() };
+
+`setup` blocks are run before each example `setup` blocks are run once before all of the examples in a group.
+
+## `teardown()`
+
+    teardown { do_something() };
+
+`teardown` blocks are run after each example `teardown` blocks are run once after all of the examples in a group.
+
+## `before_each()`
+
+Alias of `setup()`.
+
+## `after_each`
+
+Alias of `teardown()`.
+
 # ENVIRONMENT VARIABLES
 
 - KANTAN\_REPORTER
