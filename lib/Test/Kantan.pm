@@ -3,7 +3,7 @@ use 5.010_001;
 use strict;
 use warnings;
 
-our $VERSION = "0.37";
+our $VERSION = "0.38";
 
 use parent qw(Exporter);
 
@@ -427,6 +427,8 @@ it under the same terms as Perl itself.
 =head1 AUTHOR
 
 Tokuhiro Matsuno E<lt>tokuhirom@gmail.comE<gt>
+
+moznion
 
 =cut
 
