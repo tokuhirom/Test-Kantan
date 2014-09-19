@@ -187,3 +187,5 @@ it under the same terms as Perl itself.
 Tokuhiro Matsuno <tokuhirom@gmail.com>
 
 moznion
+
+Kuniwak

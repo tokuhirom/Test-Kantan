@@ -2,6 +2,11 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.39 2014-09-19T11:15:40Z
+
+    - Add to_be_a_bag family
+      (Kuniwak)
+
 0.38 2014-09-15T02:04:19Z
 
     - Added documentation(moznion)
