@@ -105,21 +105,21 @@ sub to_be_a {
 
 sub to_be_an { goto \&to_be_a }
 
-sub to_equal_as_a_bag {
+sub to_equal_as_a_bag_of {
     my ($self, $expected) = @_;
 
     $self->to_equal(Test::Deep::bag(@{$expected}));
 }
 
-sub to_be_a_bag_of { goto \&to_equal_as_a_bag }
+sub to_be_a_bag_of { goto \&to_equal_as_a_bag_of }
 
-sub to_equal_as_a_set {
+sub to_equal_as_a_set_of {
     my ($self, $expected) = @_;
 
     $self->to_equal(Test::Deep::set(@{$expected}));
 }
 
-sub to_be_a_set_of { goto \&to_equal_as_a_set }
+sub to_be_a_set_of { goto \&to_equal_as_a_set_of }
 
 sub to_be_a_sub_bag_of {
     my ($self, $expected) = @_;
@@ -210,9 +210,9 @@ Pass if $x matches $re.
 
 Pass if C<< $x->$_isa($v) >> is true.
 
-=item C<< expect($x)->to_equal_as_a_set($v : ArrayRef) >>
+=item C<< expect($x)->to_equal_as_a_set_of($v : ArrayRef) >>
 
-=item C<< expect($x)->to_be_a_set($v : ArrayRef) >>
+=item C<< expect($x)->to_be_a_set_of($v : ArrayRef) >>
 
 =item C<< expect($x)->to_be_a_sub_set_of($v : ArrayRef) >>
 
@@ -220,9 +220,9 @@ Pass if C<< $x->$_isa($v) >> is true.
 
 Pass if $x to equal $v but ignores the order of the elements.
 
-=item C<< expect($x)->to_equal_as_a_bag($v : ArrayRef) >>
+=item C<< expect($x)->to_equal_as_a_bag_of($v : ArrayRef) >>
 
-=item C<< expect($x)->to_be_a_bag($v : ArrayRef) >>
+=item C<< expect($x)->to_be_a_bag_of($v : ArrayRef) >>
 
 =item C<< expect($x)->to_be_a_sub_bag_of($v : ArrayRef) >>
 

@@ -103,20 +103,20 @@ subtest 'to_be_a', sub {
     ok !expect(A->new)->to_be_a('C');
 };
 
-subtest 'to_equal_as_a_bag' => sub {
-    is( expect( [] )->to_equal_as_a_bag( [] ), 1 );
-    is( expect( [0, 1, 2] )->to_equal_as_a_bag( [0, 1, 2] ), 1 );
-    is( expect( [0, 1, 2] )->to_equal_as_a_bag( [2, 0, 1] ), 1 );
-    is( expect( [0, 1, 2, 2] )->to_equal_as_a_bag( [0, 1, 2] ), 0 );
-    is( expect( [0, 1, 2] )->to_equal_as_a_bag( [1, 2, 3] ), 0 );
+subtest 'to_equal_as_a_bag_of' => sub {
+    is( expect( [] )->to_equal_as_a_bag_of( [] ), 1 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_bag_of( [0, 1, 2] ), 1 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_bag_of( [2, 0, 1] ), 1 );
+    is( expect( [0, 1, 2, 2] )->to_equal_as_a_bag_of( [0, 1, 2] ), 0 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_bag_of( [1, 2, 3] ), 0 );
 };
 
-subtest 'to_equal_as_a_set' => sub {
-    is( expect( [] )->to_equal_as_a_set( [] ), 1 );
-    is( expect( [0, 1, 2] )->to_equal_as_a_set( [0, 1, 2] ), 1 );
-    is( expect( [0, 1, 2] )->to_equal_as_a_set( [2, 0, 1] ), 1 );
-    is( expect( [0, 1, 2, 2] )->to_equal_as_a_set( [0, 1, 2] ), 1 );
-    is( expect( [0, 1, 2] )->to_equal_as_a_set( [1, 2, 3] ), 0 );
+subtest 'to_equal_as_a_set_of' => sub {
+    is( expect( [] )->to_equal_as_a_set_of( [] ), 1 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_set_of( [0, 1, 2] ), 1 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_set_of( [2, 0, 1] ), 1 );
+    is( expect( [0, 1, 2, 2] )->to_equal_as_a_set_of( [0, 1, 2] ), 1 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_set_of( [1, 2, 3] ), 0 );
 };
 
 subtest 'to_be_a_sub_bag_of' => sub {
