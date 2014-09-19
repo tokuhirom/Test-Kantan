@@ -105,6 +105,58 @@ sub to_be_a {
 
 sub to_be_an { goto \&to_be_a }
 
+sub to_equal_as_a_bag_of {
+    my ($self, $expected) = @_;
+
+    $self->to_equal(Test::Deep::bag(@{$expected}));
+}
+
+sub to_be_a_bag_of { goto \&to_equal_as_a_bag_of }
+
+sub to_equal_as_a_set_of {
+    my ($self, $expected) = @_;
+
+    $self->to_equal(Test::Deep::set(@{$expected}));
+}
+
+sub to_be_a_set_of { goto \&to_equal_as_a_set_of }
+
+sub to_be_a_sub_bag_of {
+    my ($self, $expected) = @_;
+
+    $self->to_equal(Test::Deep::subbagof(@{$expected}));
+}
+
+sub to_be_a_sub_set_of {
+    my ($self, $expected) = @_;
+
+    $self->to_equal(Test::Deep::subsetof(@{$expected}));
+}
+
+sub to_be_a_super_bag_of {
+    my ($self, $expected) = @_;
+
+    $self->to_equal(Test::Deep::superbagof(@{$expected}));
+}
+
+sub to_be_a_super_set_of {
+    my ($self, $expected) = @_;
+
+    $self->to_equal(Test::Deep::supersetof(@{$expected}));
+}
+
+sub to_be_a_sub_hash_of {
+    my ($self, $expected) = @_;
+
+    $self->to_equal(Test::Deep::subhashof($expected));
+}
+
+sub to_be_a_super_hash_of {
+    my ($self, $expected) = @_;
+
+    $self->to_equal(Test::Deep::superhashof($expected));
+}
+
 1;
 __END__
 
@@ -157,5 +209,31 @@ Pass if $x matches $re.
 =item C<< expect($x)->to_be_an($v : Regexp) >>
 
 Pass if C<< $x->$_isa($v) >> is true.
+
+=item C<< expect($x)->to_equal_as_a_set_of($v : ArrayRef) >>
+
+=item C<< expect($x)->to_be_a_set_of($v : ArrayRef) >>
+
+=item C<< expect($x)->to_be_a_sub_set_of($v : ArrayRef) >>
+
+=item C<< expect($x)->to_be_a_super_set_of($v : ArrayRef) >>
+
+Pass if $x to equal $v but ignores the order of the elements.
+
+=item C<< expect($x)->to_equal_as_a_bag_of($v : ArrayRef) >>
+
+=item C<< expect($x)->to_be_a_bag_of($v : ArrayRef) >>
+
+=item C<< expect($x)->to_be_a_sub_bag_of($v : ArrayRef) >>
+
+=item C<< expect($x)->to_be_a_super_bag_of($v : ArrayRef) >>
+
+Pass if $x to equal $v but ignores the order of the elements and it ignores duplicate elements.
+
+=item C<< expect($x)->to_be_a_sub_hash_of($v : HashRef) >>
+
+=item C<< expect($x)->to_be_a_super_hash_of($v : HashRef) >>
+
+Pass if $x is a "super-hash" or "sub-hash" of $v.
 
 =back

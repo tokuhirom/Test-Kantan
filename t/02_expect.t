@@ -103,5 +103,62 @@ subtest 'to_be_a', sub {
     ok !expect(A->new)->to_be_a('C');
 };
 
+subtest 'to_equal_as_a_bag_of' => sub {
+    is( expect( [] )->to_equal_as_a_bag_of( [] ), 1 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_bag_of( [0, 1, 2] ), 1 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_bag_of( [2, 0, 1] ), 1 );
+    is( expect( [0, 1, 2, 2] )->to_equal_as_a_bag_of( [0, 1, 2] ), 0 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_bag_of( [1, 2, 3] ), 0 );
+};
+
+subtest 'to_equal_as_a_set_of' => sub {
+    is( expect( [] )->to_equal_as_a_set_of( [] ), 1 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_set_of( [0, 1, 2] ), 1 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_set_of( [2, 0, 1] ), 1 );
+    is( expect( [0, 1, 2, 2] )->to_equal_as_a_set_of( [0, 1, 2] ), 1 );
+    is( expect( [0, 1, 2] )->to_equal_as_a_set_of( [1, 2, 3] ), 0 );
+};
+
+subtest 'to_be_a_sub_bag_of' => sub {
+    is( expect( [] )->to_be_a_sub_bag_of( [] ), 1 );
+    is( expect( [1, 0] )->to_be_a_sub_bag_of( [0, 1] ), 1 );
+    is( expect( [1, 0] )->to_be_a_sub_bag_of( [0, 1, 2] ), 1 );
+    is( expect( [1, 0] )->to_be_a_sub_bag_of( [0, 2] ), 0 );
+    is( expect( [1, 0] )->to_be_a_sub_bag_of( [0] ), 0 );
+};
+
+subtest 'to_be_a_sub_set_of' => sub {
+    is( expect( [] )->to_be_a_sub_set_of( [] ), 1 );
+    is( expect( [1, 0] )->to_be_a_sub_set_of( [0, 1] ), 1 );
+    is( expect( [1, 0] )->to_be_a_sub_set_of( [0, 1, 2] ), 1 );
+    is( expect( [1, 0] )->to_be_a_sub_set_of( [0] ), 0 );
+};
+
+subtest 'to_be_a_super_bag_of' => sub {
+    is( expect( [] )->to_be_a_super_bag_of( [] ), 1 );
+    is( expect( [0, 1, 2] )->to_be_a_super_bag_of( [0, 1] ), 1 );
+    is( expect( [0, 1, 2] )->to_be_a_super_bag_of( [1, 0] ), 1 );
+    is( expect( [0, 1] )->to_be_a_super_bag_of( [2, 1, 0] ), 0 );
+};
+
+subtest 'to_be_a_super_set_of' => sub {
+    is( expect( [] )->to_be_a_super_set_of( [] ), 1 );
+    is( expect( [0, 1, 2] )->to_be_a_super_bag_of( [0, 1] ), 1 );
+    is( expect( [0, 1, 2] )->to_be_a_super_bag_of( [1, 0] ), 1 );
+    is( expect( [0, 1] )->to_be_a_super_bag_of( [2, 1, 0] ), 0 );
+};
+
+subtest 'to_be_a_sub_hash_of' => sub {
+    is( expect( {} )->to_be_a_sub_hash_of( {} ), 1 );
+    is( expect( {a => 0} )->to_be_a_sub_hash_of( {a => 0, b => 1} ), 1 );
+    is( expect( {a => 0, b => 1} )->to_be_a_sub_hash_of( {a => 0} ), 0 );
+};
+
+subtest 'to_be_a_super_hash_of' => sub {
+    is( expect( {} )->to_be_a_super_hash_of( {} ), 1 );
+    is( expect( {a => 0, b => 1} )->to_be_a_super_hash_of( {a => 0} ), 1 );
+    is( expect( {a => 0, b => 1} )->to_be_a_super_hash_of( {a => 0, c => 2} ), 0 );
+};
+
 done_testing;
 
