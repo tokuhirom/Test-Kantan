@@ -119,7 +119,7 @@ sub to_equal_as_a_set {
     $self->to_equal(Test::Deep::set(@{$expected}));
 }
 
-sub to_be_a_set_of { goto \&to_equal_as_a_bag }
+sub to_be_a_set_of { goto \&to_equal_as_a_set }
 
 sub to_be_a_sub_bag_of {
     my ($self, $expected) = @_;
