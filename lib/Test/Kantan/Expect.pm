@@ -22,8 +22,11 @@ sub _ok {
     exists($args{value}) or die "Missing value";
     my $value = delete $args{value};
 
+    my $caller_level = exists($args{caller_level}) ?
+        delete $args{caller_level} : 1;
+
     $self->builder->ok(
-        caller   => Test::Kantan::Caller->new(1),
+        caller   => Test::Kantan::Caller->new($caller_level),
         value    => $self->inverted ? !$value : $value,
         %args,
     );
@@ -64,14 +67,24 @@ sub to_be_falsy {
 }
 sub to_be_false { goto \&to_be_falsy }
 
-sub to_equal {
-    my ($self, $expected) = @_;
+sub _to_equal_by_test_deep {
+    my ($self, $expected, %args) = @_;
 
     my ($ok, $stack) = Test::Deep::cmp_details($self->stuff, $expected);
     my $diag = $ok ? '-' : Test::Deep::deep_diag($stack);
     $self->_ok(
         value       => $ok,
         description => $diag,
+        %args,
+    );
+}
+
+sub to_equal {
+    my ($self, $expected) = @_;
+
+    $self->_to_equal_by_test_deep(
+        $expected,
+        caller_level => 2,
     );
 }
 
@@ -108,7 +121,10 @@ sub to_be_an { goto \&to_be_a }
 sub to_equal_as_a_bag_of {
     my ($self, $expected) = @_;
 
-    $self->to_equal(Test::Deep::bag(@{$expected}));
+    $self->_to_equal_by_test_deep(
+        Test::Deep::bag(@{$expected}),
+        caller_level => 2,
+    );
 }
 
 sub to_be_a_bag_of { goto \&to_equal_as_a_bag_of }
@@ -116,7 +132,10 @@ sub to_be_a_bag_of { goto \&to_equal_as_a_bag_of }
 sub to_equal_as_a_set_of {
     my ($self, $expected) = @_;
 
-    $self->to_equal(Test::Deep::set(@{$expected}));
+    $self->_to_equal_by_test_deep(
+        Test::Deep::set(@{$expected}),
+        caller_level => 2,
+    );
 }
 
 sub to_be_a_set_of { goto \&to_equal_as_a_set_of }
@@ -124,37 +143,55 @@ sub to_be_a_set_of { goto \&to_equal_as_a_set_of }
 sub to_be_a_sub_bag_of {
     my ($self, $expected) = @_;
 
-    $self->to_equal(Test::Deep::subbagof(@{$expected}));
+    $self->_to_equal_by_test_deep(
+        Test::Deep::subbagof(@{$expected}),
+        caller_level => 2,
+    );
 }
 
 sub to_be_a_sub_set_of {
     my ($self, $expected) = @_;
 
-    $self->to_equal(Test::Deep::subsetof(@{$expected}));
+    $self->_to_equal_by_test_deep(
+        Test::Deep::subsetof(@{$expected}),
+        caller_level => 2,
+    );
 }
 
 sub to_be_a_super_bag_of {
     my ($self, $expected) = @_;
 
-    $self->to_equal(Test::Deep::superbagof(@{$expected}));
+    $self->_to_equal_by_test_deep(
+        Test::Deep::superbagof(@{$expected}),
+        caller_level => 2,
+    );
 }
 
 sub to_be_a_super_set_of {
     my ($self, $expected) = @_;
 
-    $self->to_equal(Test::Deep::supersetof(@{$expected}));
+    $self->_to_equal_by_test_deep(
+        Test::Deep::supersetof(@{$expected}),
+        caller_level => 2,
+    );
 }
 
 sub to_be_a_sub_hash_of {
     my ($self, $expected) = @_;
 
-    $self->to_equal(Test::Deep::subhashof($expected));
+    $self->_to_equal_by_test_deep(
+        Test::Deep::subhashof($expected),
+        caller_level => 2,
+    );
 }
 
 sub to_be_a_super_hash_of {
     my ($self, $expected) = @_;
 
-    $self->to_equal(Test::Deep::superhashof($expected));
+    $self->_to_equal_by_test_deep(
+        Test::Deep::superhashof($expected),
+        caller_level => 2,
+    );
 }
 
 1;
