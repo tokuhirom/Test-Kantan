@@ -76,9 +76,10 @@
          "web" : "https://github.com/tokuhirom/Test-Kantan"
       }
    },
-   "version" : "0.39",
+   "version" : "0.40",
    "x_contributors" : [
       "moznion <moznion@gmail.com>",
-      "Kuniwak <yuki.kokubun@mixi.co.jp>"
+      "Kuniwak <yuki.kokubun@mixi.co.jp>",
+      "Kuniwak <orga.chem.job@gmail.com>"
    ]
 }

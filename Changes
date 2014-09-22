@@ -2,6 +2,14 @@ Revision history for Perl extension Test-Kantan
 
 {{$NEXT}}
 
+0.40 2014-09-22T10:17:28Z
+
+    commit f3c9a3a77dc17d6d09c1719f95ad4c317b91f0ba
+    Author: Kuniwak <orga.chem.job@gmail.com>
+    Date:   Sun Sep 21 20:06:26 2014 +0900
+
+        Fix caller level for to_be_a_bag_of family
+
 0.39 2014-09-19T11:15:40Z
 
     - Add to_be_a_bag family
