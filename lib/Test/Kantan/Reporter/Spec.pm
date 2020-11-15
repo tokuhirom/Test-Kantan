@@ -3,6 +3,9 @@ use strict;
 use warnings;
 use utf8;
 use 5.010_001;
+if ($^O eq 'MSWin32') {
+	eval "use Win32::Console::ANSI;"; # Only Windows 10 from 2020 supports ANSI sequences
+}
 use Term::ANSIColor ();
 use IO::Handle;
 
